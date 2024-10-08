@@ -17,7 +17,7 @@ public class CompanyType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    @Column(name = "id_company_type")
+    @Column(name = "company_type_id")
     private Long id;
 
     @Column(length = 255)
