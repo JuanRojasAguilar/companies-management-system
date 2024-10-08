@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.backend.companytype.domain.CompanyType;
 import com.backend.companytype.infraestructure.CompanyTypeRepository;
 
-
 @Service
 public class CompanyTypeServiceImpl implements CompanyTypeService {
     @Autowired
@@ -26,20 +25,26 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
     }
 
     @Override
+    @Transactional
     public CompanyType save(CompanyType companyType) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+        return repository.save(companyType);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<CompanyType> findById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        return repository.findById(id);
     }
 
     @Override
+    @Transactional
     public boolean delete(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        try {
+            CompanyType companyInstance = this.findById(id).get();
+            repository.delete(companyInstance);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
