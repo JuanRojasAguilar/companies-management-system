@@ -39,12 +39,11 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
     @Override
     @Transactional
     public boolean delete(Long id) {
-        try {
-            CompanyType companyInstance = this.findById(id).get();
-            repository.delete(companyInstance);
+        Optional<CompanyType> companyInstance = this.findById(id);
+        if (companyInstance.isPresent()) {
+            repository.delete(companyInstance.get());
             return true;
-        } catch (Exception e) {
-            return false;
         }
+        return false;
     }
 }
