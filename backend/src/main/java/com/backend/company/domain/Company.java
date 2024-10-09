@@ -29,6 +29,6 @@ public class Company {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_type_id")
     private CompanyType companyType;
 }

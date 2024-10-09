@@ -1,14 +1,17 @@
-package com.backend.company.application;
+package com.backend.company.infrastructure;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.backend.company.application.CompanyService;
 import com.backend.company.domain.Company;
-import com.backend.company.infraestructure.CompanyRepository;
+
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private CompanyRepository repository;

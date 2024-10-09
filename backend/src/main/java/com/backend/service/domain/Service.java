@@ -22,5 +22,5 @@ public class Service {
     private String name;
 
     @Column(name = "is_reagent_needed")
-    private boolean isReagentNeeded;
+    private boolean reagentNeeded;
 }

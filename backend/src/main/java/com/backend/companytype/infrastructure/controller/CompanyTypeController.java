@@ -1,4 +1,4 @@
-package com.backend.companytype.infraestructure.controller;
+package com.backend.companytype.infrastructure.controller;
 
 import java.util.Optional;
 import java.util.Set;

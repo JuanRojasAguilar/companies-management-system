@@ -1,4 +1,4 @@
-package com.backend.companytype.application;
+package com.backend.companytype.infrastructure;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.backend.companytype.application.CompanyTypeService;
 import com.backend.companytype.domain.CompanyType;
-import com.backend.companytype.infraestructure.CompanyTypeRepository;
 
 @Service
 public class CompanyTypeServiceImpl implements CompanyTypeService {
