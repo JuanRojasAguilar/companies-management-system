@@ -1,6 +1,6 @@
-package com.backend.region.domain;
+package com.backend.city.domain;
 
-import com.backend.country.domain.Country;
+import com.backend.region.domain.Region;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,19 +15,18 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name = "regions")
+@Table(name = "cities")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Region {
-
+public class City {
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "region_id")
+    @Column(name = "city_id")
+    @EqualsAndHashCode.Include
     private Long id;
-    
+
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
+    @JoinColumn(name = "region_id")
+    private Region region;
 }
