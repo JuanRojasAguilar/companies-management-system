@@ -11,4 +11,7 @@ import com.backend.city.domain.City;
 public interface CityService {
     List<City> findAll();
     Optional<City> findById(Long id);
+    Optional<City> update(Long id, City city);
+    City save(City city);
+    boolean delete(Long id);
 }
