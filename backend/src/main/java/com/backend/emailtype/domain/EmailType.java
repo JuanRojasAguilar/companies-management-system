@@ -1,4 +1,4 @@
-package com.backend.country.domain;
+package com.backend.emailtype.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,14 +11,14 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name="country")
+@Table(name = "email_types")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Country {
+public class EmailType {
+    @Id
 
-	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	@Column(name = "country_id")
+	@Column(name = "email_type_id")
 	private Long id;
 
 	@Column(length = 25)

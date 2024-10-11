@@ -30,7 +30,7 @@ public class FranshiceServiceImpl implements FranchiseService {
         Optional<Franchise> franchiseInstance = repository.findById(id);
         if (franchiseInstance.isPresent()) {
             Franchise newFranchise = franchiseInstance.get();
-            BeanUtils.copyProperties(newFranchise, franchise);
+            BeanUtils.copyProperties(franchise, newFranchise);
             return Optional.of(repository.save(newFranchise));
         }
         return Optional.empty();

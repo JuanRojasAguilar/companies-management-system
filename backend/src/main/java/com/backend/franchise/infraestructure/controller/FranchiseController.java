@@ -20,23 +20,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/franchises")
 public class FranchiseController {
-    @Autowired
-    private FranchiseService service;
+  @Autowired
+  private FranchiseService service;
 
-    
   @GetMapping
   @Transactional(readOnly = true)
   public List<Franchise> findAll() {
     return service.findAll();
   }
-  
+
   @GetMapping("/{id}")
   @Transactional(readOnly = true)
   public Optional<Franchise> findById(@PathVariable Long id) {
     return service.findById(id);
   }
 
-  @PostMapping 
+  @PostMapping
   @Transactional
   public Franchise save(@RequestBody Franchise franchise) {
     return service.save(franchise);
@@ -53,5 +52,5 @@ public class FranchiseController {
   public boolean delete(@PathVariable Long id) {
     return service.delete(id);
   }
-    
+
 }
