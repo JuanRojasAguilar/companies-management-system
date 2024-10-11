@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name="country")
+@Table(name="countries")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Country {
 
