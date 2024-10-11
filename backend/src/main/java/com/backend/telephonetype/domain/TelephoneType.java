@@ -1,4 +1,4 @@
-package com.backend.emailtype.domain;
+package com.backend.telephonetype.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,13 +11,13 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name = "email_types")
+@Table(name = "telephone_types")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class EmailType {
-    @Id
+public class TelephoneType {
+     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	@Column(name = "email_type_id")
+	@Column(name = "telephone_type_id")
 	private Long id;
 
 	@Column(length = 25)

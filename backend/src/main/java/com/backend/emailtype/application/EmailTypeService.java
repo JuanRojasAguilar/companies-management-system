@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.backend.emailtype.domain.EmailType;
 
-
 public interface EmailTypeService {
     Set<EmailType> findAll();
     Optional<EmailType> findById(Long id);
