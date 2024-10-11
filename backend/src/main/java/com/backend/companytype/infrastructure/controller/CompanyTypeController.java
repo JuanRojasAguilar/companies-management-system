@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,16 +23,19 @@ public class CompanyTypeController {
     private CompanyTypeService service;
 
     @GetMapping
+    @Transactional(readOnly = true)
     public Set<CompanyType> findAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
+    @Transactional(readOnly = true)
     public Optional<CompanyType> findById(@PathVariable Long id) {
         return service.findById(id);
     }
     
     @PostMapping
+    @Transactional
     public CompanyType save(@RequestBody CompanyType companyType) {
         return service.save(companyType);
     }
