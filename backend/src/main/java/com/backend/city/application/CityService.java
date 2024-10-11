@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.backend.city.domain.City;
 
-@Service
 public interface CityService {
     List<City> findAll();
     Optional<City> findById(Long id);

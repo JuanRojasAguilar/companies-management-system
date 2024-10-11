@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.backend.city.application.CityService;
 import com.backend.city.domain.City;
 
+@Service
 public class CityServiceImpl implements CityService {
   @Autowired
   private CityRepository repository;
