@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "telephone_types")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TelephoneType {
-     @Id
+  @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	@Column(name = "telephone_type_id")
