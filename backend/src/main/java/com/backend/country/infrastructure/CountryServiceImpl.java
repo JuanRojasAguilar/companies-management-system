@@ -1,4 +1,4 @@
-package com.backend.country.infrastructure.repository;
+package com.backend.country.infrastructure;
 
 
 import java.util.LinkedHashSet;
@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.country.application.CountryService;
 import com.backend.country.domain.Country;
 import com.backend.country.infrastructure.CountryRepository;
+
 
 public class CountryServiceImpl implements CountryService {
 	@Autowired
@@ -43,6 +45,17 @@ public class CountryServiceImpl implements CountryService {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	@Override
+	public Optional<Country> update(Long id, Country country) {
+		Optional<Country> countryInstance = repository.findById(id);
+		if (countryInstance.isPresent()) {
+			Country newCountry = countryInstance.get();
+			BeanUtils.copyProperties(country, newCountry);
+			return Optional.of(repository.save(newCountry));
+		}
+		return Optional.empty();
 	}
 
 }

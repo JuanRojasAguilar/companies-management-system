@@ -1,4 +1,4 @@
-package com.backend.statusorderservice.infrastructure.repository;
+package com.backend.statusorderservice.infrastructure;
 
 
 import java.util.LinkedHashSet;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +45,14 @@ public class StatusOrderServiceServiceImpl implements StatusOrderServiceService 
 		}
 	}
 
-
-
-
+	@Override
+	public Optional<StatusOrderService> update(Long id, StatusOrderService statusOrderService) {
+		Optional<StatusOrderService> statusOrderServiceInstance = repository.findById(id);
+		if (statusOrderServiceInstance.isPresent()) {
+			StatusOrderService newStatusOrderService = statusOrderServiceInstance.get();
+			BeanUtils.copyProperties(statusOrderService, newStatusOrderService);
+			return Optional.of(repository.save(newStatusOrderService));
+		}
+		return Optional.empty();
+	}
 }
