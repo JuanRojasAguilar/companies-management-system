@@ -1,4 +1,4 @@
-package com.backend.statusapproval.infrastructure.controller;
+package com.backend.statusorderservice.infrastructure.controller;
 
 import java.util.Optional;
 import java.util.Set;
@@ -12,34 +12,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.backend.statusapproval.application.StatusApprovalService;
-import com.backend.statusapproval.domain.StatusApproval;
+import com.backend.statusorderservice.application.StatusOrderServiceService;
+import com.backend.statusorderservice.domain.StatusOrderService;
 
-public class StatusApprovalController{
+public class StatusOrderServiceController{
 	@Autowired
-	private StatusApprovalService service;
+	private StatusOrderServiceService service;
 
 	@GetMapping
 	@Transactional(readOnly = true)
-	public Set<StatusApproval> findAll() {
+	public Set<StatusOrderService> findAll() {
 		return service.findAll();
 	}
 
 	@GetMapping("/{id}")
 	@Transactional(readOnly = true)
-	public Optional<StatusApproval> findById(@PathVariable Long id) {
+	public Optional<StatusOrderService> findById(@PathVariable Long id) {
 		return service.findById(id);
 	}
 
 	@PutMapping("/{id}")
 	@Transactional
-	public Optional<StatusApproval> update(@PathVariable Long id, @RequestBody StatusApproval statusApproval) {
-		return service.update(id, statusApproval);
+	public Optional<StatusOrderService> update(@PathVariable Long id, @RequestBody StatusOrderService statusOrderService) {
+		return service.update(id, statusOrderService);
 	}
 
 	@PostMapping
 	@Transactional
-	public StatusApproval save(@RequestBody StatusApproval statusApproval) {
+	public StatusOrderService save(@RequestBody StatusOrderService statusApproval) {
 		return service.save(statusApproval);
 	}
 

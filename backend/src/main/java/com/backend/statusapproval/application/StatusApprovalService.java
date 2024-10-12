@@ -12,6 +12,8 @@ public interface StatusApprovalService {
 
 	public Optional<StatusApproval> findById(Long id);
 
+	public Optional<StatusApproval> update(Long id, StatusApproval statusApproval);
+
 	public boolean delete(Long id);
 	 
 }
