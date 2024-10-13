@@ -1,4 +1,4 @@
-package com.backend.orderstate.infrastructure.controller;
+package com.backend.reagent.infrastructure.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -11,8 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.orderstate.application.OrderStateService;
-import com.backend.orderstate.domain.OrderState;
+import com.backend.reagent.application.ReagentService;
+import com.backend.reagent.domain.Reagent;
 
 import jakarta.validation.Valid;
 
@@ -24,44 +24,46 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
+
+
 @RestController
-@RequestMapping("api/orders/states")
-public class OrderStateController {
+@RequestMapping("api/reagents")
+public class ReagentController {
     @Autowired
-    private OrderStateService orderStateService;
+    private ReagentService reagentService;
 
     @GetMapping()
-    public List<OrderState> getAll() {
-        return orderStateService.findAll();
+    public List<Reagent> getAll() {
+        return reagentService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        return orderStateService.findById(id)
-            .map(orderStateNoOp -> ResponseEntity.ok(orderStateNoOp))
+    public ResponseEntity<?> getMethodName(@PathVariable Long id) {
+        return reagentService.findById(id)
+            .map(reagent -> ResponseEntity.ok(reagent))
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody OrderState orderState, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody Reagent reagent, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
-            : ResponseEntity.status(HttpStatus.CREATED).body(orderStateService.save(orderState));
+            : ResponseEntity.status(HttpStatus.CREATED).body(reagentService.save(reagent));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody OrderState orderState, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Reagent reagent, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
-            : orderStateService.update(id, orderState)
-                .map(updateOrderResponse -> ResponseEntity.status(HttpStatus.OK).body(updateOrderResponse))
+            : reagentService.update(id, reagent)
+                .map(updateReagent -> ResponseEntity.ok(updateReagent))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {    
-        return orderStateService.delete(id)
-            .map(orderStateNoOp -> ResponseEntity.ok(orderStateNoOp))
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return reagentService.delete(id) 
+            .map(deleteReagent -> ResponseEntity.ok(deleteReagent))
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
     
@@ -74,5 +76,4 @@ public class OrderStateController {
 
         return ResponseEntity.badRequest().body(errors);
     }
-    
 }
