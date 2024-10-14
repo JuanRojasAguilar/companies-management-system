@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.country.application.CountryService;
 import com.backend.country.domain.Country;
 
+@RequestMapping("api/countries")
+@RestController
 public class CountryController {
 	@Autowired
 	private CountryService service;

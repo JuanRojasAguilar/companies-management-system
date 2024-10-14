@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.backend.orderwork.application.OrderWorkService;
 import com.backend.orderwork.domain.OrderWork;
 
+@RequestMapping("/api/order-works")
 public class OrderWorkController{
 	@Autowired
 	private OrderWorkService service;
@@ -43,7 +45,7 @@ public class OrderWorkController{
 		return service.save(orderWork);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	@Transactional
 	public boolean delete(@PathVariable Long id) {
 		return service.delete(id);

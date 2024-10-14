@@ -1,4 +1,4 @@
-package com.backend.detailsorderwork.infrastructure.controller;
+package com.backend.serviceapproval.infrastructure.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,27 +19,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.detailsorderwork.application.DetailsOrderWorkService;
-import com.backend.detailsorderwork.domain.DetailsOrderWork;
+import com.backend.serviceapproval.application.ServiceApprovalService;
+import com.backend.serviceapproval.domain.ServiceApproval;
 
 import jakarta.validation.Valid;
 
 @RequestMapping("/api/details-order-controllers")
 @RestController
-public class DetailsOrderWorkController{
+public class ServiceApprovalController{
 	@Autowired
-	private DetailsOrderWorkService service;
+	private ServiceApprovalService service;
 
 	@GetMapping
 	@Transactional(readOnly = true)
-	public Set<DetailsOrderWork> findAll() {
+	public Set<ServiceApproval> findAll() {
 		return service.findAll();
 	}
 
 	@GetMapping("/{id}")
 	@Transactional(readOnly = true)
-	public ResponseEntity<DetailsOrderWork> findById(@PathVariable Long id) {
-		Optional<DetailsOrderWork> detailsOpt = service.findById(id);
+	public ResponseEntity<ServiceApproval> findById(@PathVariable Long id) {
+		Optional<ServiceApproval> detailsOpt = service.findById(id);
 		if (detailsOpt.isPresent()) {
 			return ResponseEntity.ok(detailsOpt.orElseThrow());
 		}
@@ -48,11 +48,11 @@ public class DetailsOrderWorkController{
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody DetailsOrderWork detailsOrderWork, BindingResult result, @PathVariable Long id ) {
+	public ResponseEntity<?> update(@Valid @RequestBody ServiceApproval serviceApproval, BindingResult result, @PathVariable Long id ) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
-		Optional<DetailsOrderWork> detailsOpt = service.update(id, detailsOrderWork);
+		Optional<ServiceApproval> detailsOpt = service.update(id, serviceApproval);
 		if (detailsOpt.isPresent()) {
 			return ResponseEntity.status(HttpStatus.CREATED).body(detailsOpt.orElseThrow());
 		}
@@ -61,7 +61,7 @@ public class DetailsOrderWorkController{
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody DetailsOrderWork orderWork, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody ServiceApproval orderWork, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
@@ -70,12 +70,12 @@ public class DetailsOrderWorkController{
 
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<DetailsOrderWork> delete(@PathVariable Long id) {
-		DetailsOrderWork detailsOrderWork = new DetailsOrderWork();
-		detailsOrderWork.setId(id);
-		Optional<DetailsOrderWork> detailsOrderWorkDelete = service.delete(id);
-		if (detailsOrderWorkDelete.isPresent()) {
-			return ResponseEntity.ok(detailsOrderWorkDelete.orElseThrow());
+	public ResponseEntity<ServiceApproval> delete(@PathVariable Long id) {
+		ServiceApproval serviceApproval = new ServiceApproval();
+		serviceApproval.setId(id);
+		Optional<ServiceApproval> serviceApprovalDelete = service.delete(id);
+		if (serviceApprovalDelete.isPresent()) {
+			return ResponseEntity.ok(serviceApprovalDelete.orElseThrow());
 		}
 		return ResponseEntity.notFound().build();
 	}

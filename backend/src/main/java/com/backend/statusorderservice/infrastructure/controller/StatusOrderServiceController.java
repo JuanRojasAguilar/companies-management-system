@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.statusorderservice.application.StatusOrderServiceService;
 import com.backend.statusorderservice.domain.StatusOrderService;
 
+@RequestMapping("/api/status-order-services")
+@RestController
 public class StatusOrderServiceController{
 	@Autowired
 	private StatusOrderServiceService service;
@@ -43,7 +47,7 @@ public class StatusOrderServiceController{
 		return service.save(statusApproval);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	@Transactional
 	public boolean delete(@PathVariable Long id) {
 		return service.delete(id);

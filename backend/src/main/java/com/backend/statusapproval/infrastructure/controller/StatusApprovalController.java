@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.statusapproval.application.StatusApprovalService;
 import com.backend.statusapproval.domain.StatusApproval;
 
+@RequestMapping("/api/status-approval")
+@RestController
 public class StatusApprovalController{
 	@Autowired
 	private StatusApprovalService service;
@@ -43,7 +47,7 @@ public class StatusApprovalController{
 		return service.save(statusApproval);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	@Transactional
 	public boolean delete(@PathVariable Long id) {
 		return service.delete(id);
