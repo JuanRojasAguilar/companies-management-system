@@ -23,7 +23,6 @@ public class CityController {
   private CityService service;
 
   @GetMapping
-  @Transactional(readOnly = true)
   public List<City> findAll() {
     return service.findAll();
   }
@@ -48,7 +47,7 @@ public class CityController {
 
   @DeleteMapping("/{id}")
   @Transactional
-  public boolean delete(@PathVariable Long id) {
+  public Optional<City> delete(@PathVariable Long id) {
     return service.delete(id);
   }
 }
