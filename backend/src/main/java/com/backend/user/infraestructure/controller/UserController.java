@@ -31,13 +31,13 @@ public class UserController {
 
   @GetMapping("/{id}")
   @Transactional(readOnly = true)
-  public Optional<User> findById(@PathVariable Long id) {
+  public Optional<User> findById(@PathVariable String id) {
     return service.findById(id);
   }
 
   @PutMapping("/{id}")
   @Transactional
-  public Optional<User> update(@PathVariable Long id, @RequestBody User user) {
+  public Optional<User> update(@PathVariable String id, @RequestBody User user) {
     return service.update(id, user);
   }
 
@@ -49,7 +49,7 @@ public class UserController {
 
   @DeleteMapping("/{id}")
   @Transactional
-  public boolean delete(@PathVariable Long id) {
+  public boolean delete(@PathVariable String id) {
     return service.delete(id);
   }
 }

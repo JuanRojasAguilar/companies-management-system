@@ -7,8 +7,8 @@ import com.backend.user.domain.User;
 
 public interface UserService {
   List<User> findAll();
-  Optional<User> findById(Long id);
+  Optional<User> findById(String id);
   User save(User user);
-  Optional<User> update(Long id, User user);
-  boolean delete(Long id);
+  Optional<User> update(String id, User user);
+  boolean delete(String id);
 }
