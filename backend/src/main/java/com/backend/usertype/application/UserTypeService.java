@@ -10,5 +10,5 @@ public interface UserTypeService {
     Optional<UserType> findById(Long id);
     UserType save(UserType userType);
     Optional<UserType> update(Long id, UserType userType);
-    boolean delete(Long id);
+    Optional<UserType> delete(Long id);
 }
