@@ -10,5 +10,5 @@ public interface FranchiseService {
     Optional<Franchise> findById(Long id);
     Optional<Franchise> update(Long id, Franchise franchise);
     Franchise save(Franchise franchise);
-    boolean delete(Long id);
+    Optional<Franchise> delete(Long id);
 }

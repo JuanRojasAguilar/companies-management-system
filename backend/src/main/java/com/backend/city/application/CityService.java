@@ -10,5 +10,5 @@ public interface CityService {
     Optional<City> findById(Long id);
     Optional<City> update(Long id, City city);
     City save(City city);
-    boolean delete(Long id);
+    Optional<City> delete(Long id);
 }
