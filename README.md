@@ -23,6 +23,9 @@ npm run dev
 ### Domains
 
 - Los id se escribiran de tal manera: *product_id* dejando el "id" al final.
+- Usar @EqualsAndHashCode.Include en los id para evitar problemas con Lombok
+- En las relaciones OneToMany, **siempre** usar la anotación *@JsonIgnore* 
+- En relaciones ManyToOne, usar FetchType.Lazy
 
 ### Services
 

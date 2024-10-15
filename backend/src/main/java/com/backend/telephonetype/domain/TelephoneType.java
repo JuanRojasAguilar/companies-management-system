@@ -1,4 +1,4 @@
-package com.backend.country.domain;
+package com.backend.telephonetype.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,14 +11,13 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name="countries")
+@Table(name = "telephone_types")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Country {
-
-	@Id
+public class TelephoneType {
+  @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	@Column(name = "country_id")
+	@Column(name = "telephone_type_id")
 	private Long id;
 
 	@Column(length = 25)

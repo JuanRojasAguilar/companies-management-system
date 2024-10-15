@@ -1,4 +1,4 @@
-package com.backend.country.domain;
+package com.backend.usertype.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,16 +11,15 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name="countries")
+@Table(name = "user_types")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Country {
+public class UserType {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @Column(name = "company_type_id")
+    private Long id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@EqualsAndHashCode.Include
-	@Column(name = "country_id")
-	private Long id;
-
-	@Column(length = 25)
-	private String name;
+    @Column(length = 40)
+    private String name;
 }

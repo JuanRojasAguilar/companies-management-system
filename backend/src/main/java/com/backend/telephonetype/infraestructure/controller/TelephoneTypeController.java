@@ -1,50 +1,48 @@
-package com.backend.companytype.infrastructure.controller;
+package com.backend.telephonetype.infraestructure.controller;
 
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.backend.companytype.application.CompanyTypeService;
-import com.backend.companytype.domain.CompanyType;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.backend.telephonetype.application.TelephoneTypeService;
+import com.backend.telephonetype.domain.TelephoneType;
 
 @RestController
-@RequestMapping("/api/companies/types")
-public class CompanyTypeController {
+@RequestMapping("/api/telephones/types")
+public class TelephoneTypeController {
     @Autowired
-    private CompanyTypeService service;
+    private TelephoneTypeService service;
 
     @GetMapping
     @Transactional(readOnly = true)
-    public Set<CompanyType> findAll() {
+    public Set<TelephoneType> findAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
     @Transactional(readOnly = true)
-    public Optional<CompanyType> findById(@PathVariable Long id) {
+    public Optional<TelephoneType> findById(@PathVariable Long id) {
         return service.findById(id);
     }
     
     @PostMapping
     @Transactional
-    public CompanyType save(@RequestBody CompanyType companyType) {
-        return service.save(companyType);
+    public TelephoneType save(@RequestBody TelephoneType telephoneType) {
+        return service.save(telephoneType);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public boolean delete(@RequestParam Long id) {
+    public boolean delete(@PathVariable Long id) {
         return service.delete(id);
     }
 }
