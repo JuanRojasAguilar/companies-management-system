@@ -35,13 +35,13 @@ public class OrderWorkServiceImpl implements OrderWorkService {
 	}
 
 	@Override
-	public boolean delete(Long id) {
+	public Optional<OrderWork> delete(Long id) {
 		try {
 			OrderWork orderWorkInstance = this.findById(id).get();
 			repository.delete(orderWorkInstance);
-			return true;
+			return Optional.of(orderWorkInstance);
 		} catch (Exception e) {
-			return false;
+			return Optional.empty();
 		}
 	}
 

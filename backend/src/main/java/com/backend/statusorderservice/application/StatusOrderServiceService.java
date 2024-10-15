@@ -14,6 +14,6 @@ public interface StatusOrderServiceService {
 
 	public Optional<StatusOrderService> update(Long id, StatusOrderService statusOrderService); 
 
-	public boolean delete(Long id);
+	public Optional<StatusOrderService> delete(Long id);
 	 
 }

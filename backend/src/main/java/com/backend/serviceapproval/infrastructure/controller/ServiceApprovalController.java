@@ -61,11 +61,11 @@ public class ServiceApprovalController{
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody ServiceApproval orderWork, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody ServiceApproval serviceApproval, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(orderWork));
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(serviceApproval));
 	}
 
 	@DeleteMapping("/{id}")

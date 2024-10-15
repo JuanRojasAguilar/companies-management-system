@@ -14,6 +14,6 @@ public interface CountryService {
 	
 	public Optional<Country> update(Long id, Country country);
 
-	public boolean delete(Long id);
+	public Optional<Country> delete(Long id);
 
 }

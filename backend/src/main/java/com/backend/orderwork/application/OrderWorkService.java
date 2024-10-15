@@ -14,6 +14,6 @@ public interface OrderWorkService {
 
 	public Optional<OrderWork> update(Long id, OrderWork orderWork);
 
-	public boolean delete(Long id);
+	public Optional<OrderWork> delete(Long id);
 	 
 }

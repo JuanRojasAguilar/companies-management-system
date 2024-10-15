@@ -35,13 +35,13 @@ public class StatusOrderServiceServiceImpl implements StatusOrderServiceService 
 	}
 
 	@Override
-	public boolean delete(Long id) {
+	public Optional<StatusOrderService> delete(Long id) {
 		try {
 			StatusOrderService statusOrderInstance = this.findById(id).get();
 			repository.delete(statusOrderInstance);
-			return true;
+			return Optional.of(statusOrderInstance);
 		} catch (Exception e) {
-			return false;
+			return Optional.empty();
 		}
 	}
 

@@ -35,13 +35,13 @@ public class StatusApprovalServiceImpl implements StatusApprovalService {
 	}
 
 	@Override
-	public boolean delete(Long id) {
+	public Optional<StatusApproval> delete(Long id) {
 		try {
 			StatusApproval statusInstance = this.findById(id).get();
 			repository.delete(statusInstance);
-			return true;
+			return Optional.of(statusInstance);
 		} catch (Exception e) {
-			return false;
+			return Optional.empty();
 		}
 	}
 
