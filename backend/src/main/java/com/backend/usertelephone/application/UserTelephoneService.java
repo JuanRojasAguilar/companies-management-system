@@ -10,6 +10,6 @@ public interface UserTelephoneService {
   Optional<UserTelephone> findById(Long id);
   UserTelephone save(UserTelephone userTelephone);
   Optional<UserTelephone> update(Long id, UserTelephone userTelephone);
-  boolean delete(Long id);
+  Optional<UserTelephone> delete(Long id);
 }
 

@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.usertelephone.application.UserTelephoneService;
 import com.backend.usertelephone.domain.UserTelephone;
@@ -18,22 +19,26 @@ public class UserTelephoneServiceImpl implements UserTelephoneService {
   private UserTelephoneRepository repository;
 
   @Override
+  @Transactional(readOnly = true)
   public Set<UserTelephone> findAll() {
     Set<UserTelephone> telephones = new LinkedHashSet<>((List<UserTelephone>) repository.findAll());
     return telephones;
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<UserTelephone> findById(Long id) {
     return repository.findById(id);
   }
 
   @Override
+  @Transactional
   public UserTelephone save(UserTelephone userTelephone) {
     return repository.save(userTelephone);
   }
 
   @Override
+  @Transactional
   public Optional<UserTelephone> update(Long id, UserTelephone userTelephone) {
     Optional<UserTelephone> telephoneInstance = repository.findById(id);
     if (telephoneInstance.isPresent()) {
@@ -45,17 +50,18 @@ public class UserTelephoneServiceImpl implements UserTelephoneService {
   }
 
   @Override
-  public boolean delete(Long id) {
+  @Transactional
+  public Optional<UserTelephone> delete(Long id) {
     Optional<UserTelephone> telephoneInstance = repository.findById(id);
     if (telephoneInstance.isPresent()) {
       try {
         repository.delete(telephoneInstance.get());
-        return true;
+        return Optional.of(telephoneInstance.get());
       } catch (IllegalArgumentException e) {
-        return false;
+        return Optional.empty();
       }
     }
-    return false;
+    return Optional.empty();
   }
 
 }
