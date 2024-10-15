@@ -39,12 +39,13 @@ public class CityServiceImpl implements CityService {
   }
 
   @Override
-  public boolean delete(Long id) {
-    Optional<City> cityInstance = this.findById(id);
-    if (cityInstance.isPresent()) {
-      repository.delete(cityInstance.get());
-      return true;
+  public Optional<City> delete(Long id) {
+    try {
+	  City cityInstance = this.findById(id).get();
+      repository.delete(cityInstance);
+      return Optional.of(cityInstance);
+    } catch (Exception e) {
+    	return Optional.empty();
     }
-    return false;
   }
 }
