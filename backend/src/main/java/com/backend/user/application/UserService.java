@@ -12,3 +12,4 @@ public interface UserService {
   Optional<User> update(String id, User user);
   boolean delete(String id);
 }
+
