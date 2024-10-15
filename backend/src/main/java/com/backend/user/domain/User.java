@@ -28,6 +28,10 @@ public class User {
     @Column(length = 50)
     private String name;
 
+    @NonNull
+    @EqualsAndHashCode.Include
+    private String password;
+
     @Column(length = 50, name = "last_name")
     private String lastName;
 
