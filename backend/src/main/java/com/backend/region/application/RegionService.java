@@ -13,5 +13,5 @@ public interface RegionService {
     Optional<Region> findById(Long id);
     Region save(Region region);
     Optional<Region> update(Long id, Region region);
-    boolean delete(Long id);
+    Optional<Region> delete(Long id);
 }
