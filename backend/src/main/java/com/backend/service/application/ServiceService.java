@@ -10,5 +10,5 @@ public interface ServiceService {
     public Service save(Service service); 
     public Optional<Service> findById(Long id);
     public Optional<Service> update(Long id, Service service);
-    public boolean delete(Long id);
+    public Optional<Service> delete(Long id);
 }

@@ -3,6 +3,7 @@ package com.backend.service.infrastructure;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,21 +22,24 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
+    @Transactional
     public Service save(Service service) {
         return repository.save(service);
     }
 
     @Override
+    @Transactional(readOnly=true)
     public Optional<Service> findById(Long id) {
         return repository.findById(id);
     }
 
     @Override
+    @Transactional
     public Optional<Service> update(Long id, Service service) {
         Optional<Service> serviceInstance = this.findById(id);
         if (serviceInstance.isPresent()) {
             Service newService = serviceInstance.get();
-            if (service.getName() != null) newService.setName(service.getName());
+            BeanUtils.copyProperties(service, newService);
 
             repository.save(newService);
             return Optional.of(newService);
@@ -44,10 +48,13 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public boolean delete(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    @Transactional
+    public Optional<Service> delete(Long id) {
+        Optional<Service> serviceInstance = this.findById(id);
+        if (serviceInstance.isPresent()) {
+            repository.delete(serviceInstance.get());
+            return Optional.of(serviceInstance.get());
+        }
+        return Optional.empty();
     }
-
-
 }
