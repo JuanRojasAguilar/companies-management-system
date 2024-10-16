@@ -6,9 +6,9 @@ import java.util.Optional;
 import com.backend.franchise.domain.Franchise;
 
 public interface FranchiseService {
-    List<Franchise> findAll();
-    Optional<Franchise> findById(Long id);
-    Optional<Franchise> update(Long id, Franchise franchise);
-    Franchise save(Franchise franchise);
-    boolean delete(Long id);
+    public List<Franchise> findAll();
+    public Optional<Franchise> findById(Long id);
+    public Optional<Franchise> update(Long id, Franchise franchise);
+    public Franchise save(Franchise franchise);
+    public Optional<Franchise> delete(Long id);
 }

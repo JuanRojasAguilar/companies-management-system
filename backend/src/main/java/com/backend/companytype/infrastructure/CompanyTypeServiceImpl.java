@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,12 +39,24 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 
     @Override
     @Transactional
-    public boolean delete(Long id) {
+    public Optional<CompanyType> delete(Long id) {
         Optional<CompanyType> companyInstance = this.findById(id);
         if (companyInstance.isPresent()) {
             repository.delete(companyInstance.get());
-            return true;
+            return Optional.of(companyInstance).orElseThrow();
         }
-        return false;
+        return Optional.empty();
     }
+
+	@Override
+	@Transactional
+	public Optional<CompanyType> update(Long id, CompanyType companyType) {
+		Optional<CompanyType> companyInstance = repository.findById(id);
+		if (companyInstance.isPresent()) {
+			CompanyType newCompanyType = companyInstance.get();
+			BeanUtils.copyProperties(companyType, newCompanyType);
+			return Optional.of(repository.save(newCompanyType));
+		}
+		return Optional.empty();
+	}
 }

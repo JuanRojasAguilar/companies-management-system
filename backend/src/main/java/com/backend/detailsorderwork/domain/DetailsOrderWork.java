@@ -1,7 +1,6 @@
 package com.backend.detailsorderwork.domain;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 import com.backend.orderwork.domain.OrderWork;
 import com.backend.service.domain.Service;
@@ -15,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -38,12 +39,11 @@ public class DetailsOrderWork {
 	private Service serviceAssignedId;
 
 	@Column
+    @NotNull(message = "date assignation shouldn't be null")
+    @NotBlank(message = "the field is blank")
 	private LocalDate dateAsignation;
 
 	@ManyToOne
 	@JoinColumn(name = "status_order_service_id")
 	private StatusOrderService statusOrderServiceId;
-
-	// TODO import person and order service Entities
-
 }

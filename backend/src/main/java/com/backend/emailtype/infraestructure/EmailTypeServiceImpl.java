@@ -45,13 +45,13 @@ public class EmailTypeServiceImpl implements EmailTypeService {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Optional<EmailType> delete(Long id) {
         Optional<EmailType> emailTypeInstance = repository.findById(id);
         if (emailTypeInstance.isPresent()) {
             repository.delete(emailTypeInstance.get());
-            return true;
+            return Optional.of(emailTypeInstance).orElseThrow();
         }
-        return false;
+        return Optional.empty();
     }
     
 }

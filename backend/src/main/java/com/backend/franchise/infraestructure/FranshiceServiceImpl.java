@@ -42,12 +42,12 @@ public class FranshiceServiceImpl implements FranchiseService {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Optional<Franchise> delete(Long id) {
         Optional<Franchise> franchiseInstance = repository.findById(id);
         if (franchiseInstance.isPresent()) {
             repository.delete(franchiseInstance.get());
-            return true;
+            return Optional.of(franchiseInstance).orElseThrow();
         }
-        return false;
+        return Optional.empty();
     }
 }

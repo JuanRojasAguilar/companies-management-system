@@ -1,20 +1,28 @@
 package com.backend.franchise.infraestructure.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.franchise.application.FranchiseService;
 import com.backend.franchise.domain.Franchise;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -29,28 +37,58 @@ public class FranchiseController {
     return service.findAll();
   }
 
-  @GetMapping("/{id}")
-  @Transactional(readOnly = true)
-  public Optional<Franchise> findById(@PathVariable Long id) {
-    return service.findById(id);
-  }
+	@GetMapping("/{id}")
+	@Transactional(readOnly = true)
+	public ResponseEntity<Franchise> findById(@PathVariable Long id) {
+		Optional<Franchise> detailsOpt = service.findById(id);
+		if (detailsOpt.isPresent()) {
+			return ResponseEntity.ok(detailsOpt.orElseThrow());
+		}
+		return ResponseEntity.notFound().build();
+	}
 
-  @PostMapping
-  @Transactional
-  public Franchise save(@RequestBody Franchise franchise) {
-    return service.save(franchise);
-  }
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> update(@Valid @RequestBody Franchise franchise, BindingResult result, @PathVariable Long id) {
+		if (result.hasFieldErrors()) {
+			return validation(result);
+		}
+		Optional<Franchise> detailsOpt = service.update(id, franchise);
+		if (detailsOpt.isPresent()) {
+			return ResponseEntity.status(HttpStatus.CREATED).body(detailsOpt.orElseThrow());
+		}
+		return ResponseEntity.notFound().build();
+	}
 
-  @PostMapping("/{id}")
-  @Transactional
-  public Optional<Franchise> update(@PathVariable Long id, @RequestBody Franchise franchise) {
-    return service.update(id, franchise);
-  }
+	@PostMapping
+	@Transactional
+	public ResponseEntity<?> save(@Valid @RequestBody Franchise franchise, BindingResult result) {
+		if (result.hasFieldErrors()) {
+			return validation(result);
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(franchise));
+	}
 
-  @DeleteMapping("/{id}")
-  @Transactional
-  public boolean delete(@PathVariable Long id) {
-    return service.delete(id);
-  }
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<Franchise> delete(@PathVariable Long id) {
+		Franchise franchise = new Franchise();
+		franchise.setId(id);
+		Optional<Franchise> franchiseDelete = service.delete(id);
+		if (franchiseDelete.isPresent()) {
+			return ResponseEntity.ok(franchiseDelete.orElseThrow());
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+	private ResponseEntity<?> validation(BindingResult result) {
+		Map<String, String> errors = new HashMap<>();
+
+		result.getFieldErrors().forEach(err -> {
+			errors.put(err.getField(), "El campo" + err.getField() + " " + err.getDefaultMessage());
+		});
+
+		return ResponseEntity.badRequest().body(errors);
+	}
 
 }

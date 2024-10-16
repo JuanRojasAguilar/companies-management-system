@@ -3,6 +3,8 @@ package com.backend.orderwork.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.backend.user.domain.User;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,16 +31,23 @@ public class OrderWork {
 	private Long id;
 
 	@Column(length = 20)
+    @Size(max = 20, message = "the number order work is too large")
+    @NotNull(message = "number order work shouldn't be null")
+    @NotBlank(message = "the field is blank")
 	private Long numberOrderWork;
 
 	@Column
+    @NotNull(message = "date assignation shouldn't be null")
+    @NotBlank(message = "the field is blank")
 	private LocalDate dateAsignation;
 
 	@Column
+    @NotNull(message = "time assignation shouldn't be null")
+    @NotBlank(message = "the field is blank")
 	private LocalTime timeAsignation;
 
 	@ManyToOne
-	@JoinCoulmn(name = "user_id")
+	@JoinColumn(name = "user_id")
 	private User employeeId;
 	
 	@ManyToOne
