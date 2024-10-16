@@ -10,5 +10,5 @@ public interface TelephoneTypeService {
     Optional<TelephoneType> findById(Long id);
     Optional<TelephoneType> update(Long id, TelephoneType telephoneType);
     TelephoneType save(TelephoneType telephoneType);
-    boolean delete(Long id);
+    Optional<TelephoneType> delete(Long id);
 }

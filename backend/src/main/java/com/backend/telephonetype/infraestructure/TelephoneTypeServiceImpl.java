@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.telephonetype.application.TelephoneTypeService;
 import com.backend.telephonetype.domain.TelephoneType;
@@ -18,17 +19,20 @@ public class TelephoneTypeServiceImpl implements TelephoneTypeService {
     private TelephoneTypeRepository repository;
 
     @Override
+    @Transactional(readOnly = true)
     public Set<TelephoneType> findAll() {
         Set<TelephoneType> types = new LinkedHashSet<>((List<TelephoneType>) repository.findAll());
         return types;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<TelephoneType> findById(Long id) {
         return repository.findById(id);
     }
 
     @Override
+    @Transactional
     public Optional<TelephoneType> update(Long id, TelephoneType telephoneType) {
         Optional<TelephoneType> telTypeInstance = repository.findById(id);
         if (telTypeInstance.isPresent()) {
@@ -40,17 +44,19 @@ public class TelephoneTypeServiceImpl implements TelephoneTypeService {
     }
 
     @Override
+    @Transactional
     public TelephoneType save(TelephoneType telephoneType) {
         return repository.save(telephoneType);
     }
 
     @Override
-    public boolean delete(Long id) {
+    @Transactional
+    public Optional<TelephoneType> delete(Long id) {
         Optional<TelephoneType> telTypeInstance = repository.findById(id);
         if (telTypeInstance.isPresent()) {
             repository.delete(telTypeInstance.get());
-            return true;
+            return Optional.of(telTypeInstance.get());
         }
-        return false;
+        return Optional.empty();
     }
 }
