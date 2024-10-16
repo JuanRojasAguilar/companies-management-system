@@ -3,6 +3,7 @@ package com.backend.orderwork.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.backend.orderservice.domain.OrderService;
 import com.backend.user.domain.User;
 
 import jakarta.persistence.Column;
