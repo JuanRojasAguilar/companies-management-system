@@ -49,6 +49,11 @@ public class UserTypeServiceImpl implements UserTypeService {
         return Optional.empty();
     }
 
+    @Transactional(readOnly = true)
+    public Optional<UserType> findByName(String name) {
+        return repository.findByName(name);
+    }
+
     @Override
     @Transactional
     public Optional<UserType> delete(Long id) {
