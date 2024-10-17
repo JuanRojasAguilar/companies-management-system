@@ -11,7 +11,9 @@ public interface CountryService {
 	public Set<Country> findAll();
 
 	public Optional<Country> findById(Long id);
+	
+	public Optional<Country> update(Long id, Country country);
 
-	public boolean delete(Long id);
+	public Optional<Country> delete(Long id);
 
 }

@@ -6,9 +6,9 @@ import java.util.Set;
 import com.backend.emailtype.domain.EmailType;
 
 public interface EmailTypeService {
-    Set<EmailType> findAll();
-    Optional<EmailType> findById(Long id);
-    Optional<EmailType> update(Long id, EmailType emailType);
-    EmailType save(EmailType emailType);
-    boolean delete(Long id);
+   	public Set<EmailType> findAll();
+    public Optional<EmailType> findById(Long id);
+    public Optional<EmailType> update(Long id, EmailType emailType);
+    public EmailType save(EmailType emailType);
+    public Optional<EmailType> delete(Long id);
 }

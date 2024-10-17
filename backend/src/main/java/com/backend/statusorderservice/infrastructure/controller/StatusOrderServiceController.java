@@ -1,9 +1,9 @@
-package com.backend.statusapproval.infrastructure.controller;
+package com.backend.statusorderservice.infrastructure.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,27 +19,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.statusapproval.application.StatusApprovalService;
-import com.backend.statusapproval.domain.StatusApproval;
+import com.backend.statusorderservice.application.StatusOrderServiceService;
+import com.backend.statusorderservice.domain.StatusOrderService;
 
 import jakarta.validation.Valid;
 
-@RequestMapping("/api/status-approval")
+@RequestMapping("/api/status-order-services")
 @RestController
-public class StatusApprovalController {
+public class StatusOrderServiceController{
 	@Autowired
-	private StatusApprovalService service;
+	private StatusOrderServiceService service;
 
 	@GetMapping
 	@Transactional(readOnly = true)
-	public Set<StatusApproval> findAll() {
+	public Set<StatusOrderService> findAll() {
 		return service.findAll();
 	}
 
 	@GetMapping("/{id}")
 	@Transactional(readOnly = true)
-	public ResponseEntity<?> findById(@PathVariable Long id) {
-		Optional<StatusApproval> detailsOpt = service.findById(id);
+	public ResponseEntity<StatusOrderService> findById(@PathVariable Long id) {
+		Optional<StatusOrderService> detailsOpt = service.findById(id);
 		if (detailsOpt.isPresent()) {
 			return ResponseEntity.ok(detailsOpt.orElseThrow());
 		}
@@ -48,12 +48,11 @@ public class StatusApprovalController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody StatusApproval statusApproval, BindingResult result,
-			@PathVariable Long id) {
+	public ResponseEntity<?> update(@Valid @RequestBody StatusOrderService statusOrderService, BindingResult result, @PathVariable Long id ) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
-		Optional<StatusApproval> detailsOpt = service.update(id, statusApproval);
+		Optional<StatusOrderService> detailsOpt = service.update(id, statusOrderService);
 		if (detailsOpt.isPresent()) {
 			return ResponseEntity.status(HttpStatus.CREATED).body(detailsOpt.orElseThrow());
 		}
@@ -62,30 +61,31 @@ public class StatusApprovalController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody StatusApproval statusApproval, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody StatusOrderService statusOrderService, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(statusApproval));
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(statusOrderService));
 	}
 
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> delete(@PathVariable Long id) {
-		StatusApproval statusApproval = new StatusApproval();
-		statusApproval.setId(id);
-		Optional<StatusApproval> statusApprovalDelete = service.delete(id);
-		if (statusApprovalDelete.isPresent()) {
-			return ResponseEntity.ok(statusApprovalDelete.orElseThrow());
+	public ResponseEntity<StatusOrderService> delete(@PathVariable Long id) {
+		StatusOrderService statusOrderService = new StatusOrderService();
+		statusOrderService.setId(id);
+		Optional<StatusOrderService> statusOrderServiceDelete = service.delete(id);
+		if (statusOrderServiceDelete.isPresent()) {
+			return ResponseEntity.ok(statusOrderServiceDelete.orElseThrow());
 		}
 		return ResponseEntity.notFound().build();
 	}
 
-	private ResponseEntity<?> validation(BindingResult bindingResult) {
-		Map<String, String> errors = bindingResult.getFieldErrors().stream()
-				.collect(Collectors.toMap(
-						error -> error.getField(),
-						error -> "el campo" + error.getField() + " " + error.getDefaultMessage()));
+	private ResponseEntity<?> validation(BindingResult result) {
+		Map<String, String> errors = new HashMap<>();
+
+		result.getFieldErrors().forEach(err -> {
+			errors.put(err.getField(), "El campo" + err.getField() + " " + err.getDefaultMessage());
+		});
 
 		return ResponseEntity.badRequest().body(errors);
 	}

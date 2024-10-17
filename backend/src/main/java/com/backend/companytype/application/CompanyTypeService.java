@@ -9,5 +9,6 @@ public interface CompanyTypeService {
     public CompanyType save(CompanyType companyType);
     public Set<CompanyType> findAll();
     public Optional<CompanyType> findById(Long id);
-    public boolean delete(Long id);
+	public Optional<CompanyType> update(Long id, CompanyType companyType);
+    public Optional<CompanyType> delete(Long id);
 }

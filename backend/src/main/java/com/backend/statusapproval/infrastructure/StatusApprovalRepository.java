@@ -1,4 +1,4 @@
-package com.backend.statusapproval.infrastructure.repository;
+package com.backend.statusapproval.infrastructure;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

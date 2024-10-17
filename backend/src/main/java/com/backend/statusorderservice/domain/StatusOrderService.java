@@ -1,4 +1,4 @@
-package com.backend.statusapproval.domain;
+package com.backend.statusorderservice.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,13 +11,13 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name = "status_approvals")
+@Table(name = "status_order_services")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class StatusApproval {
+public class StatusOrderService {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	@Column(name = "status_approval_id")
+	@Column(name = "status_order_service_id")
 	private Long id;
 
 	@Column(length = 20)

@@ -16,6 +16,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,8 +33,16 @@ public class Franchise {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(length = 50)
+    @Size(max = 50, message = "the name is too large")
+    @NotNull(message = "name shouldn't be null")
+    @NotBlank(message = "the field is blank")
     private String name;
 
+    @Column(length = 21)
+    @Size(max = 21, message = "the nit is too large")
+    @NotNull(message = "nit shouldn't be null")
+    @NotBlank(message = "the field is blank")
     private String nit;
 
     @ManyToOne

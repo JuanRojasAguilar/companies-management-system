@@ -47,12 +47,11 @@ public class FranshiceServiceImpl implements FranchiseService {
     }
 
     @Override
-    @Transactional
     public Optional<Franchise> delete(Long id) {
         Optional<Franchise> franchiseInstance = repository.findById(id);
         if (franchiseInstance.isPresent()) {
             repository.delete(franchiseInstance.get());
-            return Optional.of(franchiseInstance.get());
+            return Optional.of(franchiseInstance).orElseThrow();
         }
         return Optional.empty();
     }
