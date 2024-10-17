@@ -4,11 +4,17 @@ import java.util.List;
 import java.util.Optional;
 
 import com.backend.userreagent.domain.UserReagent;
+import com.backend.userreagent.domain.UserReagentId;
 
 public interface UserReagentService {
-    List<UserReagent> findAll();
-    Optional<UserReagent> findById(Long id);
-    UserReagent save(UserReagent userReagent);
-    Optional<UserReagent> update(Long id, UserReagent userReagent);
-    Optional<UserReagent> delete(Long id);
+    public UserReagent save(UserReagent userReagent);
+
+    public Optional<UserReagent> update(UserReagentId id, UserReagent userReagent);
+
+    public Optional<UserReagent> findById(UserReagentId id);
+    
+    public List<UserReagent> findAll();
+
+    public Optional<UserReagent> delete(UserReagentId id);
+>>>>>>> origin/alejo-dev
 }

@@ -14,29 +14,41 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import com.backend.reagent.domain.Reagent;
+import com.backend.service.domain.Service;
+import com.backend.user.domain.User;
+
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
-@Table(name = "user_reagents")
+@Data
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class UserReagent {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    @Column(name = "user_reagent_id")
-    private Long id;
 
-    @JoinColumn(name = "user_id")
-    @OneToOne
-    @NotBlank(message = "The field is blank")
-    private User user;
+	@EmbeddedId
+	@Column(name = "user_reagent_id")
+	@EqualsAndHashCode.Include
+	private UserReagentId id;
 
-    @Size(max = 100, message = "Name too large")
-    @NotNull(message = "Name can't be null")
-    @NotBlank(message = "The field is blank")
-    private String name;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@MapsId("userId")
+	@JoinColumn(name = "user_id")
+	private User userId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@MapsId("reagentId")
+	@JoinColumn(name = "reagent_id")
+	private Reagent reagentId;
+
+	@ManyToOne
+	@JoinColumn(name = "service_id")
+	private Service serviceId;
 }
