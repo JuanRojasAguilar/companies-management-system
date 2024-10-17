@@ -52,8 +52,8 @@ public class FranshiceServiceImpl implements FranchiseService {
         Optional<Franchise> franchiseInstance = repository.findById(id);
         if (franchiseInstance.isPresent()) {
             repository.delete(franchiseInstance.get());
-            return Optional.of(franchiseInstance.get());
-        }
-        return Optional.empty();
+            return Optional.of(franchiseInstance).orElseThrow();
+	    }
+        return Optional.empty();   
     }
 }

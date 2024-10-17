@@ -12,17 +12,19 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
 @Entity
 @Table(name = "users")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 public class User {
+
     @Id
-    @Column(name = "user_id", unique = true, nullable = false, length = 40)
-    @NonNull
     @EqualsAndHashCode.Include
+    @Column(name = "user_id", unique = true, length = 40)
     private String id;
 
     @Column(length = 50)

@@ -17,7 +17,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @Entity
@@ -32,7 +31,7 @@ public class UserReagent {
     private Long id;
 
     @JoinColumn(name = "user_id")
-    @OneToOne(mappedBy = "user_id", fetch = FetchType.LAZY)
+    @OneToOne
     @NotBlank(message = "The field is blank")
     private User user;
 

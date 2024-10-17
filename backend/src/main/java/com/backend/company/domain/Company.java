@@ -11,6 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,6 +29,9 @@ public class Company {
     private Long id;
 
     @Column(length = 100)
+    @Size(max = 100, message = "the name is too large")
+    @NotNull(message = "name shouldn't be null")
+    @NotBlank(message = "the field is blank")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

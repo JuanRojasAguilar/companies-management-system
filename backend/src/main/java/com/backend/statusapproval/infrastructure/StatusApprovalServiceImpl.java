@@ -1,4 +1,4 @@
-package com.backend.statusapproval.infrastructure.repository;
+package com.backend.statusapproval.infrastructure;
 
 
 import java.util.LinkedHashSet;
@@ -20,7 +20,6 @@ public class StatusApprovalServiceImpl implements StatusApprovalService {
 	private StatusApprovalRepository repository;
 
 	@Override
-	@Transactional
 	public StatusApproval save(StatusApproval statusApproval) {
 		return repository.save(statusApproval);
 	}
@@ -33,20 +32,19 @@ public class StatusApprovalServiceImpl implements StatusApprovalService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public Optional<StatusApproval> findById(Long id) {
 		return repository.findById(id);
 	}
 
 	@Override
-	@Transactional
 	public Optional<StatusApproval> delete(Long id) {
-		Optional<StatusApproval> statusInstance = repository.findById(id);
-		if (statusInstance.isPresent()) {
-			repository.delete(statusInstance.get());
-			return Optional.of(statusInstance.get());
+		try {
+			StatusApproval statusInstance = this.findById(id).get();
+			repository.delete(statusInstance);
+			return Optional.of(statusInstance);
+		} catch (Exception e) {
+			return Optional.empty();
 		}
-		return Optional.empty();
 	}
 
 	@Override
