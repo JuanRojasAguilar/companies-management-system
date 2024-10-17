@@ -24,7 +24,7 @@ import com.backend.detailsorderwork.domain.DetailsOrderWork;
 
 import jakarta.validation.Valid;
 
-@RequestMapping("/api/details-order-controllers")
+@RequestMapping("/api/orders/details")
 @RestController
 public class DetailsOrderWorkController{
 	@Autowired

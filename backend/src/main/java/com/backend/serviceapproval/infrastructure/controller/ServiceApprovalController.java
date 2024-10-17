@@ -24,7 +24,7 @@ import com.backend.serviceapproval.domain.ServiceApproval;
 
 import jakarta.validation.Valid;
 
-@RequestMapping("/api/details-order-controllers")
+@RequestMapping("/api/services/aprovals")
 @RestController
 public class ServiceApprovalController{
 	@Autowired

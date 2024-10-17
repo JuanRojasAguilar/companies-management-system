@@ -50,9 +50,9 @@ public class OrderWork {
 	@JoinColumn(name = "user_id")
 	private User employeeId;
 	
-	@ManyToOne
-	@JoinColumn(name = "order_service_id")
-	private OrderService orderServiceId;
+	//@ManyToOne
+	//@JoinColumn(name = "order_service_id")
+	//private OrderService orderServiceId;
 
 	// TODO import person and order service Entities
 

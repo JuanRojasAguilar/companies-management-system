@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.city.application.CityService;
 import com.backend.city.domain.City;
@@ -15,16 +16,19 @@ public class CityServiceImpl implements CityService {
   private CityRepository repository;
 
   @Override
+  @Transactional(readOnly = true)
   public List<City> findAll() {
     return repository.findAll();
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<City> findById(Long id) {
     return repository.findById(id);
   }
 
   @Override
+  @Transactional
   public Optional<City> update(Long id, City city) {
     Optional<City> cityInstance = this.findById(id);
     if (cityInstance.isPresent()) {
@@ -34,11 +38,13 @@ public class CityServiceImpl implements CityService {
   }
 
   @Override
+  @Transactional
   public City save(City city) {
     return repository.save(city);
   }
 
   @Override
+  @Transactional
   public Optional<City> delete(Long id) {
     Optional<City> cityInstance = this.findById(id);
     if (cityInstance.isPresent()) {

@@ -6,6 +6,7 @@ import com.backend.orderwork.domain.OrderWork;
 import com.backend.service.domain.Service;
 import com.backend.statusapproval.domain.StatusApproval;
 import com.backend.statusorderservice.domain.StatusOrderService;
+import com.backend.user.domain.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

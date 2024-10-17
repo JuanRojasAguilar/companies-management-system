@@ -27,7 +27,7 @@ public class DetailsOrderWork {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	@Column(name = "order_work_id")
+	@Column(name = "detail_order_work_id")
 	private Long id;
 
 	@ManyToOne

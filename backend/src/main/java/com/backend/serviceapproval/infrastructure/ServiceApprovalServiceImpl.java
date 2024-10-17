@@ -8,11 +8,13 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.serviceapproval.application.ServiceApprovalService;
 import com.backend.serviceapproval.domain.ServiceApproval;
 
+@Service
 public class ServiceApprovalServiceImpl implements ServiceApprovalService {
 	@Autowired
 	private ServiceApprovalRepository repository;

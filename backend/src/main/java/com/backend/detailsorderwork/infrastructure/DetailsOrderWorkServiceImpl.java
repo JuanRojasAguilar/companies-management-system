@@ -8,11 +8,13 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.detailsorderwork.application.DetailsOrderWorkService;
 import com.backend.detailsorderwork.domain.DetailsOrderWork;
 
+@Service
 public class DetailsOrderWorkServiceImpl implements DetailsOrderWorkService {
 	@Autowired
 	private DetailsOrderWorkRepository repository;

@@ -8,12 +8,13 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.country.application.CountryService;
 import com.backend.country.domain.Country;
 
-
+@Service
 public class CountryServiceImpl implements CountryService {
 	@Autowired
 	private CountryRepository repository;

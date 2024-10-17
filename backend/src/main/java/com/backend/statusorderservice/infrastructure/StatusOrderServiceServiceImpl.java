@@ -8,11 +8,13 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.statusorderservice.application.StatusOrderServiceService;
 import com.backend.statusorderservice.domain.StatusOrderService;
 
+@Service
 public class StatusOrderServiceServiceImpl implements StatusOrderServiceService {
 	@Autowired
 	private StatusOrderServiceRepository repository;
