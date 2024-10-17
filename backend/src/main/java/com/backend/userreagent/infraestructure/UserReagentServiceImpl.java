@@ -35,7 +35,7 @@ public class UserReagentServiceImpl implements UserReagentService {
         Optional<UserReagent> userReagentInstance = repository.findById(id);
         if (userReagentInstance.isPresent()) {
             UserReagent newReagent = userReagentInstance.get();
-            BeanUtils.copyProperties(userReagent, newReagent);
+            BeanUtils.copyProperties(userReagent, newReagent, "id");
             return Optional.of(repository.save(newReagent));
         }
         return Optional.empty();

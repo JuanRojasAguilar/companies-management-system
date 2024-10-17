@@ -43,7 +43,7 @@ public class UserTelephoneServiceImpl implements UserTelephoneService {
     Optional<UserTelephone> telephoneInstance = repository.findById(id);
     if (telephoneInstance.isPresent()) {
       UserTelephone newTelephone = telephoneInstance.get();
-      BeanUtils.copyProperties(userTelephone, newTelephone);
+      BeanUtils.copyProperties(userTelephone, newTelephone, "id");
       return Optional.of(repository.save(newTelephone));
     }
     return Optional.empty();

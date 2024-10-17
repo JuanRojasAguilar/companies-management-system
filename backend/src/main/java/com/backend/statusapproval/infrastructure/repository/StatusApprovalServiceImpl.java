@@ -54,7 +54,7 @@ public class StatusApprovalServiceImpl implements StatusApprovalService {
 		Optional<StatusApproval> statusInstance = repository.findById(id);
 		if (statusInstance.isPresent()) {
 			StatusApproval newStatus = statusInstance.get();
-			BeanUtils.copyProperties(statusApproval, newStatus);
+			BeanUtils.copyProperties(statusApproval, newStatus, "id");
 			return Optional.of(repository.save(newStatus));
 		}
 		return Optional.empty();

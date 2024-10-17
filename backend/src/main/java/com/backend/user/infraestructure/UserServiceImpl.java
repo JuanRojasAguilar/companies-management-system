@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     Optional<User> userInstance = this.findById(id);
     if (userInstance.isPresent()) {
       User newUser = userInstance.get();
-      BeanUtils.copyProperties(user, newUser);
+      BeanUtils.copyProperties(user, newUser, "id");
       return Optional.of(repository.save(newUser));
     }
     return Optional.empty();

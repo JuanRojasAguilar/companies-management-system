@@ -43,7 +43,7 @@ public class UserTypeServiceImpl implements UserTypeService {
         Optional<UserType> userTypeInstance = repository.findById(id);
         if (userTypeInstance.isPresent()) {
             UserType newUserType = userTypeInstance.get();
-            BeanUtils.copyProperties(userType, newUserType);
+            BeanUtils.copyProperties(userType, newUserType, "id");
             return Optional.of(repository.save(newUserType));
         }
         return Optional.empty();

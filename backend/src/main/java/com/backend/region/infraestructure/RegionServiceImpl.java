@@ -42,7 +42,7 @@ public class RegionServiceImpl implements RegionService {
         Optional<Region> regionInstance = repository.findById(id);
         if (regionInstance.isPresent()) {
             Region newRegion = regionInstance.get();
-            BeanUtils.copyProperties(region, newRegion);
+            BeanUtils.copyProperties(region, newRegion, "id");
             return Optional.of(repository.save(newRegion));
         }
         return Optional.empty();

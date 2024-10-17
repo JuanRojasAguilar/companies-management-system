@@ -37,7 +37,7 @@ public class TelephoneTypeServiceImpl implements TelephoneTypeService {
         Optional<TelephoneType> telTypeInstance = repository.findById(id);
         if (telTypeInstance.isPresent()) {
             TelephoneType newTelType = telTypeInstance.get();
-            BeanUtils.copyProperties(telephoneType, newTelType);
+            BeanUtils.copyProperties(telephoneType, newTelType, "id");
             return Optional.of(repository.save(newTelType));
         }
         return Optional.empty();

@@ -39,10 +39,8 @@ public class ServiceServiceImpl implements ServiceService {
         Optional<Service> serviceInstance = this.findById(id);
         if (serviceInstance.isPresent()) {
             Service newService = serviceInstance.get();
-            BeanUtils.copyProperties(service, newService);
-
-            repository.save(newService);
-            return Optional.of(newService);
+            BeanUtils.copyProperties(service, newService, "id");
+            return Optional.of(repository.save(newService));
         }
         return Optional.empty();
     }
