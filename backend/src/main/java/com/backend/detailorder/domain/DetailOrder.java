@@ -38,7 +38,8 @@ public class DetailOrder {
 	private OrderService orderService;
 
 	@ManyToOne
-	private Service service;
+	@JoinColumn(name = "service_id")
+	private Service serviceId;
 
 	@DecimalMin(value = "0.00", message= "Couldn't be negative numbers")
 	@Column(name = "service_value", precision = 10, scale = 2)
