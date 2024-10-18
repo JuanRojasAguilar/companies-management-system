@@ -1,15 +1,16 @@
 package com.backend.servicereagent.domain.entity;
 
 import java.math.BigDecimal;
-import java.security.Provider.Service;
 
 import com.backend.reagent.domain.Reagent;
+import com.backend.service.domain.Service;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -49,8 +50,11 @@ public class ServiceReagent {
     private Long stockMin;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("reagentId")
     private Reagent reagent;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("serviceId")
     private Service service;
 }
+

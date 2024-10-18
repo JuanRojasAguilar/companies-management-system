@@ -6,12 +6,13 @@ import java.util.Set;
 import com.backend.statusapproval.domain.StatusApproval;
 
 public interface StatusApprovalService {
-	public StatusApproval save(StatusApproval statusApproval);
+	StatusApproval save(StatusApproval statusApproval);
 
-	public Set<StatusApproval> findAll();
+	Set<StatusApproval> findAll();
 
-	public Optional<StatusApproval> findById(Long id);
+	Optional<StatusApproval> findById(Long id);
 
-	public boolean delete(Long id);
-	 
+	Optional<StatusApproval> update(Long id, StatusApproval statusApproval);
+
+	Optional<StatusApproval> delete(Long id);
 }

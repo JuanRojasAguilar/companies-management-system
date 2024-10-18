@@ -10,13 +10,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
-@Entity
 @Table(name = "cities")
+@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +29,10 @@ public class City {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(length = 30)
+    @Size(max = 30, message = "the name is too large")
+    @NotNull(message = "name shouldn't be null")
+    @NotBlank(message = "the field is blank")
     private String name;
 
     @ManyToOne

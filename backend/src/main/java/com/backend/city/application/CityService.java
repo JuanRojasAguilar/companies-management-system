@@ -3,8 +3,6 @@ package com.backend.city.application;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-
 import com.backend.city.domain.City;
 
 public interface CityService {
@@ -12,5 +10,5 @@ public interface CityService {
     Optional<City> findById(Long id);
     Optional<City> update(Long id, City city);
     City save(City city);
-    boolean delete(Long id);
+    Optional<City> delete(Long id);
 }

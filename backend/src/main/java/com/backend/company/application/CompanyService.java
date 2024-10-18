@@ -11,5 +11,5 @@ public interface CompanyService {
     public List<Company> findAll();
     public Optional<Company> findById(Long id);
     public Optional<Company> update(Long id, Company company);
-    public boolean delete(Long id);
+    public Optional<Company> delete(Long id);
 }

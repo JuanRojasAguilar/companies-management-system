@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.region.application.RegionService;
 import com.backend.region.domain.Region;
@@ -16,11 +17,13 @@ public class RegionServiceImpl implements RegionService {
     private RegionRepository repository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Region> findAll() {
         return (List<Region>) repository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Region> findById(Long id) {
         Optional<Region> regionInstance = repository.findById(id);
         if (regionInstance.isPresent()) {
@@ -39,20 +42,20 @@ public class RegionServiceImpl implements RegionService {
         Optional<Region> regionInstance = repository.findById(id);
         if (regionInstance.isPresent()) {
             Region newRegion = regionInstance.get();
-            BeanUtils.copyProperties(newRegion, region);
+            BeanUtils.copyProperties(region, newRegion);
             return Optional.of(repository.save(newRegion));
         }
         return Optional.empty();
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Optional<Region> delete(Long id) {
         Optional<Region> regionInstance = repository.findById(id);
         if (regionInstance.isPresent()) {
             repository.delete(regionInstance.get());
-            return true;
+            return Optional.of(regionInstance.get());
         }
-        return false;
+        return Optional.empty();
     }
     
 }
