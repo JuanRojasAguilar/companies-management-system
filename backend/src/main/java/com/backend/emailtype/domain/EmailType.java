@@ -35,6 +35,6 @@ public class EmailType {
 	@NotBlank(message = "the field is blank")
 	private String name;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "emailTypes")
-	private List<EmailUser> emailUserList;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "emailType")
+	private List<EmailUser> emailUser;
 }

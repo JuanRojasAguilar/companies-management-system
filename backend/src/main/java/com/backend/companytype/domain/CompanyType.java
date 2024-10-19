@@ -2,6 +2,8 @@ package com.backend.companytype.domain;
 
 import java.util.List;
 
+import com.backend.company.domain.Company;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,5 +36,5 @@ public class CompanyType {
     private String description;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "companyType")
-	private List<CompanyType> companyTypeList;
+	private List<Company> companys;
 }

@@ -2,7 +2,7 @@ package com.backend.orderstate.domain;
 
 import java.util.List;
 
-import com.backend.user.domain.User;
+import com.backend.orderservice.domain.OrderService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -40,5 +40,5 @@ public class OrderState {
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "orderStateId")
-	private List<User> userList;
+	private List<OrderService> ordersServices;
 }

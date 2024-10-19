@@ -71,5 +71,5 @@ public class User {
 
     @JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeId")
-	private OrderWork orderWork;
+	private List<OrderWork> ordersWorks;
 }

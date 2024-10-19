@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.backend.companytype.domain.CompanyType;
 import com.backend.franchise.domain.Franchise;
-import com.backend.franchise.domain.Franchise;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
