@@ -13,6 +13,7 @@ const styles = {
 const phoneSchema = z.object({
   type: z.string().min(1, "Debe seleccionar un tipo de teléfono"),
   number: z.string().min(1, "El número de teléfono no puede estar vacío")
+    .regex(new RegExp('.*[0-9].*'), "debe ingresar un numero")
 })  
 
 const formSchema = z.object({
@@ -35,8 +36,8 @@ export default function RegisterForm() {
   const [emailTypes] = useState([])
   const [phoneTypes] = useState([])
   const [personTypes] = useState([
-    { key: "1", label: "Prestador de servicios" },
-    { key: "2", label: "Cliente" }
+    { key: "1", label: "Prestar servicios" },
+    { key: "2", label: "Solicitar servicios" }
   ])
 
   const [formData, setFormData] = useState({
@@ -45,7 +46,7 @@ export default function RegisterForm() {
     email: "",
     emailType: "",
     password: "",
-    phoneNumbers: [],
+    phoneNumbers: [{ type: "", number: "" }], // Inicializado con un número por defecto
     personType: "",
     country: "",
     region: "",
@@ -104,6 +105,15 @@ export default function RegisterForm() {
     const updatedPhones = [...formData.phoneNumbers]
     updatedPhones[index][field] = value
     setFormData(prev => ({ ...prev, phoneNumbers: updatedPhones }))
+    
+    // Limpiar errores específicos al cambiar el valor
+    if (errors.phoneNumbers?.[index]?.[field]) {
+      const newErrors = { ...errors }
+      if (!newErrors.phoneNumbers) newErrors.phoneNumbers = []
+      if (!newErrors.phoneNumbers[index]) newErrors.phoneNumbers[index] = {}
+      delete newErrors.phoneNumbers[index][field]
+      setErrors(newErrors)
+    }
   }
 
   const handleInputChange = (field, value) => {
@@ -122,7 +132,22 @@ export default function RegisterForm() {
       if (error instanceof z.ZodError) {
         const newErrors = {}
         error.errors.forEach(err => {
-          newErrors[err.path[0]] = err.message
+          if (err.path[0] === 'phoneNumbers') {
+            if (!newErrors.phoneNumbers) newErrors.phoneNumbers = []
+            
+            if (err.path.length === 1) {
+              newErrors.phoneNumbers = err.message
+            } else {
+              const phoneIndex = err.path[1]
+              const phoneField = err.path[2]
+              if (!newErrors.phoneNumbers[phoneIndex]) {
+                newErrors.phoneNumbers[phoneIndex] = {}
+              }
+              newErrors.phoneNumbers[phoneIndex][phoneField] = err.message
+            }
+          } else {
+            newErrors[err.path[0]] = err.message
+          }
         })
         setErrors(newErrors)
       }
@@ -203,6 +228,8 @@ export default function RegisterForm() {
             label="Número de Teléfono"
             variant="bordered"
             onValueChange={(value) => handlePhoneChange(index, "number", value)}
+            isInvalid={isSubmitted && !!errors.phoneNumbers?.[index]?.number}
+            errorMessage={errors.phoneNumbers?.[index]?.number}
             className={`${styles.formElement} flex-grow`}
           />
           <Select
@@ -211,6 +238,8 @@ export default function RegisterForm() {
             placeholder="Seleccionar"
             selectedKeys={phone.type ? [phone.type] : []}
             onSelectionChange={(keys) => handlePhoneChange(index, "type", Array.from(keys)[0])}
+            isInvalid={isSubmitted && !!errors.phoneNumbers?.[index]?.type}
+            errorMessage={errors.phoneNumbers?.[index]?.type}
             className={`${styles.formElement} w-1/3`}
           >
             {phoneTypes.map((type) => (
@@ -221,11 +250,11 @@ export default function RegisterForm() {
           </Select>
         </div>
       ))}
-      {isSubmitted && errors.phoneNumbers && (
+      {isSubmitted && typeof errors.phoneNumbers === 'string' && (
         <p className="text-danger mb-2">{errors.phoneNumbers}</p>
       )}
       <Select
-        label="Tipo de Persona"
+        label="Que quieres hacer?"
         variant="bordered"
         placeholder="Seleccionar"
         selectedKeys={formData.personType ? [formData.personType] : []}

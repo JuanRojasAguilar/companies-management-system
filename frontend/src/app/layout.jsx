@@ -4,6 +4,11 @@ import "./globals.css";
 
 import {NextUIProvider} from "@nextui-org/react";
 
+const comicSans = localFont({
+  src: "./fonts/ComicSans.ttf",
+  variable: "--font-comic-sans",
+  weight: "100 900",
+})
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -24,7 +29,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${comicSans.variable} antialiased`}
       >
         <NextUIProvider>
           {children}
