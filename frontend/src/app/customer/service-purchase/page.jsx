@@ -1,3 +1,5 @@
+'use client'
+
 const styles = {
     mainDiv : "w-screen h-screen"
 }
@@ -5,7 +7,7 @@ const styles = {
 export default function CustomerPage() {
     return (
         <main className={styles.mainDiv}>
-
+            HOLA
         </main>
     )    
 }
