@@ -1,6 +1,6 @@
 import { NextUIProvider } from "@nextui-org/react";
-import CustomerNavigation from "@/components/customer/customerNavBar";
-import { comicSans } from "../layout";
+import NavigationBar from "@/components/navBar";
+import { customerPages } from "@/lib/pagesArrays/customerPages";
 
 const styles = {
     mainDiv: "flex h-screen w-screen",
@@ -9,11 +9,11 @@ const styles = {
 
 export default function customerLayout({ children }) {
     return (
-                <NextUIProvider>
-                    <div className={styles.mainDiv}>
-                        <main className={styles.currentPage}>{children}</main>
-                        <CustomerNavigation/>
-                    </div>
-                </NextUIProvider>
+        <NextUIProvider>
+            <div className={styles.mainDiv}>
+                <main className={styles.currentPage}>{children}</main>
+                <NavigationBar pages={customerPages}/>
+            </div>
+        </NextUIProvider>
     )
 }

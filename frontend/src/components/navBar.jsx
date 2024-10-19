@@ -1,14 +1,10 @@
-'use cli    ent'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Button } from "@nextui-org/react"
 
-const pages = [
-  '/customer/service-purchase',
-]
-
-export default function CustomerNavigation() {
+export default function NavigationBar({pages}) {
   const router = useRouter()
   const pathname = usePathname()
   const [currentPage, setCurrentPage] = useState(1)
