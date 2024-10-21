@@ -1,4 +1,4 @@
-package com.backend.userreagent.infrastructure.repository;
+package com.backend.userreagent.infraestructure.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

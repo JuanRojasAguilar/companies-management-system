@@ -51,5 +51,4 @@ public class UserReagentImpl implements UserReagentService {
         });
         return userReagent;
     }
-    
 }
