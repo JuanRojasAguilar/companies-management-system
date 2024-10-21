@@ -48,7 +48,7 @@ export default function ServiceCart() {
             </Card>
           ))
         ) : (
-          <h2>No has seleccionado ningún servicio</h2>
+          <h2 className="mt-4">No has seleccionado ningún servicio</h2>
         )}
       </div>
       <div className={styles.footerDiv}>

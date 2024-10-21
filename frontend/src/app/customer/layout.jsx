@@ -3,7 +3,7 @@ import NavigationBar from "@/components/navBar";
 import { customerPages } from "@/lib/pagesArrays/customerPages";
 
 const styles = {
-    mainDiv: "flex h-screen w-screen",
+    mainDiv: "flex h-full w-full",
     currentPage: "w-full h-full",
 }
 
