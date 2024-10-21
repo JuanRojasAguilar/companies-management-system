@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.servicereagent.application.ServiceReagentService;
-import com.backend.servicereagent.domain.ServiceReagent;
-import com.backend.servicereagent.domain.ServiceReagentId;
+import com.backend.servicereagent.domain.entity.ServiceReagent;
+import com.backend.servicereagent.domain.entity.ServiceReagentPk;
 
 @Service
 public class ServiceReagentImpl implements ServiceReagentService {
@@ -23,7 +23,7 @@ public class ServiceReagentImpl implements ServiceReagentService {
     }
 
     @Override
-    public Optional<ServiceReagent> update(ServiceReagentId id, ServiceReagent serviceReagent) {
+    public Optional<ServiceReagent> update(ServiceReagentPk id, ServiceReagent serviceReagent) {
         Optional<ServiceReagent> serviceReagentDB = serviceReagentRepository.findById(id);
         if (serviceReagentDB.isPresent()) {
             ServiceReagent serviceReagentToUpload = serviceReagentDB.orElseThrow();
@@ -34,7 +34,7 @@ public class ServiceReagentImpl implements ServiceReagentService {
     }
 
     @Override
-    public Optional<ServiceReagent> findById(ServiceReagentId id) {
+    public Optional<ServiceReagent> findById(ServiceReagentPk id) {
         return serviceReagentRepository.findById(id);
     }
 
@@ -44,7 +44,7 @@ public class ServiceReagentImpl implements ServiceReagentService {
     }
 
     @Override
-    public Optional<ServiceReagent> delete(ServiceReagentId id) {
+    public Optional<ServiceReagent> delete(ServiceReagentPk id) {
         Optional<ServiceReagent> serviceReagent = serviceReagentRepository.findById(id);
         serviceReagent.ifPresent(serviceReagentDb -> {
            serviceReagentRepository.delete(serviceReagentDb);

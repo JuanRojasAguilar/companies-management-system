@@ -1,10 +1,17 @@
 package com.backend.statusorderservice.domain;
 
+import java.util.List;
+
+import com.backend.detailsorderwork.domain.DetailsOrderWork;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +30,8 @@ public class StatusOrderService {
 	@Column(length = 20)
 	private String name;
 	
-	//TODO OneToMany implementation
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "statusOrderServiceId") 
+	@JsonIgnore
+	private List<DetailsOrderWork> detailsOrderWorks;
 
 }

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("api/orders/states")
+@RequestMapping("api/users/emails")
 public class EmailUserController {
     @Autowired
     private EmailUserService emailUserService;

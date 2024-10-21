@@ -2,8 +2,8 @@ package com.backend.serviceapproval.domain;
 
 import com.backend.service.domain.Service;
 import com.backend.statusapproval.domain.StatusApproval;
-import com.backend.statusorderservice.domain.StatusOrderService;
 import com.backend.user.domain.User;
+
 import com.backend.orderwork.domain.OrderWork;
 
 import jakarta.persistence.Column;
@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,7 +28,7 @@ public class ServiceApproval {
 	@Column(name = "service_approval_id")
 	private Long id;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "order_work_id")
 	private OrderWork orderWorkId;
 
@@ -39,7 +38,7 @@ public class ServiceApproval {
 
 	@ManyToOne
 	@JoinColumn(name = "service_id")
-	private Service service;
+	private Service serviceId;
 
 	@Column(length = 255)
 	private String findings;
@@ -49,6 +48,6 @@ public class ServiceApproval {
 
 	@ManyToOne
 	@JoinColumn(name = "status_approval_id")
-	private StatusApproval statusApproval;
+	private StatusApproval statusApprovalId;
 
 }

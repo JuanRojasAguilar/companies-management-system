@@ -1,10 +1,16 @@
 package com.backend.companytype.domain;
 
+import java.util.List;
+
+import com.backend.company.domain.Company;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,4 +34,7 @@ public class CompanyType {
     @NotNull(message = "description shouldn't be null")
     @NotBlank(message = "the field is blank")
     private String description;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "companyType")
+	private List<Company> companys;
 }

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.servicereagent.application.ServiceReagentService;
-import com.backend.servicereagent.domain.ServiceReagent;
-import com.backend.servicereagent.domain.ServiceReagentId;
+import com.backend.servicereagent.domain.entity.ServiceReagent;
+import com.backend.servicereagent.domain.entity.ServiceReagentPk;
 
 import jakarta.validation.Valid;
 
@@ -37,7 +37,7 @@ public class ServiceReagentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable ServiceReagentId id) {
+    public ResponseEntity<?> getById(@PathVariable ServiceReagentPk id) {
         return serviceReagentService.findById(id)
             .map(serviceReagentNoOp -> ResponseEntity.ok(serviceReagentNoOp))
             .orElseGet(() -> ResponseEntity.notFound().build());
@@ -51,7 +51,7 @@ public class ServiceReagentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable ServiceReagentId id, @Valid @RequestBody ServiceReagent serviceReagent, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable ServiceReagentPk id, @Valid @RequestBody ServiceReagent serviceReagent, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : serviceReagentService.update(id, serviceReagent)
@@ -60,7 +60,7 @@ public class ServiceReagentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable ServiceReagentId id) {    
+    public ResponseEntity<?> delete(@PathVariable ServiceReagentPk id) {    
         return serviceReagentService.delete(id)
             .map(serviceReagentNoOp -> ResponseEntity.ok(serviceReagentNoOp))
             .orElseGet(() -> ResponseEntity.notFound().build());

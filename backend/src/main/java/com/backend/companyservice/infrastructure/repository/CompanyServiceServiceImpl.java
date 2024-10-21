@@ -12,7 +12,7 @@ import com.backend.companyservice.domain.CompanyService;
 import com.backend.companyservice.domain.CompanyServiceId;
 
 @Service
-public class CompanyServiceImpl implements CompanyServiceService {
+public class CompanyServiceServiceImpl implements CompanyServiceService {
 
     @Autowired
     private CompanyServiceRepository companyServiceRepository;

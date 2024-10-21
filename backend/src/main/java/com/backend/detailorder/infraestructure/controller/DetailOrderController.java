@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/api/emails/types")
+@RequestMapping("/api/orders/details")
 public class DetailOrderController {
     @Autowired
     private DetailOrderService service;

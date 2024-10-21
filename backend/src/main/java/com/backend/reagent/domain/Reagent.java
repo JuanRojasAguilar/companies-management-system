@@ -1,10 +1,17 @@
 package com.backend.reagent.domain;
 
+import java.util.List;
+
+import com.backend.servicereagent.domain.entity.ServiceReagent;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -38,4 +45,8 @@ public class Reagent {
     @NotNull(message = "name shouldn't be null")
     @NotBlank(message = "the field is blank")
     private String name;
+
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "reagent")
+	private List<ServiceReagent> serviceReagentList;
 }
