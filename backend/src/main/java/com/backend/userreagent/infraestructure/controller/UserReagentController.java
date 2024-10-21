@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.userreagent.application.UserReagentService;
 import com.backend.userreagent.domain.UserReagent;
+import com.backend.userreagent.domain.UserReagentId;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -35,7 +36,7 @@ public class UserReagentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    public ResponseEntity<?> getById(@PathVariable UserReagentId id) {
         return service.findById(id)
             .map(userReagent -> ResponseEntity.ok(userReagent))
             .orElseGet(() -> ResponseEntity.notFound().build());
@@ -49,7 +50,7 @@ public class UserReagentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody UserReagent userReagent, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable UserReagentId id, @Valid @RequestBody UserReagent userReagent, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : service.update(id, userReagent)
@@ -58,7 +59,7 @@ public class UserReagentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {    
+    public ResponseEntity<?> delete(@PathVariable UserReagentId id) {    
         return service.delete(id)
             .map(userReagent -> ResponseEntity.ok(userReagent))
             .orElseGet(() -> ResponseEntity.notFound().build());

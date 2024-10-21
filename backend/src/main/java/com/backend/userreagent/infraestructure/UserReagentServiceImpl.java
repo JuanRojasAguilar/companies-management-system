@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.backend.userreagent.application.UserReagentService;
 import com.backend.userreagent.domain.UserReagent;
+import com.backend.userreagent.domain.UserReagentId;
+import com.backend.userreagent.infrastructure.repository.UserReagentRepository;
 
 @Service
 public class UserReagentServiceImpl implements UserReagentService {
@@ -21,7 +23,7 @@ public class UserReagentServiceImpl implements UserReagentService {
     }
 
     @Override
-    public Optional<UserReagent> findById(Long id) {
+    public Optional<UserReagent> findById(UserReagentId id) {
         return repository.findById(id);
     }
 
@@ -31,7 +33,7 @@ public class UserReagentServiceImpl implements UserReagentService {
     }
 
     @Override
-    public Optional<UserReagent> update(Long id, UserReagent userReagent) {
+    public Optional<UserReagent> update(UserReagentId id, UserReagent userReagent) {
         Optional<UserReagent> userReagentInstance = repository.findById(id);
         if (userReagentInstance.isPresent()) {
             UserReagent newReagent = userReagentInstance.get();
@@ -42,7 +44,7 @@ public class UserReagentServiceImpl implements UserReagentService {
     }
 
     @Override
-    public Optional<UserReagent> delete(Long id) {
+    public Optional<UserReagent> delete(UserReagentId id) {
         Optional<UserReagent> userReagentInstance = repository.findById(id);
         if (userReagentInstance.isPresent()) {
             repository.delete(userReagentInstance.get());
