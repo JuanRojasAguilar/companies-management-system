@@ -1,4 +1,4 @@
-package com.backend.userreagent.infrastructure.controller;
+package com.backend.userreagent.infraestructure.controller;
 
 import java.util.List;
 import java.util.Map;

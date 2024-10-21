@@ -1,4 +1,4 @@
-package com.backend.userreagent.infrastructure.repository;
+package com.backend.userreagent.infraestructure.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,5 +51,4 @@ public class UserReagentImpl implements UserReagentService {
         });
         return userReagent;
     }
-    
 }
