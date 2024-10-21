@@ -2,6 +2,7 @@ package com.backend.user.infraestructure;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +11,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.user.application.UserService;
 import com.backend.user.domain.User;
+import com.backend.usertype.domain.UserType;
+import com.backend.usertype.infraestructure.UserTypeRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-  @Autowired
-  private UserRepository repository;
+  private final UserRepository repository;
+
+  private final UserTypeRepository userTypeRepository;
 
   @Override
   @Transactional(readOnly = true)
   public List<User> findAll() {
     return repository.findAll();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<User> findAllEmployees() {
+    UserType employeeType = userTypeRepository.findByName("EMPLOYEES").get();
+    return repository
+        .findAll().stream()
+        .filter(user -> user.getUserTypeId() == employeeType).collect(Collectors.toList());
   }
 
   @Override

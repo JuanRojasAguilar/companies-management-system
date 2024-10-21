@@ -1,3 +1,3 @@
 export const customerPages = [
-    "customer/service-purchase"
+    "customer/service-purchase",
 ]

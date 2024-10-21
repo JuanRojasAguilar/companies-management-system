@@ -11,4 +11,5 @@ public interface UserTypeService {
     UserType save(UserType userType);
     Optional<UserType> update(Long id, UserType userType);
     Optional<UserType> delete(Long id);
+    Optional<UserType> findByName(String name);
 }

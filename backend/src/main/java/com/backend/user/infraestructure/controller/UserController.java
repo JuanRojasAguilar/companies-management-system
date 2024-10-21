@@ -41,6 +41,11 @@ public class UserController {
             .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
+  @GetMapping("/employees")
+  public List<User> findAllEmployees() {
+    return service.findAllEmployees();
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody User user, BindingResult bindingResult) {
     return bindingResult.hasFieldErrors()

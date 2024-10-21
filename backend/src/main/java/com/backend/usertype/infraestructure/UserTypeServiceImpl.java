@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.backend.usertype.application.UserTypeService;
 import com.backend.usertype.domain.UserType;
 
+import jakarta.validation.OverridesAttribute;
+
 @Service
 public class UserTypeServiceImpl implements UserTypeService {
     @Autowired
@@ -29,6 +31,12 @@ public class UserTypeServiceImpl implements UserTypeService {
     @Transactional(readOnly = true)
     public Optional<UserType> findById(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<UserType> findByName(String name) {
+        return repository.findByName(name);
     }
 
     @Override
