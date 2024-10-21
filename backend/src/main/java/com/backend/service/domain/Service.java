@@ -47,11 +47,11 @@ public class Service {
 	private List<ServiceReagent> serviceReagents;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "serviceId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "service")
 	private List<UserReagent> userReagentList;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "serviceId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "service")
 	private List<DetailOrder> detailOrderList;
 
 	@JsonIgnore
@@ -59,7 +59,7 @@ public class Service {
 	private List<DetailsOrderWork> detailOrderWorkList;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "serviceId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "service")
 	private List<ServiceApproval> serviceApprovalList;
 
 }

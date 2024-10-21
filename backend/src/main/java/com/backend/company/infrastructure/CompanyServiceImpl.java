@@ -66,8 +66,8 @@ public class CompanyServiceImpl implements CompanyService {
     public Optional<Company> delete(Long id) {
         Optional<Company> companyInstance = repository.findById(id);
         if (companyInstance.isPresent()) {
-            repository.delete(companyInstance.get());
-            return Optional.of(companyInstance).orElseThrow();
+            companyInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save((companyInstance.orElseThrow())));
         }
         return Optional.empty();
     }
