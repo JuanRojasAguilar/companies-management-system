@@ -3,11 +3,15 @@ package com.backend.company.infrastructure;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.company.application.CompanyService;
 import com.backend.company.domain.Company;
+import com.backend.company.domain.CompanyDto;
+import com.backend.companytype.domain.CompanyType;
+import com.backend.utils.enums.Status;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +28,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional
-    public Company save(Company company) {
-        return repository.save(company);
+    public Company save(CompanyDto company) {
+        Company companyDb = new Company();
+        BeanUtils.copyProperties(company, companyDb, company.getClass());
+        companyDb.setStatus(Status.ENABLED);
+
+        CompanyType companyType = new CompanyType();
+        companyType.setId(company.getCompanyTypeId());
+        companyDb.setCompanyType(companyType);
+
+        return repository.save(companyDb);
     }
 
     @Override
@@ -34,14 +46,18 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Optional<Company> update(Long id, Company company) {
+    public Optional<Company> update(Long id, CompanyDto company) {
         Optional<Company> companyInstance = this.findById(id);
         if (companyInstance.isPresent()) {
-            Company newCompany = companyInstance.get();
-            if (company.getName() != null) newCompany.setName(company.getName());
-            if (company.getCompanyType() != null) newCompany.setCompanyType(company.getCompanyType());
-            repository.save(newCompany);
-            return Optional.of(newCompany);
+            Company companyDb = companyInstance.orElseThrow();
+            BeanUtils.copyProperties(company, companyDb, company.getClass());
+
+            CompanyType companyType = new CompanyType();
+            companyType.setId(company.getCompanyTypeId());
+            companyDb.setCompanyType(companyType);
+
+            return Optional.of(repository.save(companyDb));
+            
         }
         return Optional.empty();
     }

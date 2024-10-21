@@ -4,9 +4,12 @@ import java.util.List;
 
 import com.backend.companytype.domain.CompanyType;
 import com.backend.franchise.domain.Franchise;
+import com.backend.utils.enums.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,13 +18,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "companies")
@@ -33,14 +39,14 @@ public class Company {
     private Long id;
 
     @Column(length = 100)
-    @Size(max = 100, message = "the name is too large")
-    @NotNull(message = "name shouldn't be null")
-    @NotBlank(message = "the field is blank")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_type_id")
     private CompanyType companyType;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
 	private List<Franchise> franchiseList;

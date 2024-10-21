@@ -38,6 +38,10 @@ public class CityServiceImpl implements CityService {
     if (cityInstance.isPresent()) {
       City cityDb = cityInstance.orElseThrow();
       BeanUtils.copyProperties(city, cityDb, city.getClass());
+
+      Region region = new Region();
+      region.setId(city.getRegionId());
+      cityDb.setRegion(region);
       return Optional.of(repository.save(cityDb));
     }
     return Optional.empty();
