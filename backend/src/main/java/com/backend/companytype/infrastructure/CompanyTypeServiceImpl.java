@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.companytype.application.CompanyTypeService;
 import com.backend.companytype.domain.CompanyType;
+import com.backend.companytype.domain.CompanyTypeDto;
+import com.backend.utils.enums.Status;
 
 @Service
 public class CompanyTypeServiceImpl implements CompanyTypeService {
@@ -27,8 +29,12 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
 
     @Override
     @Transactional
-    public CompanyType save(CompanyType companyType) {
-        return repository.save(companyType);
+    public CompanyType save(CompanyTypeDto companyType) {
+        CompanyType companyTypeDb = new CompanyType();
+        BeanUtils.copyProperties(companyType, companyTypeDb, companyType.getClass());
+        companyTypeDb.setStatus(Status.ENABLED);
+
+        return repository.save(companyTypeDb);
     }
 
     @Override
@@ -42,20 +48,21 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
     public Optional<CompanyType> delete(Long id) {
         Optional<CompanyType> companyInstance = this.findById(id);
         if (companyInstance.isPresent()) {
-            repository.delete(companyInstance.get());
-            return Optional.of(companyInstance).orElseThrow();
+            companyInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(companyInstance.orElseThrow()));
         }
         return Optional.empty();
     }
 
 	@Override
 	@Transactional
-	public Optional<CompanyType> update(Long id, CompanyType companyType) {
+	public Optional<CompanyType> update(Long id, CompanyTypeDto companyType) {
 		Optional<CompanyType> companyInstance = repository.findById(id);
 		if (companyInstance.isPresent()) {
-			CompanyType newCompanyType = companyInstance.get();
-			BeanUtils.copyProperties(companyType, newCompanyType);
-			return Optional.of(repository.save(newCompanyType));
+			CompanyType companyTypeDb = companyInstance.orElseThrow();
+            BeanUtils.copyProperties(companyType, companyTypeDb, companyType.getClass());
+
+            return Optional.of(repository.save(companyTypeDb));
 		}
 		return Optional.empty();
 	}

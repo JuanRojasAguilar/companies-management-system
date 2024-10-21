@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.companytype.application.CompanyTypeService;
 import com.backend.companytype.domain.CompanyType;
+import com.backend.companytype.domain.CompanyTypeDto;
 
 import jakarta.validation.Valid;
 
@@ -44,14 +45,14 @@ public class CompanyTypeController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody CompanyType companyType, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody CompanyTypeDto companyType, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : ResponseEntity.status(HttpStatus.CREATED).body(companyTypeService.save(companyType));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CompanyType companyType, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CompanyTypeDto companyType, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : companyTypeService.update(id, companyType)
