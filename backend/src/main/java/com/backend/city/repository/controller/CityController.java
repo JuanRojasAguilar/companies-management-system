@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.city.application.CityService;
 import com.backend.city.domain.City;
+import com.backend.city.domain.CityDto;
 
 import jakarta.validation.Valid;
 
@@ -41,14 +42,14 @@ public class CityController {
   }
 
   @PostMapping()
-  public ResponseEntity<?> create(@Valid @RequestBody City city, BindingResult bindingResult) {
+  public ResponseEntity<?> create(@Valid @RequestBody CityDto city, BindingResult bindingResult) {
     return bindingResult.hasFieldErrors()
         ? validation(bindingResult)
         : ResponseEntity.status(HttpStatus.CREATED).body(cityService.save(city));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody City city, BindingResult bindingResult) {
+  public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CityDto city, BindingResult bindingResult) {
     return bindingResult.hasFieldErrors()
         ? validation(bindingResult)
         : cityService.update(id, city)
