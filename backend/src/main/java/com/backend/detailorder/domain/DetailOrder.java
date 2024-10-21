@@ -1,5 +1,7 @@
 package com.backend.detailorder.domain;
 
+import java.math.BigDecimal;
+
 import com.backend.orderservice.domain.OrderService;
 import com.backend.service.domain.Service;
 
@@ -11,7 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,10 +38,11 @@ public class DetailOrder {
 	private OrderService orderService;
 
 	@ManyToOne
-	private Service service;
+	@JoinColumn(name = "service_id")
+	private Service serviceId;
 
-	@Min(value = 0, message= "Couldn't be negative numbers")
+	@DecimalMin(value = "0.00", message= "Couldn't be negative numbers")
 	@Column(name = "service_value", precision = 10, scale = 2)
 	@NotNull(message = "serviceValue couldn't be null")
-	private Float serviceValue;
+	private BigDecimal serviceValue;
 }

@@ -1,14 +1,19 @@
 package com.backend.city.domain;
 
+import java.util.List;
+
+import com.backend.franchise.domain.Franchise;
 import com.backend.region.domain.Region;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -38,4 +43,7 @@ public class City {
     @ManyToOne
     @JoinColumn(name = "region_id")
     private Region region;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+	private List<Franchise> franchiseList;
 }

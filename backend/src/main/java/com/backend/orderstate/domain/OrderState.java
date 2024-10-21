@@ -1,10 +1,17 @@
 package com.backend.orderstate.domain;
 
+import java.util.List;
+
+import com.backend.orderservice.domain.OrderService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,4 +37,8 @@ public class OrderState {
     @NotNull(message = "name shouldn't be null")
     @NotBlank(message = "the field is blank")
     private String name;
+
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "orderStateId")
+	private List<OrderService> ordersServices;
 }

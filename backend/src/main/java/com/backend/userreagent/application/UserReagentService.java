@@ -16,5 +16,4 @@ public interface UserReagentService {
     public List<UserReagent> findAll();
 
     public Optional<UserReagent> delete(UserReagentId id);
->>>>>>> origin/alejo-dev
 }

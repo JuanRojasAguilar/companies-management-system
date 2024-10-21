@@ -14,15 +14,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "details_order_works")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 public class DetailsOrderWork {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +41,6 @@ public class DetailsOrderWork {
 
 	@Column
     @NotNull(message = "date assignation shouldn't be null")
-    @NotBlank(message = "the field is blank")
 	private LocalDate dateAsignation;
 
 	@ManyToOne

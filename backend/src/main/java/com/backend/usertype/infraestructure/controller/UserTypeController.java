@@ -1,7 +1,6 @@
 package com.backend.usertype.infraestructure.controller;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

@@ -1,6 +1,9 @@
 package com.backend.company.domain;
 
+import java.util.List;
+
 import com.backend.companytype.domain.CompanyType;
+import com.backend.franchise.domain.Franchise;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,4 +41,7 @@ public class Company {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_type_id")
     private CompanyType companyType;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
+	private List<Franchise> franchiseList;
 }

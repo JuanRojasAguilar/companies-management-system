@@ -23,7 +23,7 @@ import com.backend.orderwork.domain.OrderWork;
 
 import jakarta.validation.Valid;
 
-@RequestMapping("/api/order-works")
+@RequestMapping("/api/works/orders")
 public class OrderWorkController{
 	@Autowired
 	private OrderWorkService service;

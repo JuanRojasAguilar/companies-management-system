@@ -1,10 +1,16 @@
 package com.backend.country.domain;
 
+import java.util.List;
+
+import com.backend.region.domain.Region;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,4 +35,7 @@ public class Country {
     @NotNull(message = "name shouldn't be null")
     @NotBlank(message = "the field is blank")
 	private String name;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
+	private List<Region> regionList;
 }
