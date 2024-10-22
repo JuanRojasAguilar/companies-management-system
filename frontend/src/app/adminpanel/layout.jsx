@@ -3,9 +3,12 @@ const { NextUIProvider } = require("@nextui-org/react");
 
 const layout = ({ children }) => {
     return (
-        <NextUIProvider>
-            {children}
-        </NextUIProvider>
+        <div className="h-screen pt-20">
+            <NextUIProvider>
+                
+                {children}
+            </NextUIProvider>
+        </div>
     );
 }
 

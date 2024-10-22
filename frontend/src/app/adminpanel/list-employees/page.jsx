@@ -1,13 +1,36 @@
 "use client";
 
-import { getEmployees } from "@/lib/hooks/useUser";
+import EmployeeCard from "@/components/aminpanel/EmployeeCard";
+import { Divider } from "@nextui-org/react";
+
+const employees = [
+    {
+        name: "Jhon Roa",
+        position: "Backend Developer"
+    },
+    {
+        name: "Juan Rojas",
+        position: "Project Manager"
+    },
+    {
+        name: "Alejandro Jimenez",
+        position: "Frontend Developer"
+    },
+    {
+        name: "Jholver Pardo",
+        position: "CEO"
+    }
+];
 
 const AdminPage = () => {
-    const employees = getEmployees();
-    console.log(employees);
     return (
-        <div>    
-            hola mondo
+        <div className="px-8 flex flex-col items-center">
+            <h1 className="mb-12 text-6xl">Empleados</h1>
+            <div className="w-1/2 flex flex-wrap gap-4">
+                {employees.map(({ name, position }) => (
+                    <EmployeeCard key={name} name={name} position={position} />
+                ))}
+            </div>
         </div>
     );
 }
