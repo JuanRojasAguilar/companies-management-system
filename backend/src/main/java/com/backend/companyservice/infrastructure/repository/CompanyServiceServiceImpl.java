@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.backend.companyservice.application.CompanyServiceService;
 import com.backend.companyservice.domain.CompanyService;
+import com.backend.companyservice.domain.CompanyServiceDto;
 import com.backend.companyservice.domain.CompanyServiceId;
+import com.backend.franchise.domain.Franchise;
+import com.backend.utils.enums.Status;
 
 @Service
 public class CompanyServiceServiceImpl implements CompanyServiceService {
@@ -18,17 +21,38 @@ public class CompanyServiceServiceImpl implements CompanyServiceService {
     private CompanyServiceRepository companyServiceRepository;
 
     @Override
-    public CompanyService save(CompanyService companyService) {
-        return companyServiceRepository.save(companyService);
+    public CompanyService save(CompanyServiceDto companyService) {
+        CompanyService companyServiceDb = new CompanyService();
+        BeanUtils.copyProperties(companyService, companyServiceDb, companyService.getClass());
+        companyServiceDb.setStatus(Status.ENABLED);
+
+        Franchise franchise = new Franchise();
+        franchise.setId(companyService.getFranchiseId());
+        companyServiceDb.setFranchise(franchise);
+
+        com.backend.service.domain.Service service = new com.backend.service.domain.Service();
+        service.setId(companyService.getServiceId());
+        companyServiceDb.setService(service);
+
+        return companyServiceRepository.save(companyServiceDb);
     }
 
     @Override
-    public Optional<CompanyService> update(CompanyServiceId id, CompanyService companyService) {
+    public Optional<CompanyService> update(CompanyServiceId id, CompanyServiceDto companyService) {
         Optional<CompanyService> companyServiceDB = companyServiceRepository.findById(id);
         if (companyServiceDB.isPresent()) {
-            CompanyService companyServiceToUpload = companyServiceDB.orElseThrow();
-            BeanUtils.copyProperties(companyService, companyServiceToUpload, "id");
-            return Optional.of(companyServiceRepository.save(companyServiceToUpload));
+            CompanyService companyServiceDb = new CompanyService();
+            BeanUtils.copyProperties(companyService, companyServiceDb, companyService.getClass());
+
+            Franchise franchise = new Franchise();
+            franchise.setId(companyService.getFranchiseId());
+            companyServiceDb.setFranchise(franchise);
+
+            com.backend.service.domain.Service service = new com.backend.service.domain.Service();
+            service.setId(companyService.getServiceId());
+            companyServiceDb.setService(service);
+
+            return Optional.of(companyServiceRepository.save(companyServiceDb));
         }
         return Optional.empty();
     }
@@ -45,11 +69,12 @@ public class CompanyServiceServiceImpl implements CompanyServiceService {
 
     @Override
     public Optional<CompanyService> delete(CompanyServiceId id) {
-        Optional<CompanyService> companyService = companyServiceRepository.findById(id);
-        companyService.ifPresent(companyServiceDb -> {
-           companyServiceRepository.delete(companyServiceDb);
-        });
-        return companyService;
+        Optional<CompanyService> companyInstance = this.findById(id);
+        if (companyInstance.isPresent()) {
+            companyInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(companyServiceRepository.save(companyInstance.orElseThrow()));
+        }
+        return Optional.empty();
     }
     
 }

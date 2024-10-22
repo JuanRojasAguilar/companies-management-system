@@ -3,22 +3,29 @@ package com.backend.companytype.domain;
 import java.util.List;
 
 import com.backend.company.domain.Company;
+import com.backend.utils.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="companies_types")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -30,11 +37,12 @@ public class CompanyType {
     private Long id;
 
     @Column(length = 255)
-    @Size(max = 255, message = "the description is too large")
-    @NotNull(message = "description shouldn't be null")
-    @NotBlank(message = "the field is blank")
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "companyType")
+    @JsonIgnore
 	private List<Company> companys;
 }

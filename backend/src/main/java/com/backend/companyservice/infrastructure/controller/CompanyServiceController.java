@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.companyservice.application.CompanyServiceService;
 import com.backend.companyservice.domain.CompanyService;
+import com.backend.companyservice.domain.CompanyServiceDto;
 import com.backend.companyservice.domain.CompanyServiceId;
 
 import jakarta.validation.Valid;
@@ -44,14 +45,14 @@ public class CompanyServiceController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody CompanyService companyService, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody CompanyServiceDto companyService, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : ResponseEntity.status(HttpStatus.CREATED).body(companyServiceService.save(companyService));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable CompanyServiceId id, @Valid @RequestBody CompanyService companyService, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable CompanyServiceId id, @Valid @RequestBody CompanyServiceDto companyService, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : companyServiceService.update(id, companyService)

@@ -1,28 +1,34 @@
 package com.backend.companyservice.domain;
 
+import java.math.BigDecimal;
+
 import com.backend.franchise.domain.Franchise;
 import com.backend.service.domain.Service;
+import com.backend.utils.enums.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
+@Table(name = "companies_services")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CompanyService {
 
 	@EmbeddedId
@@ -33,16 +39,16 @@ public class CompanyService {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@MapsId("franchiseId")
 	@JoinColumn(name = "franchise_id")
-	private Franchise franchiseId;
+	private Franchise franchise;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@MapsId("serviceId")
 	@JoinColumn(name = "service_id")
-	private Service serviceId;
+	private Service service;
 
 	@Column(length = 25)
-	@Size(max = 25, message = "the value is too large")
-	@NotNull(message = "value shouldn't be null")
-	@NotBlank(message = "the field is blank")
-	private Float valueService;
+	private BigDecimal valueService;
+
+	@Enumerated(EnumType.STRING)
+	private Status status;
 }

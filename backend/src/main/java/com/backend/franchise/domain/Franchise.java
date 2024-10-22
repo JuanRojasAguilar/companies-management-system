@@ -67,6 +67,6 @@ public class Franchise {
 	private List<User> userList;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "franchiseId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "franchise")
 	private List<CompanyService> companyServiceId;
 }

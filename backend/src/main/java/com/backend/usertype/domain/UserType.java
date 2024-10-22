@@ -18,16 +18,16 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name = "user_types")
+@Table(name = "user_types") 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    @Column(name = "company_type_id")
+    @Column(name = "user_type_id")
     private Long id;
 
-    @Column(length = 40)
+    @Column(length = 40, unique = true)
     private String name;
 
 	@JsonIgnore
