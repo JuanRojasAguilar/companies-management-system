@@ -1,20 +1,20 @@
 'use client'
 
 import FindingsServicesList from "@/components/service-provider/findingsServicesList"
-import EditFinding from "@/components/service-provider/editFinding"
+import ServiceCard from "@/components/service-provider/editFinding"
 
 const styles = {
     mainDiv : "w-screen h-screen grid grid-cols-2"
 }
 
-export default function CustomerPage() {
+export default function ServiceProviderPage() {
     return (
         <main className={styles.mainDiv}>
             <section>
-					<FindingsServicesList/>
+				<FindingsServicesList/>
             </section>
             <section>
-                <EditFinding/>
+                <ServiceCard/>
             </section>
         </main>
     )    
