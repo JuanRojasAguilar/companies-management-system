@@ -117,7 +117,7 @@ export default function FindingsServiceList() {
           )}
         </TableBody>
       </Table>
-      <Button color="primary" onClick={uploadServices}>
+      <Button color="default" variant="ghost" onClick={uploadServices}>
         Upload Selected Services
       </Button>
     </div>

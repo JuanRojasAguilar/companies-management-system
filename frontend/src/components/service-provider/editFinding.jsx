@@ -51,11 +51,11 @@ export default function ServiceFindingCard() {
 	  			/>
 			</CardBody>
 	  		<CardFooter>
-	  			<Button color="success" onClick={handleConfirmEdit}>
+	  			<Button color="success" variant="ghost" onClick={handleConfirmEdit}>
        			   Confirm Edits
        			 </Button>
        			 <Spacer x={0.5} />
-       			 <Button color="warning" onClick={() => setFinding(localStorageService.finding)}>
+       			 <Button color="warning" variant="ghost" onClick={() => setFinding(localStorageService.finding)}>
        			   Cancel
        			 </Button>
 	  		</CardFooter>
