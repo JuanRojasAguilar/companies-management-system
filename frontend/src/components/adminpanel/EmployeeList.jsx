@@ -1,7 +1,6 @@
 "use client";
 
-import EmployeeCard from "@/components/aminpanel/EmployeeCard";
-import { Divider } from "@nextui-org/react";
+import EmployeeCard from "./EmployeeCard";
 
 const employees = [
     {
@@ -22,7 +21,7 @@ const employees = [
     }
 ];
 
-const AdminPage = () => {
+const EmployeeList = () => {
     return (
         <div className="px-8 flex flex-col items-center">
             <h1 className="mb-12 text-6xl">Empleados</h1>
@@ -35,4 +34,4 @@ const AdminPage = () => {
     );
 }
 
-export default AdminPage;
+export default EmployeeList;

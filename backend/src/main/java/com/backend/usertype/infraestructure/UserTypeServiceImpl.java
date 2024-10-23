@@ -68,8 +68,4 @@ public class UserTypeServiceImpl implements UserTypeService {
         return Optional.empty();
     }
 
-    @Override
-    public Optional<UserType> findByName(String name) {
-        return null;   
-    }
 }

@@ -48,8 +48,9 @@ export default function LoginForm() {
       
       // Here you would typically send the data to your backend
       
-      setIsSubmitted(false)
-      setFormData({ email: "", password: "" })
+      setIsSubmitted(false);
+      setFormData({ email: "", password: "" });
+      location.replace("/adminpanel");
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors = {}
