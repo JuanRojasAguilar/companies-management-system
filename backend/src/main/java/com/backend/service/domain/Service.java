@@ -39,8 +39,8 @@ public class Service {
     private boolean reagentNeeded;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "serviceId")
-	private List<CompanyService> companyServiceId;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "service")
+	private List<CompanyService> companyServices;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "service")
@@ -55,7 +55,7 @@ public class Service {
 	private List<DetailOrder> detailOrderList;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "serviceAssignedId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "serviceAssigned")
 	private List<DetailsOrderWork> detailOrderWorkList;
 
 	@JsonIgnore

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.detailorder.application.DetailOrderService;
 import com.backend.detailorder.domain.DetailOrder;
+import com.backend.detailorder.domain.DetailOrderDto;
 
 import jakarta.validation.Valid;
 
@@ -49,7 +50,7 @@ public class DetailOrderController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody DetailOrder detailOrder, BindingResult result, @PathVariable Long id) {
+	public ResponseEntity<?> update(@Valid @RequestBody DetailOrderDto detailOrder, BindingResult result, @PathVariable Long id) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
@@ -62,7 +63,7 @@ public class DetailOrderController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody DetailOrder detailOrder, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody DetailOrderDto detailOrder, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
