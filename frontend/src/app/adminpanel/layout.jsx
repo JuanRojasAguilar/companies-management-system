@@ -3,11 +3,11 @@ const { NextUIProvider } = require("@nextui-org/react");
 
 const layout = ({ children }) => {
     return (
-        <div className="h-screen pt-20">
-            <NextUIProvider>
+        <NextUIProvider>
+            <div className="h-screen pt-20">
                 {children}
-            </NextUIProvider>
-        </div>
+            </div>
+        </NextUIProvider>
     );
 }
 
