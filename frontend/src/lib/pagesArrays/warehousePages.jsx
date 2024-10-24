@@ -1,3 +1,4 @@
 export const warehousePages = [
-  "products"
+  "products",
+  "add-product"
 ]
