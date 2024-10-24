@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.statusorderservice.application.StatusOrderServiceService;
 import com.backend.statusorderservice.domain.StatusOrderService;
+import com.backend.statusorderservice.domain.StatusOrderServiceDto;
+import com.backend.utils.enums.Status;
 
 @Service
 public class StatusOrderServiceServiceImpl implements StatusOrderServiceService {
@@ -20,8 +22,12 @@ public class StatusOrderServiceServiceImpl implements StatusOrderServiceService 
 	private StatusOrderServiceRepository repository;
 
 	@Override
-	public StatusOrderService save(StatusOrderService statusOrderService) {
-		return repository.save(statusOrderService);
+	public StatusOrderService save(StatusOrderServiceDto statusOrderService) {
+		StatusOrderService statusOrderServiceDb = new StatusOrderService();
+		BeanUtils.copyProperties(statusOrderService, statusOrderServiceDb, statusOrderService.getClass());
+		statusOrderServiceDb.setStatus((Status.ENABLED));
+
+		return repository.save(statusOrderServiceDb);
 	}
 
 	@Override
@@ -38,22 +44,22 @@ public class StatusOrderServiceServiceImpl implements StatusOrderServiceService 
 
 	@Override
 	public Optional<StatusOrderService> delete(Long id) {
-		try {
-			StatusOrderService statusOrderInstance = this.findById(id).get();
-			repository.delete(statusOrderInstance);
-			return Optional.of(statusOrderInstance);
-		} catch (Exception e) {
-			return Optional.empty();
-		}
+		Optional<StatusOrderService> statusOrderServiceInstance = this.findById(id);
+        if (statusOrderServiceInstance.isPresent()) {
+            statusOrderServiceInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(statusOrderServiceInstance.orElseThrow()));
+        }
+            return Optional.empty();
 	}
 
 	@Override
-	public Optional<StatusOrderService> update(Long id, StatusOrderService statusOrderService) {
+	public Optional<StatusOrderService> update(Long id, StatusOrderServiceDto statusOrderService) {
 		Optional<StatusOrderService> statusOrderServiceInstance = repository.findById(id);
 		if (statusOrderServiceInstance.isPresent()) {
-			StatusOrderService newStatusOrderService = statusOrderServiceInstance.get();
-			BeanUtils.copyProperties(statusOrderService, newStatusOrderService);
-			return Optional.of(repository.save(newStatusOrderService));
+			StatusOrderService statusOrderServiceDb = new StatusOrderService();
+			BeanUtils.copyProperties(statusOrderService, statusOrderServiceDb, statusOrderService.getClass());
+
+			return Optional.of(repository.save(statusOrderServiceDb));
 		}
 		return Optional.empty();
 	}

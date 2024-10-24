@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.statusorderservice.application.StatusOrderServiceService;
 import com.backend.statusorderservice.domain.StatusOrderService;
+import com.backend.statusorderservice.domain.StatusOrderServiceDto;
 
 import jakarta.validation.Valid;
 
@@ -48,7 +49,7 @@ public class StatusOrderServiceController{
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody StatusOrderService statusOrderService, BindingResult result, @PathVariable Long id ) {
+	public ResponseEntity<?> update(@Valid @RequestBody StatusOrderServiceDto statusOrderService, BindingResult result, @PathVariable Long id ) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
@@ -61,7 +62,7 @@ public class StatusOrderServiceController{
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody StatusOrderService statusOrderService, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody StatusOrderServiceDto statusOrderService, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
