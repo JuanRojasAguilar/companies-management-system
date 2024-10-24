@@ -8,10 +8,13 @@ import com.backend.detailsorderwork.domain.DetailsOrderWork;
 import com.backend.orderservice.domain.OrderService;
 import com.backend.serviceapproval.domain.ServiceApproval;
 import com.backend.user.domain.User;
+import com.backend.utils.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,14 +22,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "order_works")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -38,28 +45,24 @@ public class OrderWork {
 	private Long id;
 
 	@Column(length = 20)
-    @Size(max = 20, message = "the number order work is too large")
-    @NotNull(message = "number order work shouldn't be null")
-    @NotBlank(message = "the field is blank")
 	private Long numberOrderWork;
 
-	@Column
-    @NotNull(message = "date assignation shouldn't be null")
-    @NotBlank(message = "the field is blank")
+	@Column(name = "date_assignation")
 	private LocalDate dateAsignation;
 
-	@Column
-    @NotNull(message = "time assignation shouldn't be null")
-    @NotBlank(message = "the field is blank")
+	@Column(name = "time_assignation")
 	private LocalTime timeAsignation;
+
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private User employeeId;
+	private User employee;
 	
 	@ManyToOne
 	@JoinColumn(name = "order_service_id")
-	private OrderService orderServiceId;
+	private OrderService orderService;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orderWork")
@@ -68,4 +71,10 @@ public class OrderWork {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orderWork")
 	private List<ServiceApproval> serviceApprovalList;
+
+	@PrePersist
+	protected void onCreate(){
+		this.dateAsignation = LocalDate.now();
+		this.timeAsignation = LocalTime.now();
+	}
 }

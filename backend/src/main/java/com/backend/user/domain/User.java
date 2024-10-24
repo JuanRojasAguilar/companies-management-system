@@ -75,6 +75,6 @@ public class User {
 	private EmailUser emailUser;
 
     @JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
 	private List<OrderWork> ordersWorks;
 }

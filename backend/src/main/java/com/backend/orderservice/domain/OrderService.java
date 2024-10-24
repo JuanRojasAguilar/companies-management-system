@@ -61,7 +61,7 @@ public class OrderService {
 	private OrderState orderState;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orderServiceId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orderService")
 	private List<OrderWork> orderWorkList;
 
 	@PrePersist

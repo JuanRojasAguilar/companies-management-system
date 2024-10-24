@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.backend.orderwork.application.OrderWorkService;
 import com.backend.orderwork.domain.OrderWork;
+import com.backend.orderwork.domain.OrderWorkDto;
 
 import jakarta.validation.Valid;
 
@@ -46,7 +47,7 @@ public class OrderWorkController{
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody OrderWork orderWork, BindingResult result, @PathVariable Long id ) {
+	public ResponseEntity<?> update(@Valid @RequestBody OrderWorkDto orderWork, BindingResult result, @PathVariable Long id ) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
@@ -59,7 +60,7 @@ public class OrderWorkController{
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody OrderWork orderWork, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody OrderWorkDto orderWork, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
