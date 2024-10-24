@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.orderstate.application.OrderStateService;
 import com.backend.orderstate.domain.OrderState;
+import com.backend.orderstate.domain.OrderStateDto;
+import com.backend.utils.enums.Status;
 
 @Service
 public class OrderStateImpl implements OrderStateService {
@@ -19,18 +21,23 @@ public class OrderStateImpl implements OrderStateService {
 
     @Transactional
     @Override
-    public OrderState save(OrderState orderState) {
-        return orderStateRepository.save(orderState);
+    public OrderState save(OrderStateDto orderState) {
+        OrderState orderStateDb = new OrderState();
+        BeanUtils.copyProperties(orderState, orderStateDb, orderState.getClass());
+        orderStateDb.setStatus(Status.ENABLED);
+
+        return orderStateRepository.save(orderStateDb);
     }
 
     @Transactional
     @Override
-    public Optional<OrderState> update(Long id, OrderState orderState) {
+    public Optional<OrderState> update(Long id, OrderStateDto orderState) {
         Optional<OrderState> orderStateDB = orderStateRepository.findById(id);
         if (orderStateDB.isPresent()) {
-            OrderState orderStateToUpload = orderStateDB.orElseThrow();
-            BeanUtils.copyProperties(orderState, orderStateToUpload, "id");
-            return Optional.of(orderStateRepository.save(orderStateToUpload));
+            OrderState orderStateDb = new OrderState();
+            BeanUtils.copyProperties(orderState, orderStateDb, orderState.getClass());
+
+            return Optional.of(orderStateRepository.save(orderStateDb));
         }
         return Optional.empty();
     }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.orderstate.application.OrderStateService;
 import com.backend.orderstate.domain.OrderState;
+import com.backend.orderstate.domain.OrderStateDto;
 
 import jakarta.validation.Valid;
 
@@ -43,14 +44,14 @@ public class OrderStateController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody OrderState orderState, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody OrderStateDto orderState, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : ResponseEntity.status(HttpStatus.CREATED).body(orderStateService.save(orderState));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody OrderState orderState, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody OrderStateDto orderState, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : orderStateService.update(id, orderState)
