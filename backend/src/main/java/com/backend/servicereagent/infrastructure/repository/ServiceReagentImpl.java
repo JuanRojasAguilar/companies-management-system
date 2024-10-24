@@ -7,9 +7,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.backend.reagent.domain.Reagent;
 import com.backend.servicereagent.application.ServiceReagentService;
-import com.backend.servicereagent.domain.entity.ServiceReagent;
-import com.backend.servicereagent.domain.entity.ServiceReagentPk;
+import com.backend.servicereagent.domain.ServiceReagent;
+import com.backend.servicereagent.domain.ServiceReagentDto;
+import com.backend.servicereagent.domain.ServiceReagentPk;
+import com.backend.utils.enums.Status;
 
 @Service
 public class ServiceReagentImpl implements ServiceReagentService {
@@ -18,17 +21,38 @@ public class ServiceReagentImpl implements ServiceReagentService {
     private ServiceReagentRepository serviceReagentRepository;
 
     @Override
-    public ServiceReagent save(ServiceReagent serviceReagent) {
-        return serviceReagentRepository.save(serviceReagent);
+    public ServiceReagent save(ServiceReagentDto serviceReagent) {
+        ServiceReagent serviceReagentDb = new ServiceReagent();
+        BeanUtils.copyProperties(serviceReagent, serviceReagentDb, serviceReagent.getClass());
+        serviceReagentDb.setStatus(Status.ENABLED);
+
+        com.backend.service.domain.Service service = new com.backend.service.domain.Service();
+        service.setId(serviceReagent.getServiceId());
+        serviceReagentDb.setService(service);
+
+        Reagent reagent = new Reagent();
+        reagent.setId(serviceReagent.getReagentId());
+        serviceReagentDb.setReagent(reagent);
+
+        return serviceReagentRepository.save(serviceReagentDb);
     }
 
     @Override
-    public Optional<ServiceReagent> update(ServiceReagentPk id, ServiceReagent serviceReagent) {
+    public Optional<ServiceReagent> update(ServiceReagentPk id, ServiceReagentDto serviceReagent) {
         Optional<ServiceReagent> serviceReagentDB = serviceReagentRepository.findById(id);
         if (serviceReagentDB.isPresent()) {
-            ServiceReagent serviceReagentToUpload = serviceReagentDB.orElseThrow();
-            BeanUtils.copyProperties(serviceReagent, serviceReagentToUpload, "id");
-            return Optional.of(serviceReagentRepository.save(serviceReagentToUpload));
+            ServiceReagent serviceReagentDb = new ServiceReagent();
+            BeanUtils.copyProperties(serviceReagent, serviceReagentDb, serviceReagent.getClass());
+
+            com.backend.service.domain.Service service = new com.backend.service.domain.Service();
+            service.setId(serviceReagent.getServiceId());
+            serviceReagentDb.setService(service);
+
+            Reagent reagent = new Reagent();
+            reagent.setId(serviceReagent.getReagentId());
+            serviceReagentDb.setReagent(reagent);
+
+            return Optional.of(serviceReagentRepository.save(serviceReagentDb));
         }
         return Optional.empty();
     }
@@ -45,11 +69,12 @@ public class ServiceReagentImpl implements ServiceReagentService {
 
     @Override
     public Optional<ServiceReagent> delete(ServiceReagentPk id) {
-        Optional<ServiceReagent> serviceReagent = serviceReagentRepository.findById(id);
-        serviceReagent.ifPresent(serviceReagentDb -> {
-           serviceReagentRepository.delete(serviceReagentDb);
-        });
-        return serviceReagent;
+        Optional<ServiceReagent> serviceReagentInstance = this.findById(id);
+        if (serviceReagentInstance.isPresent()) {
+            serviceReagentInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(serviceReagentRepository.save(serviceReagentInstance.orElseThrow()));
+        }
+            return Optional.empty();
     }
     
 }

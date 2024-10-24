@@ -6,7 +6,7 @@ import com.backend.companyservice.domain.CompanyService;
 import com.backend.detailorder.domain.DetailOrder;
 import com.backend.detailsorderwork.domain.DetailsOrderWork;
 import com.backend.serviceapproval.domain.ServiceApproval;
-import com.backend.servicereagent.domain.entity.ServiceReagent;
+import com.backend.servicereagent.domain.ServiceReagent;
 import com.backend.userreagent.domain.UserReagent;
 import com.backend.utils.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;

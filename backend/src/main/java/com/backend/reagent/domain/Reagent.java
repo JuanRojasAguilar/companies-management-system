@@ -2,7 +2,7 @@ package com.backend.reagent.domain;
 
 import java.util.List;
 
-import com.backend.servicereagent.domain.entity.ServiceReagent;
+import com.backend.servicereagent.domain.ServiceReagent;
 import com.backend.utils.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

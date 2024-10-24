@@ -1,4 +1,4 @@
-package com.backend.servicereagent.domain.entity;
+package com.backend.servicereagent.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
