@@ -63,11 +63,11 @@ public class User {
 	private UserType userTypeId;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientId") 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client") 
     private List<OrderService> ordersServicesClient;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeId") 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee") 
     private List<OrderService> orderServicesEmployee;
 
     @JsonIgnore

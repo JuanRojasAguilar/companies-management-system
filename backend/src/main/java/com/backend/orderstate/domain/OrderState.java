@@ -39,6 +39,6 @@ public class OrderState {
     private String name;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "orderStateId")
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "orderState")
 	private List<OrderService> ordersServices;
 }

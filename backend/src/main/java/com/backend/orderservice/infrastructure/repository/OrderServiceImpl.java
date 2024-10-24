@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.backend.orderservice.application.OrderServiceService;
 import com.backend.orderservice.domain.OrderService;
+import com.backend.orderservice.domain.OrderServiceDto;
+import com.backend.orderstate.domain.OrderState;
+import com.backend.user.domain.User;
+import com.backend.utils.enums.Status;
 
 @Service
 public class OrderServiceImpl implements OrderServiceService {
@@ -17,17 +21,47 @@ public class OrderServiceImpl implements OrderServiceService {
     private OrderServiceRepository orderServiceRepository;
 
     @Override
-    public OrderService save(OrderService orderService) {
-        return orderServiceRepository.save(orderService);
-    }
+    public OrderService save(OrderServiceDto orderService) {
+        OrderService orderServiceDb = new OrderService();
+        BeanUtils.copyProperties(orderService, orderServiceDb);
+        orderServiceDb.setStatus(Status.ENABLED);
+
+        User client = new User();
+        client.setId(orderService.getClientId());
+        orderServiceDb.setClient(client);
+
+        User employee = new User();
+        employee.setId(orderService.getEmployeeId());
+        orderServiceDb.setClient(employee);
+
+        OrderState orderState = new OrderState();
+        orderState.setId(orderService.getOrderStateId());
+        orderServiceDb.setOrderState(orderState);
+
+        return orderServiceRepository.save(orderServiceDb);
+
+    }   
 
     @Override
-    public Optional<OrderService> update(Long id, OrderService orderService) {
+    public Optional<OrderService> update(Long id, OrderServiceDto orderService) {
         Optional<OrderService> orderServiceDB = orderServiceRepository.findById(id);
         if (orderServiceDB.isPresent()) {
-            OrderService orderServiceToUpload = orderServiceDB.orElseThrow();
-            BeanUtils.copyProperties(orderService, orderServiceToUpload, "id");
-            return Optional.of(orderServiceRepository.save(orderServiceToUpload));
+            OrderService orderServiceDb = new OrderService();
+            BeanUtils.copyProperties(orderService, orderServiceDb, orderService.getClass());
+
+            User client = new User();
+            client.setId(orderService.getClientId());
+            orderServiceDb.setClient(client);
+
+            User employee = new User();
+            employee.setId(orderService.getEmployeeId());
+            orderServiceDb.setClient(employee);
+
+            OrderState orderState = new OrderState();
+            orderState.setId(orderService.getOrderStateId());
+            orderServiceDb.setOrderState(orderState);
+
+            return Optional.of(orderServiceRepository.save(orderServiceDb));
         }
         return Optional.empty();
     }
@@ -44,11 +78,12 @@ public class OrderServiceImpl implements OrderServiceService {
 
     @Override
     public Optional<OrderService> delete(Long id) {
-        Optional<OrderService> orderService = orderServiceRepository.findById(id);
-        orderService.ifPresent(orderServiceDb -> {
-           orderServiceRepository.delete(orderServiceDb);
-        });
-        return orderService;
-    }
+        Optional<OrderService> orderServiceInstance = this.findById(id);
+        if (orderServiceInstance.isPresent()) {
+            orderServiceInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(orderServiceRepository.save(orderServiceInstance.orElseThrow()));
+        }
+            return Optional.empty();
+  }
     
 }
