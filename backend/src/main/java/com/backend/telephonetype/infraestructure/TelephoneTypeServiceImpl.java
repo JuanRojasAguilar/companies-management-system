@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.telephonetype.application.TelephoneTypeService;
 import com.backend.telephonetype.domain.TelephoneType;
+import com.backend.telephonetype.domain.TelephoneTypeDto;
+import com.backend.utils.enums.Status;
 
 @Service
 public class TelephoneTypeServiceImpl implements TelephoneTypeService {
@@ -33,11 +35,12 @@ public class TelephoneTypeServiceImpl implements TelephoneTypeService {
 
     @Override
     @Transactional
-    public Optional<TelephoneType> update(Long id, TelephoneType telephoneType) {
+    public Optional<TelephoneType> update(Long id, TelephoneTypeDto telephoneType) {
         Optional<TelephoneType> telTypeInstance = repository.findById(id);
         if (telTypeInstance.isPresent()) {
-            TelephoneType newTelType = telTypeInstance.get();
-            BeanUtils.copyProperties(telephoneType, newTelType);
+            TelephoneType newTelType = new TelephoneType();
+            BeanUtils.copyProperties(telephoneType, newTelType, telephoneType.getClass());
+
             return Optional.of(repository.save(newTelType));
         }
         return Optional.empty();
@@ -45,8 +48,12 @@ public class TelephoneTypeServiceImpl implements TelephoneTypeService {
 
     @Override
     @Transactional
-    public TelephoneType save(TelephoneType telephoneType) {
-        return repository.save(telephoneType);
+    public TelephoneType save(TelephoneTypeDto telephoneType) {
+        TelephoneType newTelType = new TelephoneType();
+        BeanUtils.copyProperties(telephoneType, newTelType, telephoneType.getClass());
+        newTelType.setStatus(Status.ENABLED);
+
+        return repository.save(newTelType);
     }
 
     @Override
@@ -54,8 +61,8 @@ public class TelephoneTypeServiceImpl implements TelephoneTypeService {
     public Optional<TelephoneType> delete(Long id) {
         Optional<TelephoneType> telTypeInstance = repository.findById(id);
         if (telTypeInstance.isPresent()) {
-            repository.delete(telTypeInstance.get());
-            return Optional.of(telTypeInstance.get());
+            telTypeInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(telTypeInstance.orElseThrow()));
         }
         return Optional.empty();
     }

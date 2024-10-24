@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.telephonetype.application.TelephoneTypeService;
 import com.backend.telephonetype.domain.TelephoneType;
+import com.backend.telephonetype.domain.TelephoneTypeDto;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,14 +45,14 @@ public class TelephoneTypeController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> save(@Valid @RequestBody TelephoneType telephoneType, BindingResult bindingResult) {
+    public ResponseEntity<?> save(@Valid @RequestBody TelephoneTypeDto telephoneType, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
                 ? validation(bindingResult)
                 : ResponseEntity.status(HttpStatus.CREATED).body(service.save(telephoneType));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody TelephoneType telephoneType,
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody TelephoneTypeDto telephoneType,
             BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
                 ? validation(bindingResult)
