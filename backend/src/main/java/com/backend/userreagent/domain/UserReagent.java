@@ -4,7 +4,10 @@ import com.backend.user.domain.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import com.backend.utils.enums.Status;
 import jakarta.persistence.JoinColumn;
 import com.backend.reagent.domain.Reagent;
 import com.backend.service.domain.Service;
@@ -32,14 +35,17 @@ public class UserReagent {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@MapsId("userId")
 	@JoinColumn(name = "user_id")
-	private User userId;
+	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@MapsId("reagentId")
 	@JoinColumn(name = "reagent_id")
-	private Reagent reagentId;
+	private Reagent reagent;
+
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
 	@ManyToOne
 	@JoinColumn(name = "service_id")
-	private Service serviceId;
+	private Service service;
 }

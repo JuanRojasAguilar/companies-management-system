@@ -8,6 +8,7 @@ import com.backend.franchise.domain.Franchise;
 import com.backend.orderservice.domain.OrderService;
 import com.backend.orderwork.domain.OrderWork;
 import com.backend.serviceapproval.domain.ServiceApproval;
+import com.backend.userreagent.domain.UserReagent;
 import com.backend.usertype.domain.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,7 +22,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -82,4 +82,8 @@ public class User {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private List<ServiceApproval> serviceApprovals;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<UserReagent> userReagents;
 }

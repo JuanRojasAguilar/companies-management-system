@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import com.backend.userreagent.domain.UserReagent;
+import com.backend.userreagent.domain.UserReagentDto;
 import com.backend.userreagent.domain.UserReagentId;
 
 public interface UserReagentService {
-    UserReagent save(UserReagent userReagent);
+    UserReagent save(UserReagentDto userReagent);
 
-    Optional<UserReagent> update(UserReagentId id, UserReagent userReagent);
+    Optional<UserReagent> update(UserReagentId id, UserReagentDto userReagent);
 
     Optional<UserReagent> findById(UserReagentId id);
     

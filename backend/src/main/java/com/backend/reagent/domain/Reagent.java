@@ -3,6 +3,7 @@ package com.backend.reagent.domain;
 import java.util.List;
 
 import com.backend.servicereagent.domain.ServiceReagent;
+import com.backend.userreagent.domain.UserReagent;
 import com.backend.utils.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -48,4 +49,8 @@ public class Reagent {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "reagent")
 	private List<ServiceReagent> serviceReagentList;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reagent")
+    private List<UserReagent> userReagents;
 }
