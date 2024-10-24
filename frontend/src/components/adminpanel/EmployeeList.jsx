@@ -31,7 +31,7 @@ const EmployeeList = () => {
     return (
         <div className="px-8 flex flex-col items-center">
             <h1 className="mb-12 text-6xl">Empleados</h1>
-            <div className="w-1/2 flex flex-wrap gap-4">
+            <div className="w-fit flex flex-wrap gap-4 justify-center">
                 {employeeList.map(({ name, position }) => (
                     <EmployeeCard key={name} name={name} position={position} />
                 ))}

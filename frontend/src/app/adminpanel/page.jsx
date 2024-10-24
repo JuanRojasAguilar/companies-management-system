@@ -3,11 +3,16 @@
 import { Card, CardBody, CardFooter, Divider } from "@nextui-org/react";
 import EmployeeList from "../../components/adminpanel/EmployeeList";
 import { Fragment, useState } from "react";
+import AddProduct from "../../components/adminpanel/AddProduct";
 
 const pageComponents = [
     {
         name: "Gestionar empleados",
         component: <EmployeeList />
+    },
+    {
+        name: "Gestionar Servicios",
+        component: <AddProduct />
     }
 ]
 
@@ -18,11 +23,12 @@ const Styles = {
         px-8
         pb-8
         h-full
+        bg-black/50
     `,
     aside: `
         w-1/5
         border-2
-        rounded-lg
+        rounded-l-lg
     `,
 }
 
@@ -38,9 +44,9 @@ const AdminPanel = () => {
             </div>
             <div className="w-full h-full flex">
                 <div className={Styles.aside}>
-                    <h2 className="text-2xl mb-2">Servicios</h2>
+                    <h2 className="text-2xl mb-2">Menu Administrativo</h2>
                     <Divider />
-                    <div className="mt-4 text-xl">
+                    <div className="mt-4 text-xl flex flex-col gap-4">
                     {pageComponents.map(({name, component}) => (
                         <Card key={name}>
                             <CardBody>
@@ -51,11 +57,10 @@ const AdminPanel = () => {
                     ))}
                     </div>
                 </div>
-                <div className="w-4/5 border-2 rounded-lg">
+                <div className="w-4/5 border-2 rounded-r-lg">
                     {pageLoaded}
                 </div>
             </div>
-
         </div>
     );
 }
