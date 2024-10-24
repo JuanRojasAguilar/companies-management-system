@@ -31,7 +31,7 @@ public class StatusApproval {
 	private String name;
 	
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "statusApprovalId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "statusApproval")
 	private List<ServiceApproval> serviceApprovalList;
 
 }

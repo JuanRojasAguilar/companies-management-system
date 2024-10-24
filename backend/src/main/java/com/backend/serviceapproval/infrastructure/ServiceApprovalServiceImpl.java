@@ -11,8 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.backend.orderwork.domain.OrderWork;
 import com.backend.serviceapproval.application.ServiceApprovalService;
 import com.backend.serviceapproval.domain.ServiceApproval;
+import com.backend.serviceapproval.domain.ServiceApprovalDto;
+import com.backend.statusapproval.domain.StatusApproval;
+import com.backend.user.domain.User;
+import com.backend.utils.enums.Status;
 
 @Service
 public class ServiceApprovalServiceImpl implements ServiceApprovalService {
@@ -20,8 +25,29 @@ public class ServiceApprovalServiceImpl implements ServiceApprovalService {
 	private ServiceApprovalRepository repository;
 
 	@Override
-	public ServiceApproval save(ServiceApproval orderWork) {
-		return repository.save(orderWork);
+	public ServiceApproval save(ServiceApprovalDto serviceApproval) {
+		ServiceApproval serviceApprovalDb = new ServiceApproval();
+		BeanUtils.copyProperties(serviceApproval, serviceApprovalDb, serviceApproval.getClass());
+		serviceApprovalDb.setStatus(Status.ENABLED);
+
+		com.backend.service.domain.Service service = new com.backend.service.domain.Service();
+		service.setId(serviceApproval.getServiceId());
+		serviceApprovalDb.setService(service);
+
+		OrderWork orderWork = new OrderWork();
+		orderWork.setId(serviceApproval.getOrderWorkId());
+		serviceApprovalDb.setOrderWork(orderWork);
+
+		User client = new User();
+		client.setId(serviceApproval.getClientId());
+		serviceApprovalDb.setClient(client);
+
+		StatusApproval statusApproval = new StatusApproval();
+		statusApproval.setId(serviceApproval.getStatusApprovalId());
+		serviceApprovalDb.setStatusApproval(statusApproval);
+
+		return repository.save(serviceApprovalDb);
+
 	}
 
 	@Override
@@ -38,22 +64,39 @@ public class ServiceApprovalServiceImpl implements ServiceApprovalService {
 
 	@Override
 	public Optional<ServiceApproval> delete(Long id) {
-		try {
-			ServiceApproval serviceApprovalInstance = this.findById(id).get();
-			repository.delete(serviceApprovalInstance);
-			return Optional.of(serviceApprovalInstance);
-		} catch (Exception e) {
-			return Optional.empty();
-		}
+		Optional<ServiceApproval> serviceApproval = this.findById(id);
+        if (serviceApproval.isPresent()) {
+            serviceApproval.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(serviceApproval.orElseThrow()));
+        }
+            return Optional.empty();
+
 	}
 
 	@Override
-	public Optional<ServiceApproval> update(Long id, ServiceApproval orderWork) {
+	public Optional<ServiceApproval> update(Long id, ServiceApprovalDto serviceApproval) {
 		Optional<ServiceApproval> serviceApprovalInstance = repository.findById(id);
 		if (serviceApprovalInstance.isPresent()) {
-			ServiceApproval newServiceApproval = serviceApprovalInstance.get();
-			BeanUtils.copyProperties(orderWork, newServiceApproval);
-			return Optional.of(repository.save(newServiceApproval));
+			ServiceApproval serviceApprovalDb = new ServiceApproval();
+			BeanUtils.copyProperties(serviceApproval, serviceApprovalDb, serviceApproval.getClass());
+
+			com.backend.service.domain.Service service = new com.backend.service.domain.Service();
+			service.setId(serviceApproval.getServiceId());
+			serviceApprovalDb.setService(service);
+
+			OrderWork orderWork = new OrderWork();
+			orderWork.setId(serviceApproval.getOrderWorkId());
+			serviceApprovalDb.setOrderWork(orderWork);
+
+			User client = new User();
+			client.setId(serviceApproval.getClientId());
+			serviceApprovalDb.setClient(client);
+
+			StatusApproval statusApproval = new StatusApproval();
+			statusApproval.setId(serviceApproval.getStatusApprovalId());
+			serviceApprovalDb.setStatusApproval(statusApproval);
+
+			return Optional.of(repository.save(serviceApprovalDb));
 		}
 		return Optional.empty();
 	}

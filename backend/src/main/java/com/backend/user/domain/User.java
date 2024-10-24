@@ -7,6 +7,7 @@ import com.backend.emailuser.domain.EmailUser;
 import com.backend.franchise.domain.Franchise;
 import com.backend.orderservice.domain.OrderService;
 import com.backend.orderwork.domain.OrderWork;
+import com.backend.serviceapproval.domain.ServiceApproval;
 import com.backend.usertype.domain.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -77,4 +78,8 @@ public class User {
     @JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
 	private List<OrderWork> ordersWorks;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    private List<ServiceApproval> serviceApprovals;
 }
