@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.emailtype.application.EmailTypeService;
 import com.backend.emailtype.domain.EmailType;
+import com.backend.emailtype.domain.EmailTypeDto;
 
 import jakarta.validation.Valid;
 
@@ -49,7 +50,7 @@ public class EmailTypeController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody EmailType emailType, BindingResult result, @PathVariable Long id) {
+	public ResponseEntity<?> update(@Valid @RequestBody EmailTypeDto emailType, BindingResult result, @PathVariable Long id) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
@@ -62,7 +63,7 @@ public class EmailTypeController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody EmailType emailType, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody EmailTypeDto emailType, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}

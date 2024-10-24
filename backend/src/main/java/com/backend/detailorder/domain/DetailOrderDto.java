@@ -7,9 +7,10 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+import java.io.Serializable;
 
 @Data
-public class DetailOrderDto {
+public class DetailOrderDto implements Serializable {
     @DecimalMin(value = "0.00", message= "Couldn't be negative numbers")
 	@NotNull(message = "serviceValue couldn't be null")
 	private BigDecimal serviceValue;
