@@ -1,3 +1,3 @@
-export const customerPages = [
-  "warehouse/products"
+export const warehousePages = [
+  "products"
 ]

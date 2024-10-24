@@ -1,6 +1,6 @@
 import { NextUIProvider } from "@nextui-org/react";
 import NavigationBar from "@/components/navBar";
-import { warehousePages } from "@/lib/pagesArrays/customerPages";
+import { warehousePages } from "@/lib/pagesArrays/warehousePages";
 
 const styles = {
     mainDiv: "flex h-screen w-screen",

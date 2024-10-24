@@ -1,6 +1,5 @@
 'use client'
 
-import AvailableServicesList from "@/components/customer/availableServicesList"
 import ProductsList from "@/components/warehouse/productsList"
 
 const styles = {
