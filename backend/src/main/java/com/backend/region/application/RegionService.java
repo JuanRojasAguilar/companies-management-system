@@ -6,12 +6,13 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.backend.region.domain.Region;
+import com.backend.region.domain.RegionDto;
 
 @Service
 public interface RegionService {
     List<Region> findAll();
     Optional<Region> findById(Long id);
-    Region save(Region region);
-    Optional<Region> update(Long id, Region region);
+    Region save(RegionDto region);
+    Optional<Region> update(Long id, RegionDto region);
     Optional<Region> delete(Long id);
 }

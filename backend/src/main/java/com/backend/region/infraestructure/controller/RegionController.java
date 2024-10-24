@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.region.application.RegionService;
 import com.backend.region.domain.Region;
+import com.backend.region.domain.RegionDto;
 
 import jakarta.validation.Valid;
 
@@ -42,14 +43,14 @@ public class RegionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody Region region, BindingResult bindingResult) {
+    public ResponseEntity<?> save(@Valid @RequestBody RegionDto region, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
                 ? validation(bindingResult)
                 : ResponseEntity.status(HttpStatus.CREATED).body(service.save(region));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Region region,
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RegionDto region,
             BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
                 ? validation(bindingResult)

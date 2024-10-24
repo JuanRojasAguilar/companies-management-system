@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.backend.country.domain.Country;
 import com.backend.region.application.RegionService;
 import com.backend.region.domain.Region;
+import com.backend.region.domain.RegionDto;
+import com.backend.utils.enums.Status;
 
 @Service
 public class RegionServiceImpl implements RegionService {
@@ -33,17 +36,30 @@ public class RegionServiceImpl implements RegionService {
     }
 
     @Override
-    public Region save(Region region) {
-        return repository.save(region);
+    public Region save(RegionDto region) {
+        Region regionDb = new Region();
+        BeanUtils.copyProperties(region, regionDb, region.getClass());
+        regionDb.setStatus(Status.ENABLED);
+
+        Country country = new Country();
+        country.setId(region.getCountryId());
+        regionDb.setCountry(country);
+
+        return repository.save(regionDb);
     }
 
     @Override
-    public Optional<Region> update(Long id, Region region) {
+    public Optional<Region> update(Long id, RegionDto region) {
         Optional<Region> regionInstance = repository.findById(id);
         if (regionInstance.isPresent()) {
-            Region newRegion = regionInstance.get();
-            BeanUtils.copyProperties(region, newRegion);
-            return Optional.of(repository.save(newRegion));
+            Region regionDb = new Region();
+            BeanUtils.copyProperties(region, regionDb, region.getClass());
+
+            Country country = new Country();
+            country.setId(region.getCountryId());
+            regionDb.setCountry(country);
+
+            return Optional.of(repository.save(regionDb));
         }
         return Optional.empty();
     }
@@ -52,8 +68,8 @@ public class RegionServiceImpl implements RegionService {
     public Optional<Region> delete(Long id) {
         Optional<Region> regionInstance = repository.findById(id);
         if (regionInstance.isPresent()) {
-            repository.delete(regionInstance.get());
-            return Optional.of(regionInstance.get());
+            regionInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(regionInstance.orElseThrow()));
         }
         return Optional.empty();
     }
