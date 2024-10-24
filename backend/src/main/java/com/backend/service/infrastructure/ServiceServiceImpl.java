@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.service.application.ServiceService;
 import com.backend.service.domain.Service;
+import com.backend.service.domain.ServiceDto;
+import com.backend.utils.enums.Status;
 
 @org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService {
@@ -23,8 +25,12 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     @Transactional
-    public Service save(Service service) {
-        return repository.save(service);
+    public Service save(ServiceDto service) {
+        Service serviceDb = new Service();
+        BeanUtils.copyProperties(service, serviceDb, service.getClass());
+        serviceDb.setStatus(Status.ENABLED);
+
+        return repository.save(serviceDb);
     }
 
     @Override
@@ -35,14 +41,13 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     @Transactional
-    public Optional<Service> update(Long id, Service service) {
-        Optional<Service> serviceInstance = this.findById(id);
+    public Optional<Service> update(Long id, ServiceDto service) {
+        Optional<Service> serviceInstance = repository.findById(id);
         if (serviceInstance.isPresent()) {
-            Service newService = serviceInstance.get();
-            BeanUtils.copyProperties(service, newService);
+            Service serviceDb = new Service();
+            BeanUtils.copyProperties(service, serviceDb, service.getClass());
 
-            repository.save(newService);
-            return Optional.of(newService);
+            return Optional.of(repository.save(serviceDb));
         }
         return Optional.empty();
     }
@@ -52,8 +57,8 @@ public class ServiceServiceImpl implements ServiceService {
     public Optional<Service> delete(Long id) {
         Optional<Service> serviceInstance = this.findById(id);
         if (serviceInstance.isPresent()) {
-            repository.delete(serviceInstance.get());
-            return Optional.of(serviceInstance.get());
+            serviceInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(serviceInstance.orElseThrow()));
         }
         return Optional.empty();
     }
