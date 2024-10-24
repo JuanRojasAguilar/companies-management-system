@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.detailsorderwork.application.DetailsOrderWorkService;
 import com.backend.detailsorderwork.domain.DetailsOrderWork;
+import com.backend.detailsorderwork.domain.DetailsOrderWorkDto;
 
 import jakarta.validation.Valid;
 
@@ -48,7 +49,7 @@ public class DetailsOrderWorkController{
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody DetailsOrderWork detailsOrderWork, BindingResult result, @PathVariable Long id ) {
+	public ResponseEntity<?> update(@Valid @RequestBody DetailsOrderWorkDto detailsOrderWork, BindingResult result, @PathVariable Long id ) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
@@ -61,7 +62,7 @@ public class DetailsOrderWorkController{
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody DetailsOrderWork orderWork, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody DetailsOrderWorkDto orderWork, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}

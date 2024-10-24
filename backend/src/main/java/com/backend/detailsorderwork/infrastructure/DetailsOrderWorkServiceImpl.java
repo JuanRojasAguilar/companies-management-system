@@ -13,6 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.detailsorderwork.application.DetailsOrderWorkService;
 import com.backend.detailsorderwork.domain.DetailsOrderWork;
+import com.backend.detailsorderwork.domain.DetailsOrderWorkDto;
+import com.backend.orderwork.domain.OrderWork;
+import com.backend.statusorderservice.domain.StatusOrderService;
+import com.backend.utils.enums.Status;
 
 @Service
 public class DetailsOrderWorkServiceImpl implements DetailsOrderWorkService {
@@ -20,8 +24,24 @@ public class DetailsOrderWorkServiceImpl implements DetailsOrderWorkService {
 	private DetailsOrderWorkRepository repository;
 
 	@Override
-	public DetailsOrderWork save(DetailsOrderWork orderWork) {
-		return repository.save(orderWork);
+	public DetailsOrderWork save(DetailsOrderWorkDto detailsOrderWork) {
+		DetailsOrderWork detailsOrderWorkDb = new DetailsOrderWork();
+			BeanUtils.copyProperties(detailsOrderWork, detailsOrderWorkDb, detailsOrderWork.getClass());
+			detailsOrderWorkDb.setStatus(Status.ENABLED);
+
+			OrderWork orderWork = new OrderWork();
+			orderWork.setId(detailsOrderWork.getOrderWorkId());
+			detailsOrderWorkDb.setOrderWork(orderWork);
+
+			com.backend.service.domain.Service service = new com.backend.service.domain.Service();
+			service.setId(detailsOrderWork.getServiceAssignedId());
+			detailsOrderWorkDb.setServiceAssigned(service);
+
+			StatusOrderService statusOrderService = new StatusOrderService();
+			statusOrderService.setId(detailsOrderWork.getStatusOrderServiceId());
+			detailsOrderWorkDb.setStatusOrderService(statusOrderService);
+
+			return repository.save(detailsOrderWorkDb);
 	}
 
 	@Override
@@ -38,22 +58,34 @@ public class DetailsOrderWorkServiceImpl implements DetailsOrderWorkService {
 
 	@Override
 	public Optional<DetailsOrderWork> delete(Long id) {
-		try {
-			DetailsOrderWork detailsOrderWorkInstance = this.findById(id).get();
-			repository.delete(detailsOrderWorkInstance);
-			return Optional.of(detailsOrderWorkInstance);
-		} catch (Exception e) {
-			return Optional.empty();
+		Optional<DetailsOrderWork> detailsOrderWork = this.findById(id);
+		if (detailsOrderWork.isPresent()) {
+			detailsOrderWork.orElseThrow().setStatus(Status.DISABLED);
+			return Optional.of(repository.save(detailsOrderWork.orElseThrow()));
 		}
+	    	return Optional.empty();
 	}
 
 	@Override
-	public Optional<DetailsOrderWork> update(Long id, DetailsOrderWork orderWork) {
+	public Optional<DetailsOrderWork> update(Long id, DetailsOrderWorkDto detailsOrderWork) {
 		Optional<DetailsOrderWork> detailsOrderWorkInstance = repository.findById(id);
 		if (detailsOrderWorkInstance.isPresent()) {
-			DetailsOrderWork newDetailsOrderWork = detailsOrderWorkInstance.get();
-			BeanUtils.copyProperties(orderWork, newDetailsOrderWork);
-			return Optional.of(repository.save(newDetailsOrderWork));
+			DetailsOrderWork detailsOrderWorkDb = new DetailsOrderWork();
+			BeanUtils.copyProperties(detailsOrderWork, detailsOrderWorkDb, detailsOrderWork.getClass());
+
+			OrderWork orderWork = new OrderWork();
+			orderWork.setId(detailsOrderWork.getOrderWorkId());
+			detailsOrderWorkDb.setOrderWork(orderWork);
+
+			com.backend.service.domain.Service service = new com.backend.service.domain.Service();
+			service.setId(detailsOrderWork.getServiceAssignedId());
+			detailsOrderWorkDb.setServiceAssigned(service);
+
+			StatusOrderService statusOrderService = new StatusOrderService();
+			statusOrderService.setId(detailsOrderWork.getStatusOrderServiceId());
+			detailsOrderWorkDb.setStatusOrderService(statusOrderService);
+
+			return Optional.of(repository.save(detailsOrderWorkDb));
 		}
 		return Optional.empty();
 	}

@@ -30,7 +30,7 @@ public class StatusOrderService {
 	@Column(length = 20)
 	private String name;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "statusOrderServiceId") 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "statusOrderService") 
 	@JsonIgnore
 	private List<DetailsOrderWork> detailsOrderWorks;
 

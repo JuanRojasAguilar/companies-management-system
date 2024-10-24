@@ -62,10 +62,10 @@ public class OrderWork {
 	private OrderService orderServiceId;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orderWorkId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orderWork")
 	private List<DetailsOrderWork> detailOrderWorkList;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orderWorkId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orderWork")
 	private List<ServiceApproval> serviceApprovalList;
 }
