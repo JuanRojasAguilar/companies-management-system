@@ -30,9 +30,9 @@ public class ServiceReagentDto implements Serializable {
     @Min(value = 0, message = "stockMin cannot be negative")
     private Long stockMin;
 
-    @Max(value = 1)
+    @Min(value = 1)
     private Long reagentId;
 
-    @Max(value = 1)
+    @Min(value = 1)
     private Long serviceId;
 }

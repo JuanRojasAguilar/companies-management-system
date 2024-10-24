@@ -10,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.backend.telephonetype.domain.TelephoneType;
+import com.backend.user.domain.User;
 import com.backend.usertelephone.application.UserTelephoneService;
 import com.backend.usertelephone.domain.UserTelephone;
+import com.backend.usertelephone.domain.UserTelephoneDto;
+import com.backend.utils.enums.Status;
 
 @Service
 public class UserTelephoneServiceImpl implements UserTelephoneService {
@@ -33,18 +37,39 @@ public class UserTelephoneServiceImpl implements UserTelephoneService {
 
   @Override
   @Transactional
-  public UserTelephone save(UserTelephone userTelephone) {
-    return repository.save(userTelephone);
+  public UserTelephone save(UserTelephoneDto userTelephone) {
+    UserTelephone userTelephoneDb = new UserTelephone();
+    BeanUtils.copyProperties(userTelephone, userTelephoneDb, userTelephone.getClass());
+    userTelephoneDb.setStatus(Status.ENABLED);
+
+    User user = new User();
+    user.setId(userTelephone.getUserId());
+    userTelephoneDb.setUser(user);
+
+    TelephoneType telephoneType = new TelephoneType();
+    telephoneType.setId(userTelephone.getTelephoneTypeId());
+    userTelephoneDb.setTelephoneType(telephoneType);
+
+    return repository.save(userTelephoneDb);
   }
 
   @Override
   @Transactional
-  public Optional<UserTelephone> update(Long id, UserTelephone userTelephone) {
+  public Optional<UserTelephone> update(Long id, UserTelephoneDto userTelephone) {
     Optional<UserTelephone> telephoneInstance = repository.findById(id);
     if (telephoneInstance.isPresent()) {
-      UserTelephone newTelephone = telephoneInstance.get();
-      BeanUtils.copyProperties(userTelephone, newTelephone);
-      return Optional.of(repository.save(newTelephone));
+      UserTelephone userTelephoneDb = new UserTelephone();
+      BeanUtils.copyProperties(userTelephone, userTelephoneDb, userTelephone.getClass());
+
+      User user = new User();
+      user.setId(userTelephone.getUserId());
+      userTelephoneDb.setUser(user);
+
+      TelephoneType telephoneType = new TelephoneType();
+      telephoneType.setId(userTelephone.getTelephoneTypeId());
+      userTelephoneDb.setTelephoneType(telephoneType);
+
+      return Optional.of(repository.save(userTelephoneDb));
     }
     return Optional.empty();
   }
@@ -52,16 +77,12 @@ public class UserTelephoneServiceImpl implements UserTelephoneService {
   @Override
   @Transactional
   public Optional<UserTelephone> delete(Long id) {
-    Optional<UserTelephone> telephoneInstance = repository.findById(id);
-    if (telephoneInstance.isPresent()) {
-      try {
-        repository.delete(telephoneInstance.get());
-        return Optional.of(telephoneInstance.get());
-      } catch (IllegalArgumentException e) {
-        return Optional.empty();
-      }
-    }
-    return Optional.empty();
+    Optional<UserTelephone> userTelefoneInstance = this.findById(id);
+        if (userTelefoneInstance.isPresent()) {
+            userTelefoneInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(userTelefoneInstance.orElseThrow()));
+        }
+            return Optional.empty();
   }
 
 }

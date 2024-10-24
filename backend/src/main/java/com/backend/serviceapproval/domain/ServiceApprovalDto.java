@@ -3,6 +3,7 @@ package com.backend.serviceapproval.domain;
 import java.io.Serializable;
 
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -25,6 +26,6 @@ public class ServiceApprovalDto implements Serializable{
     @Size(max = 40)
     private String clientId;
 
-    @Max(value = 1)
+    @Min(value = 1)
     private Long statusApprovalId;
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.usertelephone.application.UserTelephoneService;
 import com.backend.usertelephone.domain.UserTelephone;
+import com.backend.usertelephone.domain.UserTelephoneDto;
 
 import jakarta.validation.Valid;
 
@@ -43,14 +44,14 @@ public class UserTelephoneController {
   }
 
   @PostMapping
-  public ResponseEntity<?> save(@Valid @RequestBody UserTelephone userTelephone, BindingResult bindingResult) {
+  public ResponseEntity<?> save(@Valid @RequestBody UserTelephoneDto userTelephone, BindingResult bindingResult) {
     return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : ResponseEntity.status(HttpStatus.CREATED).body(service.save(userTelephone));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody UserTelephone userTelephone, BindingResult bindingResult) {
+  public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody UserTelephoneDto userTelephone, BindingResult bindingResult) {
     return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : service.update(id, userTelephone)
