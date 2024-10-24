@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.usertype.application.UserTypeService;
 import com.backend.usertype.domain.UserType;
+import com.backend.usertype.domain.UserTypeDto;
 
 import jakarta.validation.Valid;
 
@@ -44,7 +45,7 @@ public class UserTypeController {
 
   @PutMapping("/{id}")
   @Transactional
-  public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody UserType userType,
+  public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody UserTypeDto userType,
       BindingResult bindingResult) {
     return bindingResult.hasFieldErrors()
         ? validation(bindingResult)
@@ -55,7 +56,7 @@ public class UserTypeController {
 
   @PostMapping
   @Transactional
-  public ResponseEntity<?> save(@Valid @RequestBody UserType userType, BindingResult bindingResult) {
+  public ResponseEntity<?> save(@Valid @RequestBody UserTypeDto userType, BindingResult bindingResult) {
     return bindingResult.hasFieldErrors()
         ? validation(bindingResult)
         : ResponseEntity.status(HttpStatus.CREATED).body(service.save(userType));

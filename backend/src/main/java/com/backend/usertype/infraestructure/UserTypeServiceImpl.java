@@ -12,8 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.usertype.application.UserTypeService;
 import com.backend.usertype.domain.UserType;
+import com.backend.usertype.domain.UserTypeDto;
+import com.backend.utils.enums.Status;
 
-import jakarta.validation.OverridesAttribute;
 
 @Service
 public class UserTypeServiceImpl implements UserTypeService {
@@ -41,18 +42,24 @@ public class UserTypeServiceImpl implements UserTypeService {
 
     @Override
     @Transactional
-    public UserType save(UserType userType) {
-        return repository.save(userType);
+    public UserType save(UserTypeDto userType) {
+        UserType userTypeDb = new UserType();
+        BeanUtils.copyProperties(userType, userTypeDb, userType.getClass());
+        userTypeDb.setStatus(Status.ENABLED);
+
+        return repository.save(userTypeDb);
+
     }
 
     @Override
     @Transactional
-    public Optional<UserType> update(Long id, UserType userType) {
+    public Optional<UserType> update(Long id, UserTypeDto userType) {
         Optional<UserType> userTypeInstance = repository.findById(id);
         if (userTypeInstance.isPresent()) {
-            UserType newUserType = userTypeInstance.get();
-            BeanUtils.copyProperties(userType, newUserType);
-            return Optional.of(repository.save(newUserType));
+            UserType userTypeDb = new UserType();
+            BeanUtils.copyProperties(userType, userTypeDb, userType.getClass());
+
+            return Optional.of(repository.save(userTypeDb));
         }
         return Optional.empty();
     }
@@ -62,8 +69,8 @@ public class UserTypeServiceImpl implements UserTypeService {
     public Optional<UserType> delete(Long id) {
         Optional<UserType> userTypeInstance = repository.findById(id);
         if (userTypeInstance.isPresent()) {
-            repository.delete(userTypeInstance.get());
-            return Optional.of(userTypeInstance.get());
+            userTypeInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(userTypeInstance.orElseThrow()));
         }
         return Optional.empty();
     }
