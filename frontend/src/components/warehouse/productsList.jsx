@@ -8,7 +8,7 @@ import {
   TableCell,
   Button,
   TableColumn,
-  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
+  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Text
 } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 
@@ -48,7 +48,8 @@ export default function ProductsList() {
 
   return (
     <div className="space-y-4 h-full p-4">
-      <Table aria-label="Products Table" className="grow [&>div]:grow [&>div]:mb-2">
+	  <h1 className="text-lg text-center">Products List</h1>
+	  <Table aria-label="Products Table" className="grow [&>div]:grow [&>div]:mb-2">
         <TableHeader>
           {columns.map((column) => (
             <TableColumn className="text-center" key={column}>
@@ -75,32 +76,32 @@ export default function ProductsList() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Product Details</ModalHeader>
               <ModalBody>
-			    <p> 
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
-                  dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. 
-                  Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. 
-                  Et mollit incididunt nisi consectetur esse laborum eiusmod pariatur 
-                  proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
-                </p>
+			    <Table aria-label="Product Details Table" className="grow [&>div]:grow [&>div]:mb-2">
+			      <TableHeader>
+			        <TableColumn className="text-center">Attribute</TableColumn>
+			        <TableColumn className="text-center">Value</TableColumn>
+			      </TableHeader>
+			      <TableBody>
+			        <TableRow>
+			          <TableCell className="text-center">Product Name</TableCell>
+			          <TableCell className="text-center">{products[0]?.name}</TableCell>
+			        </TableRow>
+			        <TableRow>
+			          <TableCell className="text-center">Value</TableCell>
+			          <TableCell className="text-center">{products[0]?.value}</TableCell>
+			        </TableRow>
+			        <TableRow>
+			          <TableCell className="text-center">Current Stock</TableCell>
+			          <TableCell className="text-center">{products[0]?.currStock}</TableCell>
+			        </TableRow>
+			      </TableBody>
+			    </Table>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
                 </Button>
               </ModalFooter>
             </>
