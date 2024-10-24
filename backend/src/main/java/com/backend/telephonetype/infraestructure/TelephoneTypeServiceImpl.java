@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.telephonetype.application.TelephoneTypeService;
 import com.backend.telephonetype.domain.TelephoneType;
+import com.backend.telephonetype.domain.TelephoneTypeDto;
 
 @Service
 public class TelephoneTypeServiceImpl implements TelephoneTypeService {
@@ -45,7 +46,7 @@ public class TelephoneTypeServiceImpl implements TelephoneTypeService {
 
     @Override
     @Transactional
-    public TelephoneType save(TelephoneType telephoneType) {
+    public TelephoneType save(TelephoneTypeDto telephoneType) {
         return repository.save(telephoneType);
     }
 
