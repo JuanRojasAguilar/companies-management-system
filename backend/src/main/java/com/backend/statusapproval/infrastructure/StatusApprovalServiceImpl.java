@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.statusapproval.application.StatusApprovalService;
 import com.backend.statusapproval.domain.StatusApproval;
+import com.backend.statusapproval.domain.StatusApprovalDto;
+import com.backend.utils.enums.Status;
 
 @Service
 public class StatusApprovalServiceImpl implements StatusApprovalService {
@@ -20,8 +22,12 @@ public class StatusApprovalServiceImpl implements StatusApprovalService {
 	private StatusApprovalRepository repository;
 
 	@Override
-	public StatusApproval save(StatusApproval statusApproval) {
-		return repository.save(statusApproval);
+	public StatusApproval save(StatusApprovalDto statusApproval) {
+		StatusApproval statusApprovalDb = new StatusApproval();
+		BeanUtils.copyProperties(statusApproval, statusApprovalDb, statusApproval.getClass());
+		statusApprovalDb.setStatus(Status.ENABLED);
+		
+		return repository.save(statusApprovalDb);
 	}
 
 	@Override
@@ -48,13 +54,12 @@ public class StatusApprovalServiceImpl implements StatusApprovalService {
 	}
 
 	@Override
-	public Optional<StatusApproval> update(Long id, StatusApproval statusApproval) {
-		Optional<StatusApproval> statusApprovalInstance = repository.findById(id);
-		if (statusApprovalInstance.isPresent()) {
-			StatusApproval newStatusApproval = statusApprovalInstance.get();
-			BeanUtils.copyProperties(statusApproval, newStatusApproval);
-			return Optional.of(repository.save(newStatusApproval));
-		}
-		return Optional.empty();
+	public Optional<StatusApproval> update(Long id, StatusApprovalDto statusApproval) {
+		Optional<StatusApproval> statusApprovalInstance = this.findById(id);
+        if (statusApprovalInstance.isPresent()) {
+            statusApprovalInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(statusApprovalInstance.orElseThrow()));
+        }
+            return Optional.empty();
 	}
 }
