@@ -7,12 +7,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.backend.city.domain.City;
 import com.backend.user.domain.User;
+import com.backend.utils.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.backend.company.domain.Company;
 import com.backend.companyservice.domain.CompanyService;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,13 +24,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "franchises")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -39,15 +45,9 @@ public class Franchise {
     private Long id;
 
     @Column(length = 50)
-    @Size(max = 50, message = "the name is too large")
-    @NotNull(message = "name shouldn't be null")
-    @NotBlank(message = "the field is blank")
     private String name;
 
     @Column(length = 21)
-    @Size(max = 21, message = "the nit is too large")
-    @NotNull(message = "nit shouldn't be null")
-    @NotBlank(message = "the field is blank")
     private String nit;
 
     @ManyToOne
@@ -60,7 +60,7 @@ public class Franchise {
 
     @Column(name = "founding_date")
     @DateTimeFormat(pattern = "dd-mm-yyyy")
-    private Date founding_date;
+    private Date foundingDate;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "franchise")
@@ -69,4 +69,7 @@ public class Franchise {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "franchise")
 	private List<CompanyService> companyServiceId;
+
+    @Enumerated(EnumType.STRING)
+    Status status;
 }

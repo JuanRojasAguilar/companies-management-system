@@ -8,8 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.backend.city.domain.City;
+import com.backend.company.domain.Company;
 import com.backend.franchise.application.FranchiseService;
 import com.backend.franchise.domain.Franchise;
+import com.backend.franchise.domain.FranchiseDto;
+import com.backend.utils.enums.Status;
 
 @Service
 public class FranshiceServiceImpl implements FranchiseService {
@@ -30,20 +34,41 @@ public class FranshiceServiceImpl implements FranchiseService {
 
     @Override
     @Transactional
-    public Optional<Franchise> update(Long id, Franchise franchise) {
+    public Optional<Franchise> update(Long id, FranchiseDto franchise) {
         Optional<Franchise> franchiseInstance = repository.findById(id);
         if (franchiseInstance.isPresent()) {
-            Franchise newFranchise = franchiseInstance.get();
-            BeanUtils.copyProperties(franchise, newFranchise);
-            return Optional.of(repository.save(newFranchise));
+            Franchise franchiseDb = new Franchise(); 
+            BeanUtils.copyProperties(franchise, franchiseDb, franchise.getClass());
+
+            City city = new City();
+            city.setId(franchise.getCityId());
+            franchiseDb.setCity(city);
+
+            Company company = new Company();
+            company.setId(franchise.getCompanyId());
+            franchiseDb.setCompany(company);
+
+            return Optional.of(repository.save(franchiseDb));
         }
         return Optional.empty();
     }
 
     @Override
     @Transactional
-    public Franchise save(Franchise franchise) {
-        return repository.save(franchise);
+    public Franchise save(FranchiseDto franchise) {
+        Franchise franchiseDb = new Franchise(); 
+        BeanUtils.copyProperties(franchise, franchiseDb, franchise.getClass());
+        franchiseDb.setStatus(Status.ENABLED);
+
+        City city = new City();
+        city.setId(franchise.getCityId());
+        franchiseDb.setCity(city);
+
+        Company company = new Company();
+        company.setId(franchise.getCompanyId());
+        franchiseDb.setCompany(company);
+
+        return repository.save(franchiseDb);
     }
 
     @Override
@@ -51,8 +76,8 @@ public class FranshiceServiceImpl implements FranchiseService {
     public Optional<Franchise> delete(Long id) {
         Optional<Franchise> franchiseInstance = repository.findById(id);
         if (franchiseInstance.isPresent()) {
-            repository.delete(franchiseInstance.get());
-            return Optional.of(franchiseInstance).orElseThrow();
+            franchiseInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(franchiseInstance.orElseThrow()));
 	    }
         return Optional.empty();   
     }
