@@ -52,13 +52,12 @@ public class OrderWorkServiceImpl implements OrderWorkService {
 
 	@Override
 	public Optional<OrderWork> delete(Long id) {
-		try {
-			OrderWork orderWorkInstance = this.findById(id).get();
-			repository.delete(orderWorkInstance);
-			return Optional.of(orderWorkInstance);
-		} catch (Exception e) {
-			return Optional.empty();
-		}
+		Optional<OrderWork> orderWorkInstance = this.findById(id);
+        if (orderWorkInstance.isPresent()) {
+            orderWorkInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(orderWorkInstance.orElseThrow()));
+        }
+            return Optional.empty();
 	}
 
 	@Override

@@ -57,11 +57,12 @@ public class OrderStateImpl implements OrderStateService {
     @Transactional
     @Override
     public Optional<OrderState> delete(Long id) {
-        Optional<OrderState> orderState = orderStateRepository.findById(id);
-        orderState.ifPresent(orderStateDb -> {
-           orderStateRepository.delete(orderStateDb);
-        });
-        return orderState;
+        Optional<OrderState> orderState = this.findById(id);
+        if (orderState.isPresent()) {
+            orderState.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(orderStateRepository.save(orderState.orElseThrow()));
+        }
+            return Optional.empty();
     }
     
 }
