@@ -1,16 +1,16 @@
 'use client'
 
-import AddProduct from "@/components/warehouse/addProduct"
+import ApproveClientCart from "@/components/warehouse/approveClientCart"
 
 const styles = {
     mainDiv : "w-screen h-screen"
 }
 
-export default function AddProductPage() {
+export default function ClientCartPage() {
     return (
         <main className={styles.mainDiv}>
             <section>
-                <AddProduct/>
+                <ApproveClientCart/>
             </section>
         </main>
     )    

@@ -6,7 +6,7 @@ const styles = {
     mainDiv : "w-screen h-screen"
 }
 
-export default function CustomerPage() {
+export default function ProductsPage() {
     return (
         <main className={styles.mainDiv}>
             <section>

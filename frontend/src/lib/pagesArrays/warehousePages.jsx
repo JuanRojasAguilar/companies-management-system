@@ -1,4 +1,5 @@
 export const warehousePages = [
   "products",
-  "add-product"
+  "add-product",
+  "approve-sales"
 ]
