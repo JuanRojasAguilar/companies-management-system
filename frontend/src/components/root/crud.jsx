@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Modal, Input, Button, Table, Row, Col } from '@nextui-org/react';
+import { Modal, Input, Button, Table, Row, ModalBody, ModalFooter, ModalHeader, TableRow, TableBody, TableCell, TableColumn, TableHeader } from '@nextui-org/react';
 
-export default function CRUDPage() {
+export default function CRUDPage({ entity }) {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -10,21 +10,46 @@ export default function CRUDPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [search, setSearch] = useState("");
 
+  const differentEndpoints = [
+    ["order/details", "order-details"],
+    ["work/orders/details", "work-orders-details"],
+    ["emails/types", "emails-types"],
+    ["users/emails", "users-emails"],
+    ["orders/services", "orders-services"],
+    ["orders/states", "orders-states"],
+    ["works/orders", "works-orders"],
+    ["services/approvals", "services-approvals"],
+    ["service-reagents", "service-reagents"],
+    ["telephones/types", "telephones-types"],
+    ["user-reagents", "user-reagents"],
+    ["users/types", "users-types"],
+    ["users/telephones", "users-telephones"]
+  ];
+
+  const convertEndpoint = () => {
+      const match = differentEndpoints.find(([original, modified]) => modified == entity);
+      return( match ? match[0] : entity);
+  };
+
   // Fetch data on mount
   useEffect(() => {
-    axios.get('/api/items') // Replace with your actual API endpoint
-      .then(response => {
-        setData(response.data);
-        setFilteredData(response.data);
-      })
-      .catch(error => console.error("Error fetching data:", error));
-  }, []);
+	const fixedEndpoint = convertEndpoint();
+    if (fixedEndpoint) {
+      axios.get(`/api/${fixedEndpoint}`)
+        .then(response => {
+          console.log(response.data); // Log response for debugging
+          setData(response.data);
+          setFilteredData(response.data);
+        })
+        .catch(error => console.error("Error fetching data:", error));
+    }
+  }, [entity]);
 
   // Filter data by search
   useEffect(() => {
     setFilteredData(
-      data.filter(item => 
-        item.name.toLowerCase().includes(search.toLowerCase())
+      data.filter(item =>
+        item.name?.toLowerCase().includes(search.toLowerCase()) // Use optional chaining
       )
     );
   }, [search, data]);
@@ -37,9 +62,9 @@ export default function CRUDPage() {
 
   // Handle edit submission
   const handleEditSubmit = () => {
-    axios.put(`/api/items/${selectedItem.id}`, selectedItem)
+    if (!selectedItem) return; // Check if selectedItem is defined
+    axios.put(`/api/${entity}/${selectedItem.id}`, selectedItem)
       .then(response => {
-        // Update the data state with the edited item
         setData(prevData =>
           prevData.map(item =>
             item.id === selectedItem.id ? selectedItem : item
@@ -52,9 +77,9 @@ export default function CRUDPage() {
 
   // Handle delete confirmation
   const handleDeleteConfirm = () => {
-    axios.delete(`/api/items/${selectedItem.id}`)
+    if (!selectedItem) return; // Check if selectedItem is defined
+    axios.delete(`/api/${entity}/${selectedItem.id}`)
       .then(response => {
-        // Remove the item from the data state
         setData(prevData => prevData.filter(item => item.id !== selectedItem.id));
         setShowDeleteModal(false);
       })
@@ -63,35 +88,35 @@ export default function CRUDPage() {
 
   return (
     <div className="container">
-      <h1>CRUD Table</h1>
+      <h1>{entity} CRUD Table</h1>
       
       <Input 
         type="text"
         clearable
         underlined
-        placeholder="Search by name..." 
+        placeholder={`Search by name in ${entity}...`} 
         value={search}
         onChange={e => setSearch(e.target.value)}
         css={{ marginBottom: '20px', width: '250px' }}
       />
 
-      <Table aria-label="Example CRUD Table">
-        <Table.Header>
-          <Table.Column>Name</Table.Column>
-          <Table.Column>Description</Table.Column>
-          <Table.Column>Action</Table.Column>
-        </Table.Header>
-        <Table.Body>
+      <Table aria-label={`${entity} Table`}>
+        <TableHeader>
+          <TableColumn>Name</TableColumn>
+          <TableColumn>Description</TableColumn>
+          <TableColumn>Action</TableColumn>
+        </TableHeader>
+        <TableBody>
           {filteredData.map(item => (
-            <Table.Row key={item.id}>
-              <Table.Cell>{item.name}</Table.Cell>
-              <Table.Cell>{item.description}</Table.Cell>
-              <Table.Cell>
+            <TableRow key={item.id}>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.description}</TableCell>
+              <TableCell>
                 <Button auto onClick={() => handleSelectItem(item)}>Select</Button>
-              </Table.Cell>
-            </Table.Row>
+              </TableCell>
+            </TableRow>
           ))}
-        </Table.Body>
+        </TableBody>
       </Table>
 
       {/* Edit Modal */}
@@ -100,10 +125,10 @@ export default function CRUDPage() {
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
       >
-        <Modal.Header>
-          <h2>Edit Item</h2>
-        </Modal.Header>
-        <Modal.Body>
+        <ModalHeader>
+          <h2>Edit {entity}</h2>
+        </ModalHeader>
+        <ModalBody>
           <Input
             label="Name"
             clearable
@@ -118,15 +143,15 @@ export default function CRUDPage() {
             value={selectedItem?.description || ''}
             onChange={e => setSelectedItem({ ...selectedItem, description: e.target.value })}
           />
-        </Modal.Body>
-        <Modal.Footer>
+        </ModalBody>
+        <ModalFooter>
           <Button auto onClick={handleEditSubmit}>
             Save Changes
           </Button>
           <Button auto flat color="error" onClick={() => setShowEditModal(false)}>
             Cancel
           </Button>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
 
       {/* Delete Confirmation Modal */}
@@ -135,20 +160,20 @@ export default function CRUDPage() {
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
       >
-        <Modal.Header>
+        <ModalHeader>
           <h2>Confirm Deletion</h2>
-        </Modal.Header>
-        <Modal.Body>
-          <p>Are you sure you want to delete this item?</p>
-        </Modal.Body>
-        <Modal.Footer>
+        </ModalHeader>
+        <ModalBody>
+          <p>Are you sure you want to delete this {entity}?</p>
+        </ModalBody>
+        <ModalFooter>
           <Button auto flat color="error" onClick={handleDeleteConfirm}>
             Confirm
           </Button>
           <Button auto flat onClick={() => setShowDeleteModal(false)}>
             Cancel
           </Button>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
 
       {/* If an item is selected, show Edit/Delete buttons */}
@@ -161,3 +186,4 @@ export default function CRUDPage() {
     </div>
   );
 }
+

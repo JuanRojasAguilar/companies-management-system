@@ -1,3 +1,26 @@
 export const rootPages = [
-	"test"
+    "cities",
+    "companies",
+    "company-services",
+    "countries",
+    "order-details",
+    "work-orders-details",
+    "emails-types",
+    "users-emails",
+    "franchises",
+    "orders-services",
+    "orders-states",
+    "works-orders",
+    "reagents",
+    "regions",
+    "services-approvals",
+    "services",
+    "service-reagents",
+    "status-approval",
+    "status-order-services",
+    "telephones-types",
+    "user-reagents",
+    "users-types",
+    "users",
+    "users-telephones"
 ]

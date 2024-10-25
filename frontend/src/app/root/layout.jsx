@@ -7,7 +7,7 @@ const styles = {
     currentPage: "w-full h-full",
 }
 
-export default function warehouseLayout({ children }) {
+export default function providerLayout({ children }) {
     return (
         <NextUIProvider>
             <div className={styles.mainDiv}>
