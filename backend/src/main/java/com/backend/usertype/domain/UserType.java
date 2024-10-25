@@ -37,6 +37,11 @@ public class UserType {
     private Status status;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userTypeId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userType")
 	private List<User> userList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    private List<GrantedPermission> permissions;
+    
 }

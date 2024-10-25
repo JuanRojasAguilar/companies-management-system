@@ -5,22 +5,33 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.backend.user.application.UserService;
 import com.backend.user.domain.User;
+import com.backend.user.domain.dto.UserDto;
+import com.backend.usertype.application.UserTypeService;
 import com.backend.usertype.domain.UserType;
-import com.backend.usertype.infraestructure.UserTypeRepository;
+import com.backend.utils.exceptions.InvalidPasswordException;
+import com.backend.utils.exceptions.ObjectNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-  private final UserRepository repository;
+  @Autowired
+  UserRepository repository;
 
-  private final UserTypeRepository userTypeRepository;
+  @Autowired
+  UserTypeService userTypeRepository;
+
+  @Autowired
+  PasswordEncoder passwordEncoder;
 
   @Override
   @Transactional(readOnly = true)
@@ -34,19 +45,13 @@ public class UserServiceImpl implements UserService {
     UserType employeeType = userTypeRepository.findByName("EMPLOYEES").get();
     return repository
         .findAll().stream()
-        .filter(user -> user.getUserTypeId() == employeeType).collect(Collectors.toList());
+        .filter(user -> user.getUserType() == employeeType).collect(Collectors.toList());
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<User> findById(String id) {
     return repository.findById(id);
-  }
-
-  @Override
-  @Transactional
-  public User save(User user) {
-    return repository.save(user);
   }
 
   @Override
@@ -70,5 +75,34 @@ public class UserServiceImpl implements UserService {
       return Optional.of(userInstance.get());
     }
     return Optional.empty();
+  }
+
+  @Override
+  public User save(UserDto newUser) {
+    validatePassword(newUser);
+
+    User user = new User();
+    BeanUtils.copyProperties(newUser, user, newUser.getClass());
+    UserType defaultRole = userTypeRepository.findDefaultRole()
+                    .orElseThrow(() -> new ObjectNotFoundException("Role not found. Default Role"));
+    user.setUserType(defaultRole);
+
+    return repository.save(user);
+  }
+
+  @Override
+  public Optional<User> findOneByUsername(String username) {
+    return repository.findByUsername(username);
+  }
+
+  private void validatePassword(UserDto dto) {
+
+    if(!StringUtils.hasText(dto.getPassword()) || !StringUtils.hasText(dto.getRepeatedPassword())){
+        throw new InvalidPasswordException("Passwords don't match");
+    }
+
+    if(!dto.getPassword().equals(dto.getRepeatedPassword())){
+        throw new InvalidPasswordException("Passwords don't match");
+    }
   }
 }

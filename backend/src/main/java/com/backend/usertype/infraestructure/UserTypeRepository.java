@@ -9,5 +9,5 @@ import com.backend.usertype.domain.UserType;
 
 @Repository
 public interface UserTypeRepository extends JpaRepository<UserType, Long> {
-    Optional<UserType> findByName(String name);
+    Optional<UserType> findByName(String defaultRole);
 }

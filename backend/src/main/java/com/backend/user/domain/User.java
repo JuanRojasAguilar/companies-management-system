@@ -1,7 +1,11 @@
 package com.backend.user.domain;
 
 import java.sql.Date;
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.backend.emailuser.domain.EmailUser;
 import com.backend.franchise.domain.Franchise;
@@ -25,32 +29,37 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "\"user\"")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements UserDetails {
 
     @Id
     @EqualsAndHashCode.Include
     @Column(name = "user_id", unique = true, length = 40)
     private String id;
 
-    @Column(length = 50)
     private String name;
 
-    @NonNull
-    @EqualsAndHashCode.Include
+    private String lastname;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(length = 500, nullable = false)
     private String password;
 
-    @Column(length = 50, name = "last_name")
-    private String lastName;
+    private String repeatedPassword;
+
+    @ManyToOne
+    @JoinColumn(name = "user_type_id")
+    private UserType userType;
 
     @Column(name = "register_date", updatable = false, insertable = false)
     private Date registerDate;
@@ -58,10 +67,6 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
-
-	@ManyToOne
-	@JoinColumn(name = "user_type_id")
-	private UserType userTypeId;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client") 
@@ -86,4 +91,10 @@ public class User {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<UserReagent> userReagents;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+    }
 }

@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.user.application.UserService;
+import com.backend.user.application.auth.AuthenticationService;
 import com.backend.user.domain.User;
+import com.backend.user.domain.dto.UserDto;
 
 import jakarta.validation.Valid;
 
@@ -28,6 +30,8 @@ import jakarta.validation.Valid;
 public class UserController {
   @Autowired
   private UserService service;
+
+  @Autowired AuthenticationService authenticationService;
 
   @GetMapping
   public List<User> findAll() {
@@ -57,10 +61,10 @@ public class UserController {
 
   @PostMapping
   @Transactional
-  public ResponseEntity<?> save(@Valid @RequestBody User user, BindingResult bindingResult) {
+  public ResponseEntity<?> save(@Valid @RequestBody UserDto user, BindingResult bindingResult) {
     return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
-            : ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
+            : ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.registerOneCustomer(user));
   }
 
   @DeleteMapping("/{id}")
