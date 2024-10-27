@@ -1,14 +1,22 @@
 package com.backend.user.domain;
 
 import java.sql.Date;
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.backend.emailuser.domain.EmailUser;
 import com.backend.franchise.domain.Franchise;
 import com.backend.orderservice.domain.OrderService;
 import com.backend.orderwork.domain.OrderWork;
+import com.backend.serviceapproval.domain.ServiceApproval;
+import com.backend.userreagent.domain.UserReagent;
 import com.backend.usertype.domain.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,36 +28,38 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "\"user\"")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements UserDetails {
 
     @Id
     @EqualsAndHashCode.Include
     @Column(name = "user_id", unique = true, length = 40)
     private String id;
 
-    @Column(length = 50)
     private String name;
 
-    @NonNull
-    @EqualsAndHashCode.Include
+    private String lastname;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(length = 500, nullable = false)
     private String password;
 
-    @Column(length = 50, name = "last_name")
-    private String lastName;
+    @ManyToOne
+    @JoinColumn(name = "user_type_id")
+    private UserType userType;
 
     @Column(name = "register_date", updatable = false, insertable = false)
     private Date registerDate;
@@ -58,16 +68,12 @@ public class User {
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
-	@ManyToOne
-	@JoinColumn(name = "user_type_id")
-	private UserType userTypeId;
-
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientId") 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client") 
     private List<OrderService> ordersServicesClient;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeId") 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee") 
     private List<OrderService> orderServicesEmployee;
 
     @JsonIgnore
@@ -75,6 +81,34 @@ public class User {
 	private EmailUser emailUser;
 
     @JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
 	private List<OrderWork> ordersWorks;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    private List<ServiceApproval> serviceApprovals;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<UserReagent> userReagents;
+
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(userType == null) return null;
+
+        if(userType.getPermissions() == null) return null;
+
+        List<SimpleGrantedAuthority> authorities = userType.getPermissions().stream()
+                .map(each -> each.getOperation().getName())
+                .map(each -> new SimpleGrantedAuthority(each))
+                //.map(each -> {
+                //    String permission = each.name();
+                //    return new SimpleGrantedAuthority(permission);
+                //})
+                .collect(Collectors.toList());
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.userType.getName()));
+        return authorities;
+    }
 }

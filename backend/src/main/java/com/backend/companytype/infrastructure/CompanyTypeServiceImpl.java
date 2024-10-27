@@ -31,7 +31,7 @@ public class CompanyTypeServiceImpl implements CompanyTypeService {
     @Transactional
     public CompanyType save(CompanyTypeDto companyType) {
         CompanyType companyTypeDb = new CompanyType();
-        BeanUtils.copyProperties(companyType, companyTypeDb, companyType.getClass());
+        companyTypeDb.setDescription(companyType.getDescription());
         companyTypeDb.setStatus(Status.ENABLED);
 
         return repository.save(companyTypeDb);

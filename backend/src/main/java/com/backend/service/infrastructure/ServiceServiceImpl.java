@@ -3,12 +3,13 @@ package com.backend.service.infrastructure;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.service.application.ServiceService;
 import com.backend.service.domain.Service;
+import com.backend.service.domain.ServiceDto;
+import com.backend.utils.enums.Status;
 
 @org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService {
@@ -23,8 +24,13 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     @Transactional
-    public Service save(Service service) {
-        return repository.save(service);
+    public Service save(ServiceDto service) {
+        Service serviceDb = new Service();
+        serviceDb.setName(service.getName());
+        serviceDb.setReagentNeeded(service.isReagentNeeded());
+        serviceDb.setStatus(Status.ENABLED);
+
+        return repository.save(serviceDb);
     }
 
     @Override
@@ -35,14 +41,14 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     @Transactional
-    public Optional<Service> update(Long id, Service service) {
-        Optional<Service> serviceInstance = this.findById(id);
+    public Optional<Service> update(Long id, ServiceDto service) {
+        Optional<Service> serviceInstance = repository.findById(id);
         if (serviceInstance.isPresent()) {
-            Service newService = serviceInstance.get();
-            BeanUtils.copyProperties(service, newService);
+            Service serviceDb = new Service();
+            serviceDb.setName(service.getName());
+            serviceDb.setReagentNeeded(service.isReagentNeeded());
 
-            repository.save(newService);
-            return Optional.of(newService);
+            return Optional.of(repository.save(serviceDb));
         }
         return Optional.empty();
     }
@@ -52,8 +58,8 @@ public class ServiceServiceImpl implements ServiceService {
     public Optional<Service> delete(Long id) {
         Optional<Service> serviceInstance = this.findById(id);
         if (serviceInstance.isPresent()) {
-            repository.delete(serviceInstance.get());
-            return Optional.of(serviceInstance.get());
+            serviceInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(serviceInstance.orElseThrow()));
         }
         return Optional.empty();
     }

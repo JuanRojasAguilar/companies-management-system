@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.servicereagent.application.ServiceReagentService;
-import com.backend.servicereagent.domain.entity.ServiceReagent;
-import com.backend.servicereagent.domain.entity.ServiceReagentPk;
+import com.backend.servicereagent.domain.ServiceReagent;
+import com.backend.servicereagent.domain.ServiceReagentDto;
+import com.backend.servicereagent.domain.ServiceReagentPk;
 
 import jakarta.validation.Valid;
 
@@ -44,14 +45,14 @@ public class ServiceReagentController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody ServiceReagent serviceReagent, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody ServiceReagentDto serviceReagent, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : ResponseEntity.status(HttpStatus.CREATED).body(serviceReagentService.save(serviceReagent));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable ServiceReagentPk id, @Valid @RequestBody ServiceReagent serviceReagent, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable ServiceReagentPk id, @Valid @RequestBody ServiceReagentDto serviceReagent, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : serviceReagentService.update(id, serviceReagent)

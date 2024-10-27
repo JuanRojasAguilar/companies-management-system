@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.franchise.application.FranchiseService;
 import com.backend.franchise.domain.Franchise;
+import com.backend.franchise.domain.FranchiseDto;
 
 import jakarta.validation.Valid;
 
@@ -48,7 +49,7 @@ public class FranchiseController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody Franchise franchise, BindingResult result,
+	public ResponseEntity<?> update(@Valid @RequestBody FranchiseDto franchise, BindingResult result,
 			@PathVariable Long id) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
@@ -62,7 +63,7 @@ public class FranchiseController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody Franchise franchise, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody FranchiseDto franchise, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}

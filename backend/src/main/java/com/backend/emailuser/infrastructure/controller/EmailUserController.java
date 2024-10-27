@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.emailuser.application.EmailUserService;
 import com.backend.emailuser.domain.EmailUser;
+import com.backend.emailuser.domain.EmailUserDto;
 
 import jakarta.validation.Valid;
 
@@ -43,14 +44,14 @@ public class EmailUserController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody EmailUser emailUser, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody EmailUserDto emailUser, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : ResponseEntity.status(HttpStatus.CREATED).body(emailUserService.save(emailUser));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody EmailUser emailUser, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody EmailUserDto emailUser, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : emailUserService.update(id, emailUser)

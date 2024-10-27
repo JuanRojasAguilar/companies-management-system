@@ -2,9 +2,12 @@ package com.backend.usertelephone.domain;
 
 import com.backend.telephonetype.domain.TelephoneType;
 import com.backend.user.domain.User;
+import com.backend.utils.enums.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,4 +39,7 @@ public class UserTelephone {
   @ManyToOne
   @JoinColumn(name="user_id")
   private User user;
+
+  @Enumerated(EnumType.STRING)
+  private Status status;
 }

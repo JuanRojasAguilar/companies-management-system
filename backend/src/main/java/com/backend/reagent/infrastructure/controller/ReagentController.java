@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.reagent.application.ReagentService;
 import com.backend.reagent.domain.Reagent;
+import com.backend.reagent.domain.ReagentDto;
 
 import jakarta.validation.Valid;
 
@@ -45,14 +46,14 @@ public class ReagentController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody Reagent reagent, BindingResult bindingResult) {
+    public ResponseEntity<?> create(@Valid @RequestBody ReagentDto reagent, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : ResponseEntity.status(HttpStatus.CREATED).body(reagentService.save(reagent));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Reagent reagent, BindingResult bindingResult) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ReagentDto reagent, BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : reagentService.update(id, reagent)

@@ -3,10 +3,13 @@ package com.backend.statusorderservice.domain;
 import java.util.List;
 
 import com.backend.detailsorderwork.domain.DetailsOrderWork;
+import com.backend.utils.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,8 +32,11 @@ public class StatusOrderService {
 
 	@Column(length = 20)
 	private String name;
+
+	@Enumerated(EnumType.STRING)
+	private Status status;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "statusOrderServiceId") 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "statusOrderService") 
 	@JsonIgnore
 	private List<DetailsOrderWork> detailsOrderWorks;
 

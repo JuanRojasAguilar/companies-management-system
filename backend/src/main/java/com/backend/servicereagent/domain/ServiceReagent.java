@@ -1,26 +1,28 @@
-package com.backend.servicereagent.domain.entity;
+package com.backend.servicereagent.domain;
 
 import java.math.BigDecimal;
 
 import com.backend.reagent.domain.Reagent;
 import com.backend.service.domain.Service;
+import com.backend.utils.enums.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "services_reagents")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -32,22 +34,16 @@ public class ServiceReagent {
     @EqualsAndHashCode.Include
     private ServiceReagentPk serviceReagentPk;
 
-    @Column(name = "unit_value", precision = 10, scale = 2)
-    @NotNull(message = "unitValue couldn't be null")
-    @DecimalMin(value = "0.00", message = "unitValue must be a positive number")
     private BigDecimal unitValue;
 
-    @NotNull(message = "Stock value couldn't be null")
-    @Min(value = 0, message = "Stock cannot be negative")
     private Long stock;
 
-    @NotNull(message = "stockMax couldn't be null")
-    @Min(value = 0, message = "stockMax cannot be negative")
     private Long stockMax;
 
-    @NotNull(message = "stockMin couldn't be null")
-    @Min(value = 0, message = "stockMin cannot be negative")
     private Long stockMin;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("reagentId")

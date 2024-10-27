@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.serviceapproval.application.ServiceApprovalService;
 import com.backend.serviceapproval.domain.ServiceApproval;
+import com.backend.serviceapproval.domain.ServiceApprovalDto;
 
 import jakarta.validation.Valid;
 
@@ -48,7 +49,7 @@ public class ServiceApprovalController{
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody ServiceApproval serviceApproval, BindingResult result, @PathVariable Long id ) {
+	public ResponseEntity<?> update(@Valid @RequestBody ServiceApprovalDto serviceApproval, BindingResult result, @PathVariable Long id ) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
@@ -61,7 +62,7 @@ public class ServiceApprovalController{
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody ServiceApproval serviceApproval, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody ServiceApprovalDto serviceApproval, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}

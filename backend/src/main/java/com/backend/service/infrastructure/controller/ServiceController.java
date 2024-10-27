@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.service.application.ServiceService;
 import com.backend.service.domain.Service;
+import com.backend.service.domain.ServiceDto;
 
 import jakarta.validation.Valid;
 
@@ -42,7 +43,7 @@ public class ServiceController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@PathVariable Long id, @Valid @RequestBody Service newService,
+    public ResponseEntity<?> save(@PathVariable Long id, @Valid @RequestBody ServiceDto newService,
             BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
                 ? validation(bindingResult)
@@ -50,7 +51,7 @@ public class ServiceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Service newService,
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ServiceDto newService,
             BindingResult bindingResult) {
         return bindingResult.hasFieldErrors()
                 ? validation(bindingResult)

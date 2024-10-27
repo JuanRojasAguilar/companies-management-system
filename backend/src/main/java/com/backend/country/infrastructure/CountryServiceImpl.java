@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.country.application.CountryService;
 import com.backend.country.domain.Country;
+import com.backend.country.domain.CountryDto;
+import com.backend.utils.enums.Status;
 
 @Service
 public class CountryServiceImpl implements CountryService {
@@ -21,8 +22,12 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	@Transactional
-	public Country save(Country country) {
-		return repository.save(country);
+	public Country save(CountryDto country) {
+		Country countryDb = new Country();
+		countryDb.setName(country.getName());
+		countryDb.setStatus(Status.ENABLED);
+
+		return repository.save(countryDb);
 	}
 
 	@Override
@@ -32,28 +37,30 @@ public class CountryServiceImpl implements CountryService {
 		return countries;
 
 	}
+
 	@Override
 	public Optional<Country> findById(Long id) {
 		return repository.findById(id); 
 	}
+
 	@Override
 	public Optional<Country> delete(Long id) {
-		try {
-			Country countryInstance = this.findById(id).get();
-			repository.delete(countryInstance);
-			return Optional.of(countryInstance);
-		} catch (Exception e) {
-			return Optional.empty();
+		Optional<Country> countryInstance = this.findById(id);
+		if (countryInstance.isPresent()) {
+			countryInstance.orElseThrow().setStatus(Status.DISABLED);
+			return Optional.of(repository.save(countryInstance.orElseThrow()));
 		}
+		return Optional.empty();
 	}
 
 	@Override
-	public Optional<Country> update(Long id, Country country) {
+	public Optional<Country> update(Long id, CountryDto country) {
 		Optional<Country> countryInstance = repository.findById(id);
 	if (countryInstance.isPresent()) {
-			Country newCountry = countryInstance.get();
-			BeanUtils.copyProperties(country, newCountry);
-			return Optional.of(repository.save(newCountry));
+			Country countryDb = countryInstance.orElseThrow();
+			countryDb.setName(country.getName());
+
+			return Optional.of(repository.save(countryDb));
 		}
 		return Optional.empty();
 	}

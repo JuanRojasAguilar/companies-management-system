@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.detailorder.application.DetailOrderService;
 import com.backend.detailorder.domain.DetailOrder;
+import com.backend.detailorder.domain.DetailOrderDto;
+import com.backend.orderservice.domain.OrderService;
+import com.backend.utils.enums.Status;
 
 @Service
 public class DetailOrderServiceImpl implements DetailOrderService {
@@ -29,27 +31,48 @@ public class DetailOrderServiceImpl implements DetailOrderService {
     }
 
     @Override
-    public Optional<DetailOrder> update(Long id, DetailOrder detailOrder) {
+    public Optional<DetailOrder> update(Long id, DetailOrderDto detailOrder) {
         Optional<DetailOrder> detailOrderInstance = repository.findById(id);
         if (detailOrderInstance.isPresent()) {
-            DetailOrder newDetailOrder = detailOrderInstance.get();
-            BeanUtils.copyProperties(detailOrder, newDetailOrder);
-            return Optional.of(repository.save(newDetailOrder));
+            DetailOrder detailOrderDb = detailOrderInstance.orElseThrow();
+            detailOrderDb.setServiceValue(detailOrder.getServiceValue());
+
+            com.backend.service.domain.Service service = new com.backend.service.domain.Service();
+            service.setId(detailOrder.getServiceId());
+            detailOrderDb.setService(service);
+
+            OrderService orderService = new OrderService();
+            orderService.setId(detailOrder.getServiceId());
+            detailOrderDb.setService(service);
+
+            return Optional.of(repository.save(detailOrderDb));
         }
         return Optional.empty();
     }
 
     @Override
-    public DetailOrder save(DetailOrder detailOrder) {
-        return repository.save(detailOrder);
+    public DetailOrder save(DetailOrderDto detailOrder) {
+        DetailOrder detailOrderDb = new DetailOrder();
+        detailOrderDb.setServiceValue(detailOrder.getServiceValue());
+        detailOrderDb.setStatus(Status.DISABLED);
+
+        com.backend.service.domain.Service service = new com.backend.service.domain.Service();
+        service.setId(detailOrder.getServiceId());
+        detailOrderDb.setService(service);
+
+        OrderService orderService = new OrderService();
+        orderService.setId(detailOrder.getServiceId());
+        detailOrderDb.setService(service);
+
+        return repository.save(detailOrderDb);
     }
 
     @Override
     public Optional<DetailOrder> delete(Long id) {
         Optional<DetailOrder> detailOrderInstance = repository.findById(id);
         if (detailOrderInstance.isPresent()) {
-            repository.delete(detailOrderInstance.get());
-            return Optional.of(detailOrderInstance).orElseThrow();
+            detailOrderInstance.orElseThrow().setStatus(Status.DISABLED);
+            return Optional.of(repository.save(detailOrderInstance.orElseThrow()));
         }
         return Optional.empty();
     }

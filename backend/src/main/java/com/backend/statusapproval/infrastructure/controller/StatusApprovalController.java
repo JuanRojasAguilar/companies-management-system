@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.statusapproval.application.StatusApprovalService;
 import com.backend.statusapproval.domain.StatusApproval;
+import com.backend.statusapproval.domain.StatusApprovalDto;
 
 import jakarta.validation.Valid;
 
@@ -48,7 +49,7 @@ public class StatusApprovalController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody StatusApproval statusApproval, BindingResult result,
+	public ResponseEntity<?> update(@Valid @RequestBody StatusApprovalDto statusApproval, BindingResult result,
 			@PathVariable Long id) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
@@ -62,7 +63,7 @@ public class StatusApprovalController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody StatusApproval statusApproval, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody StatusApprovalDto statusApproval, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}

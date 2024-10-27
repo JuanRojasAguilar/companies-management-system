@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.statusapproval.application.StatusApprovalService;
 import com.backend.statusapproval.domain.StatusApproval;
+import com.backend.statusapproval.domain.StatusApprovalDto;
+import com.backend.utils.enums.Status;
 
 @Service
 public class StatusApprovalServiceImpl implements StatusApprovalService {
@@ -20,8 +21,12 @@ public class StatusApprovalServiceImpl implements StatusApprovalService {
 	private StatusApprovalRepository repository;
 
 	@Override
-	public StatusApproval save(StatusApproval statusApproval) {
-		return repository.save(statusApproval);
+	public StatusApproval save(StatusApprovalDto statusApproval) {
+		StatusApproval statusApprovalDb = new StatusApproval();
+		statusApprovalDb.setName(statusApproval.getName());
+		statusApprovalDb.setStatus(Status.ENABLED);
+		
+		return repository.save(statusApprovalDb);
 	}
 
 	@Override
@@ -48,13 +53,10 @@ public class StatusApprovalServiceImpl implements StatusApprovalService {
 	}
 
 	@Override
-	public Optional<StatusApproval> update(Long id, StatusApproval statusApproval) {
-		Optional<StatusApproval> statusApprovalInstance = repository.findById(id);
-		if (statusApprovalInstance.isPresent()) {
-			StatusApproval newStatusApproval = statusApprovalInstance.get();
-			BeanUtils.copyProperties(statusApproval, newStatusApproval);
-			return Optional.of(repository.save(newStatusApproval));
-		}
-		return Optional.empty();
+	public Optional<StatusApproval> update(Long id, StatusApprovalDto statusApproval) {
+		StatusApproval statusApprovalDb = new StatusApproval();
+		statusApprovalDb.setName(statusApproval.getName());
+		
+		return Optional.of(repository.save(statusApprovalDb));
 	}
 }

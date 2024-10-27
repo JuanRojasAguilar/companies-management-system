@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.backend.emailuser.domain.EmailUser;
+import com.backend.emailuser.domain.EmailUserDto;
 
 public interface EmailUserService {
-    public EmailUser save(EmailUser emailUser);
+    public EmailUser save(EmailUserDto emailUser);
 
-    public Optional<EmailUser> update(Long id, EmailUser emailUser);
+    public Optional<EmailUser> update(Long id, EmailUserDto emailUser);
 
     public Optional<EmailUser> findById(Long id);
     

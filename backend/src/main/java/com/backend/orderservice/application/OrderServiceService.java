@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.backend.orderservice.domain.OrderService;
+import com.backend.orderservice.domain.OrderServiceDto;
 
 public interface OrderServiceService {
-    public OrderService save(OrderService orderService);
+    public OrderService save(OrderServiceDto orderService);
 
-    public Optional<OrderService> update(Long id, OrderService orderService);
+    public Optional<OrderService> update(Long id, OrderServiceDto orderService);
 
     public Optional<OrderService> findById(Long id);
     

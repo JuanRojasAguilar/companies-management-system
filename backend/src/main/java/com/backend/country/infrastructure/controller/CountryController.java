@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.country.application.CountryService;
 import com.backend.country.domain.Country;
+import com.backend.country.domain.CountryDto;
 
 import jakarta.validation.Valid;
 
@@ -48,7 +49,7 @@ public class CountryController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> update(@Valid @RequestBody Country country, BindingResult result, @PathVariable Long id) {
+	public ResponseEntity<?> update(@Valid @RequestBody CountryDto country, BindingResult result, @PathVariable Long id) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
@@ -61,7 +62,7 @@ public class CountryController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> save(@Valid @RequestBody Country country, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @RequestBody CountryDto country, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);
 		}
