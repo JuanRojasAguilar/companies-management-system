@@ -15,6 +15,10 @@ public class ServiceApprovalDto implements Serializable{
 	@NotBlank
 	private String findings;
 
+    @NotNull
+	@NotBlank
+    private String solutions;
+
     @Max(value = 1)
     private Long serviceId;
 

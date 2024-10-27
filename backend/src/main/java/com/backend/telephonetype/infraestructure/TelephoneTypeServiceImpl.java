@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +38,7 @@ public class TelephoneTypeServiceImpl implements TelephoneTypeService {
         Optional<TelephoneType> telTypeInstance = repository.findById(id);
         if (telTypeInstance.isPresent()) {
             TelephoneType newTelType = new TelephoneType();
-            BeanUtils.copyProperties(telephoneType, newTelType, telephoneType.getClass());
+            newTelType.setName(telephoneType.getName());
 
             return Optional.of(repository.save(newTelType));
         }
@@ -50,7 +49,7 @@ public class TelephoneTypeServiceImpl implements TelephoneTypeService {
     @Transactional
     public TelephoneType save(TelephoneTypeDto telephoneType) {
         TelephoneType newTelType = new TelephoneType();
-        BeanUtils.copyProperties(telephoneType, newTelType, telephoneType.getClass());
+        newTelType.setName(telephoneType.getName());
         newTelType.setStatus(Status.ENABLED);
 
         return repository.save(newTelType);

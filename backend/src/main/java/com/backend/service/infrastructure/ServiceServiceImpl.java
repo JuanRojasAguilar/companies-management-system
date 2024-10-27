@@ -3,7 +3,6 @@ package com.backend.service.infrastructure;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,8 @@ public class ServiceServiceImpl implements ServiceService {
     @Transactional
     public Service save(ServiceDto service) {
         Service serviceDb = new Service();
-        BeanUtils.copyProperties(service, serviceDb, service.getClass());
+        serviceDb.setName(service.getName());
+        serviceDb.setReagentNeeded(service.isReagentNeeded());
         serviceDb.setStatus(Status.ENABLED);
 
         return repository.save(serviceDb);
@@ -45,7 +45,8 @@ public class ServiceServiceImpl implements ServiceService {
         Optional<Service> serviceInstance = repository.findById(id);
         if (serviceInstance.isPresent()) {
             Service serviceDb = new Service();
-            BeanUtils.copyProperties(service, serviceDb, service.getClass());
+            serviceDb.setName(service.getName());
+            serviceDb.setReagentNeeded(service.isReagentNeeded());
 
             return Optional.of(repository.save(serviceDb));
         }

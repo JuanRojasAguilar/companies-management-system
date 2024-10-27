@@ -2,7 +2,6 @@ package com.backend.user.domain.dto;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -13,12 +12,15 @@ import lombok.Data;
 
 @Data
 public class UserDto implements Serializable{
-    @Column(length = 45, nullable = false)
+
+    @NotNull
+    @NotEmpty
+    private String id;
+
     @NotEmpty(message = "name cannot be null")
     @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$", message = "El campo solo puede contener letras y espacios, no caracteres especiales")
     private String name;
 
-    @Column(length = 45, nullable = false)
     @NotEmpty(message = "lastname cannot be null")
     @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$", message = "El campo solo puede contener letras y espacios, no caracteres especiales")
     private String lastname;

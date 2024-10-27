@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,7 @@ public class EmailTypeServiceImpl implements EmailTypeService {
         Optional<EmailType> emailTypeInstance = repository.findById(id);
         if (emailTypeInstance.isPresent()) {
             EmailType emailTypeDb = new EmailType();
-            BeanUtils.copyProperties(emailType, emailTypeDb, emailType.getClass());
+            emailTypeDb.setName(emailType.getName());
             
             return Optional.of(repository.save(emailTypeDb));
         }
@@ -45,7 +44,7 @@ public class EmailTypeServiceImpl implements EmailTypeService {
     @Override
     public EmailType save(EmailTypeDto emailType) {
         EmailType emailTypeDb = new EmailType();
-        BeanUtils.copyProperties(emailType, emailTypeDb, emailType.getClass());
+        emailTypeDb.setName(emailType.getName());
         emailTypeDb.setStatus(Status.ENABLED);
 
         return repository.save(emailTypeDb);

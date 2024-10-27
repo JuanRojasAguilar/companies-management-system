@@ -3,7 +3,6 @@ package com.backend.reagent.infrastructure.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +21,8 @@ public class ReagentImpl implements ReagentService {
     @Override
     public Reagent save(ReagentDto reagent) {
         Reagent reagentDb = new Reagent();
-        BeanUtils.copyProperties(reagent, reagentDb, reagent.getClass());
+        reagentDb.setName(reagent.getName());
+        reagentDb.setSerial(reagent.getSerial());
         reagentDb.setStatus(Status.ENABLED);
 
         return reagentRepository.save(reagentDb);
@@ -34,7 +34,8 @@ public class ReagentImpl implements ReagentService {
         Optional<Reagent> reagentDb = reagentRepository.findById(id);
         if (reagentDb.isPresent()) {
             Reagent reagentToUpload = new Reagent();
-            BeanUtils.copyProperties(reagent, reagentToUpload, reagent.getClass());
+            reagentToUpload.setName(reagent.getName());
+            reagentToUpload.setSerial(reagent.getSerial());
 
             return Optional.of(reagentRepository.save(reagentToUpload));
         }

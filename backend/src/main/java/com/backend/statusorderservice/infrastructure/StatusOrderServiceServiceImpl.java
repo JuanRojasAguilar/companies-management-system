@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,7 @@ public class StatusOrderServiceServiceImpl implements StatusOrderServiceService 
 	@Override
 	public StatusOrderService save(StatusOrderServiceDto statusOrderService) {
 		StatusOrderService statusOrderServiceDb = new StatusOrderService();
-		BeanUtils.copyProperties(statusOrderService, statusOrderServiceDb, statusOrderService.getClass());
+		statusOrderServiceDb.setName(statusOrderService.getName());
 		statusOrderServiceDb.setStatus((Status.ENABLED));
 
 		return repository.save(statusOrderServiceDb);
@@ -57,7 +56,7 @@ public class StatusOrderServiceServiceImpl implements StatusOrderServiceService 
 		Optional<StatusOrderService> statusOrderServiceInstance = repository.findById(id);
 		if (statusOrderServiceInstance.isPresent()) {
 			StatusOrderService statusOrderServiceDb = new StatusOrderService();
-			BeanUtils.copyProperties(statusOrderService, statusOrderServiceDb, statusOrderService.getClass());
+			statusOrderServiceDb.setName(statusOrderService.getName());
 
 			return Optional.of(repository.save(statusOrderServiceDb));
 		}

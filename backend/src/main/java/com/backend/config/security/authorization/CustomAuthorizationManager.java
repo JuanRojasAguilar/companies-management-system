@@ -10,8 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.stereotype.Component;
 
-import com.backend.operation.domain.Operation;
-import com.backend.operation.infrastructure.OperationnRepository;
+import com.backend.operation.domain.Operations;
+import com.backend.operation.infrastructure.OperationsnRepository;
 import com.backend.user.application.UserService;
 import com.backend.user.domain.User;
 import com.backend.utils.exceptions.ObjectNotFoundException;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Component
 public class CustomAuthorizationManager implements AuthorizationManager<RequestAuthorizationContext>  {
     @Autowired
-    private OperationnRepository operationRepository;
+    private OperationsnRepository operationRepository;
 
     @Autowired
     private UserService userService;
@@ -56,15 +56,15 @@ public class CustomAuthorizationManager implements AuthorizationManager<RequestA
             throw new AuthenticationCredentialsNotFoundException("User not logged in");
         }
 
-        List<Operation> operations = obtainOperations(authentication);
+        List<Operations> operations = obtainOperationss(authentication);
 
-        boolean isGranted = operations.stream().anyMatch(getOperationPredicate(url, httpMethod));
+        boolean isGranted = operations.stream().anyMatch(getOperationsPredicate(url, httpMethod));
 
         System.out.println("IS GRANTED: " + isGranted);
         return isGranted;
     }
 
-    private static Predicate<Operation> getOperationPredicate(String url, String httpMethod) {
+    private static Predicate<Operations> getOperationsPredicate(String url, String httpMethod) {
         return operation -> {
 
             String basePath = operation.getModule().getBasePath();
@@ -76,7 +76,7 @@ public class CustomAuthorizationManager implements AuthorizationManager<RequestA
         };
     }
 
-    private List<Operation> obtainOperations(Authentication authentication) {
+    private List<Operations> obtainOperationss(Authentication authentication) {
 
         UsernamePasswordAuthenticationToken authToken = (UsernamePasswordAuthenticationToken) authentication;
         String username = (String) authToken.getPrincipal();
@@ -91,10 +91,10 @@ public class CustomAuthorizationManager implements AuthorizationManager<RequestA
 
     private boolean isPublic(String url, String httpMethod) {
 
-        List<Operation> publicAccessEndpoints = operationRepository
+        List<Operations> publicAccessEndpoints = operationRepository
                 .findByPubliccAcces();
 
-        boolean isPublic = publicAccessEndpoints.stream().anyMatch(getOperationPredicate(url, httpMethod));
+        boolean isPublic = publicAccessEndpoints.stream().anyMatch(getOperationsPredicate(url, httpMethod));
 
 
         System.out.println("IS PUBLIC: " + isPublic);

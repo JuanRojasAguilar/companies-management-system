@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +35,7 @@ public class DetailOrderServiceImpl implements DetailOrderService {
         Optional<DetailOrder> detailOrderInstance = repository.findById(id);
         if (detailOrderInstance.isPresent()) {
             DetailOrder detailOrderDb = detailOrderInstance.orElseThrow();
-            BeanUtils.copyProperties(detailOrder, detailOrderDb, detailOrder.getClass());
+            detailOrderDb.setServiceValue(detailOrder.getServiceValue());
 
             com.backend.service.domain.Service service = new com.backend.service.domain.Service();
             service.setId(detailOrder.getServiceId());
@@ -54,7 +53,7 @@ public class DetailOrderServiceImpl implements DetailOrderService {
     @Override
     public DetailOrder save(DetailOrderDto detailOrder) {
         DetailOrder detailOrderDb = new DetailOrder();
-        BeanUtils.copyProperties(detailOrder, detailOrderDb, detailOrder.getClass());
+        detailOrderDb.setServiceValue(detailOrder.getServiceValue());
         detailOrderDb.setStatus(Status.DISABLED);
 
         com.backend.service.domain.Service service = new com.backend.service.domain.Service();

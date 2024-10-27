@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +23,7 @@ public class OrderWorkServiceImpl implements OrderWorkService {
 	@Override
 	public OrderWork save(OrderWorkDto orderWork) {
 		OrderWork orderWorkDb = new OrderWork();
-		BeanUtils.copyProperties(orderWork, orderWorkDb, orderWork.getClass());
+		orderWorkDb.setNumberOrderWork(orderWork.getNumberOrderWork());
 		orderWorkDb.setStatus(Status.ENABLED);
 
 		User employee = new User();
@@ -65,7 +64,7 @@ public class OrderWorkServiceImpl implements OrderWorkService {
 		Optional<OrderWork> orderWorkInstance = repository.findById(id);
 		if (orderWorkInstance.isPresent()) {
 			OrderWork orderWorkDb = new OrderWork();
-			BeanUtils.copyProperties(orderWork, orderWorkDb, orderWork.getClass());
+			orderWorkDb.setNumberOrderWork(orderWork.getNumberOrderWork());
 
 			User employee = new User();
 			employee.setId(orderWork.getEmployeeId());

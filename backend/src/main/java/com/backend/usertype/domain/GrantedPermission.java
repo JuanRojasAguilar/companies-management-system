@@ -1,6 +1,6 @@
 package com.backend.usertype.domain;
 
-import com.backend.operation.domain.Operation;
+import com.backend.operation.domain.Operations;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,10 +18,10 @@ public class GrantedPermission {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "role_id")
-    private UserType role;
+    @JoinColumn(name = "user_type_id")
+    private UserType userType;
 
     @ManyToOne
     @JoinColumn(name = "operation_id")
-    private Operation operation;
+    private Operations operation;
 }

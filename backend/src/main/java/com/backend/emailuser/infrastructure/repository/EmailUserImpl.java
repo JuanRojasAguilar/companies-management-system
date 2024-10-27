@@ -3,7 +3,6 @@ package com.backend.emailuser.infrastructure.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class EmailUserImpl implements EmailUserService {
     @Override
     public EmailUser save(EmailUserDto emailUser) {
         EmailUser emailUserDb = new EmailUser();
-        BeanUtils.copyProperties(emailUser, emailUserDb, getClass());
+        emailUserDb.setEmail(emailUser.getEmail());
         emailUserDb.setStatus(Status.ENABLED);
 
         EmailType emailType = new EmailType();
@@ -42,7 +41,7 @@ public class EmailUserImpl implements EmailUserService {
         Optional<EmailUser> emailUserDB = emailUserRepository.findById(id);
         if (emailUserDB.isPresent()) {
             EmailUser emailUserDb = new EmailUser();
-            BeanUtils.copyProperties(emailUser, emailUserDb, getClass());
+            emailUserDb.setEmail(emailUser.getEmail());
 
             EmailType emailType = new EmailType();
             emailType.setId(emailUser.getEmailTypeId());

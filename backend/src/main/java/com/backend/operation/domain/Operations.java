@@ -1,6 +1,6 @@
 package com.backend.operation.domain;
 
-import com.backend.module.domain.Module;
+import com.backend.module.domain.Modules;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Operation {
+public class Operations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,5 +27,5 @@ public class Operation {
 
     @ManyToOne
     @JoinColumn(name = "module_id")
-    private Module module;
+    private Modules module;
 }

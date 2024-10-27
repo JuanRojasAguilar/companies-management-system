@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,7 @@ public class CountryServiceImpl implements CountryService {
 	@Transactional
 	public Country save(CountryDto country) {
 		Country countryDb = new Country();
-		BeanUtils.copyProperties(country, countryDb, country.getClass());
+		countryDb.setName(country.getName());
 		countryDb.setStatus(Status.ENABLED);
 
 		return repository.save(countryDb);
@@ -59,7 +58,7 @@ public class CountryServiceImpl implements CountryService {
 		Optional<Country> countryInstance = repository.findById(id);
 	if (countryInstance.isPresent()) {
 			Country countryDb = countryInstance.orElseThrow();
-			BeanUtils.copyProperties(country, countryDb, country.getClass());
+			countryDb.setName(country.getName());
 
 			return Optional.of(repository.save(countryDb));
 		}

@@ -3,7 +3,6 @@ package com.backend.companyservice.infrastructure.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class CompanyServiceServiceImpl implements CompanyServiceService {
     @Override
     public CompanyService save(CompanyServiceDto companyService) {
         CompanyService companyServiceDb = new CompanyService();
-        BeanUtils.copyProperties(companyService, companyServiceDb, companyService.getClass());
+        companyServiceDb.setValueService(companyService.getValueService());
         companyServiceDb.setStatus(Status.ENABLED);
 
         Franchise franchise = new Franchise();
@@ -42,7 +41,7 @@ public class CompanyServiceServiceImpl implements CompanyServiceService {
         Optional<CompanyService> companyServiceDB = companyServiceRepository.findById(id);
         if (companyServiceDB.isPresent()) {
             CompanyService companyServiceDb = new CompanyService();
-            BeanUtils.copyProperties(companyService, companyServiceDb, companyService.getClass());
+            companyServiceDb.setValueService(companyService.getValueService());
 
             Franchise franchise = new Franchise();
             franchise.setId(companyService.getFranchiseId());

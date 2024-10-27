@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,8 @@ public class ServiceApprovalServiceImpl implements ServiceApprovalService {
 	@Override
 	public ServiceApproval save(ServiceApprovalDto serviceApproval) {
 		ServiceApproval serviceApprovalDb = new ServiceApproval();
-		BeanUtils.copyProperties(serviceApproval, serviceApprovalDb, serviceApproval.getClass());
+		serviceApprovalDb.setFindings(serviceApproval.getFindings());
+		serviceApprovalDb.setSolutions(serviceApprovalDb.getSolutions());
 		serviceApprovalDb.setStatus(Status.ENABLED);
 
 		com.backend.service.domain.Service service = new com.backend.service.domain.Service();
@@ -78,7 +78,8 @@ public class ServiceApprovalServiceImpl implements ServiceApprovalService {
 		Optional<ServiceApproval> serviceApprovalInstance = repository.findById(id);
 		if (serviceApprovalInstance.isPresent()) {
 			ServiceApproval serviceApprovalDb = new ServiceApproval();
-			BeanUtils.copyProperties(serviceApproval, serviceApprovalDb, serviceApproval.getClass());
+			serviceApprovalDb.setFindings(serviceApproval.getFindings());
+			serviceApprovalDb.setSolutions(serviceApprovalDb.getSolutions());
 
 			com.backend.service.domain.Service service = new com.backend.service.domain.Service();
 			service.setId(serviceApproval.getServiceId());

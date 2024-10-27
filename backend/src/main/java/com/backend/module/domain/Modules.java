@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Module {
+public class Modules {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

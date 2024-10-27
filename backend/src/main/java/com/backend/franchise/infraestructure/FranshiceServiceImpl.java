@@ -3,7 +3,6 @@ package com.backend.franchise.infraestructure;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +37,9 @@ public class FranshiceServiceImpl implements FranchiseService {
         Optional<Franchise> franchiseInstance = repository.findById(id);
         if (franchiseInstance.isPresent()) {
             Franchise franchiseDb = new Franchise(); 
-            BeanUtils.copyProperties(franchise, franchiseDb, franchise.getClass());
+            franchiseDb.setName(franchise.getName());
+            franchiseDb.setNit(franchise.getNit());
+            franchiseDb.setFoundingDate(franchise.getFoundingDate());
 
             City city = new City();
             city.setId(franchise.getCityId());
@@ -57,7 +58,9 @@ public class FranshiceServiceImpl implements FranchiseService {
     @Transactional
     public Franchise save(FranchiseDto franchise) {
         Franchise franchiseDb = new Franchise(); 
-        BeanUtils.copyProperties(franchise, franchiseDb, franchise.getClass());
+        franchiseDb.setName(franchise.getName());
+        franchiseDb.setNit(franchise.getNit());
+        franchiseDb.setFoundingDate(franchise.getFoundingDate());
         franchiseDb.setStatus(Status.ENABLED);
 
         City city = new City();

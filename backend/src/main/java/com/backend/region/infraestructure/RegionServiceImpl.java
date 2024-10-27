@@ -3,7 +3,6 @@ package com.backend.region.infraestructure;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +37,7 @@ public class RegionServiceImpl implements RegionService {
     @Override
     public Region save(RegionDto region) {
         Region regionDb = new Region();
-        BeanUtils.copyProperties(region, regionDb, region.getClass());
+        regionDb.setName(region.getName());
         regionDb.setStatus(Status.ENABLED);
 
         Country country = new Country();
@@ -53,7 +52,7 @@ public class RegionServiceImpl implements RegionService {
         Optional<Region> regionInstance = repository.findById(id);
         if (regionInstance.isPresent()) {
             Region regionDb = new Region();
-            BeanUtils.copyProperties(region, regionDb, region.getClass());
+            regionDb.setName(region.getName());
 
             Country country = new Country();
             country.setId(region.getCountryId());

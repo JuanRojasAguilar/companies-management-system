@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,7 @@ public class StatusApprovalServiceImpl implements StatusApprovalService {
 	@Override
 	public StatusApproval save(StatusApprovalDto statusApproval) {
 		StatusApproval statusApprovalDb = new StatusApproval();
-		BeanUtils.copyProperties(statusApproval, statusApprovalDb, statusApproval.getClass());
+		statusApprovalDb.setName(statusApproval.getName());
 		statusApprovalDb.setStatus(Status.ENABLED);
 		
 		return repository.save(statusApprovalDb);
@@ -55,11 +54,9 @@ public class StatusApprovalServiceImpl implements StatusApprovalService {
 
 	@Override
 	public Optional<StatusApproval> update(Long id, StatusApprovalDto statusApproval) {
-		Optional<StatusApproval> statusApprovalInstance = this.findById(id);
-        if (statusApprovalInstance.isPresent()) {
-            statusApprovalInstance.orElseThrow().setStatus(Status.DISABLED);
-            return Optional.of(repository.save(statusApprovalInstance.orElseThrow()));
-        }
-            return Optional.empty();
+		StatusApproval statusApprovalDb = new StatusApproval();
+		statusApprovalDb.setName(statusApproval.getName());
+		
+		return Optional.of(repository.save(statusApprovalDb));
 	}
 }

@@ -51,7 +51,7 @@ public class UserController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody User user, BindingResult bindingResult) {
+  public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody UserDto user, BindingResult bindingResult) {
     return bindingResult.hasFieldErrors()
             ? validation(bindingResult)
             : service.update(id, user)

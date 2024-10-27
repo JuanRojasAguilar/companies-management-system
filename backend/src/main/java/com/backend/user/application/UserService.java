@@ -11,7 +11,8 @@ public interface UserService {
   Optional<User> findById(String id);
   List<User> findAllEmployees();
   User save(UserDto user);
-  Optional<User> update(String id, User user);
+  Optional<User> update(String id, UserDto user);
   Optional<User> delete(String id);
   Optional<User> findOneByUsername(String username);
+  void createadminUser();
 }

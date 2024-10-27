@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.backend.franchise.domain.Franchise;
 import com.backend.user.application.UserService;
 import com.backend.user.domain.User;
 import com.backend.user.domain.dto.UserDto;
@@ -56,12 +56,35 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public Optional<User> update(String id, User user) {
+  public Optional<User> update(String id, UserDto user) {
     Optional<User> userInstance = this.findById(id);
     if (userInstance.isPresent()) {
-      User newUser = userInstance.get();
-      BeanUtils.copyProperties(user, newUser);
-      return Optional.of(repository.save(newUser));
+      validatePassword(user);
+
+      User usetToUpdate = new User();
+      usetToUpdate.setId(user.getId());
+      usetToUpdate.setName(user.getName());
+      usetToUpdate.setLastname(user.getLastname());
+      usetToUpdate.setUsername(user.getUsername());
+      usetToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+
+      if (user.getFranchiseId() != null) {
+        Franchise franchise = new Franchise();
+        franchise.setId(user.getFranchiseId());
+        usetToUpdate.setFranchise(franchise);
+      }
+
+      if (user.getUsertypeId() == 0) {
+        UserType defaultRole = userTypeRepository.findDefaultRole()
+            .orElseThrow(() -> new ObjectNotFoundException("Role not found. Default Role"));
+        usetToUpdate.setUserType(defaultRole);
+      } else {
+        UserType userType = new UserType();
+        userType.setId(user.getUsertypeId());
+        usetToUpdate.setUserType(userType);
+      }
+
+      return Optional.of(repository.save(usetToUpdate));
     }
     return Optional.empty();
   }
@@ -82,10 +105,27 @@ public class UserServiceImpl implements UserService {
     validatePassword(newUser);
 
     User user = new User();
-    BeanUtils.copyProperties(newUser, user, newUser.getClass());
-    UserType defaultRole = userTypeRepository.findDefaultRole()
-                    .orElseThrow(() -> new ObjectNotFoundException("Role not found. Default Role"));
-    user.setUserType(defaultRole);
+    user.setId(newUser.getId());
+    user.setName(newUser.getName());
+    user.setLastname(newUser.getLastname());
+    user.setUsername(newUser.getUsername());
+    user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
+    if (newUser.getFranchiseId() != null) {
+      Franchise franchise = new Franchise();
+      franchise.setId(newUser.getFranchiseId());
+      user.setFranchise(franchise);
+    }
+
+    if (newUser.getUsertypeId() == 0) {
+      UserType defaultRole = userTypeRepository.findDefaultRole()
+          .orElseThrow(() -> new ObjectNotFoundException("Role not found. Default Role"));
+      user.setUserType(defaultRole);
+    } else {
+      UserType userType = new UserType();
+      userType.setId(newUser.getUsertypeId());
+      user.setUserType(userType);
+    }
 
     return repository.save(user);
   }
@@ -97,12 +137,24 @@ public class UserServiceImpl implements UserService {
 
   private void validatePassword(UserDto dto) {
 
-    if(!StringUtils.hasText(dto.getPassword()) || !StringUtils.hasText(dto.getRepeatedPassword())){
-        throw new InvalidPasswordException("Passwords don't match");
+    if (!StringUtils.hasText(dto.getPassword()) || !StringUtils.hasText(dto.getRepeatedPassword())) {
+      throw new InvalidPasswordException("Passwords don't match");
     }
 
-    if(!dto.getPassword().equals(dto.getRepeatedPassword())){
-        throw new InvalidPasswordException("Passwords don't match");
+    if (!dto.getPassword().equals(dto.getRepeatedPassword())) {
+      throw new InvalidPasswordException("Passwords don't match");
     }
+  }
+
+  @Override
+  public void createadminUser() {
+    UserDto user = new UserDto();
+    user.setId("1");
+    user.setUsername("root");
+    user.setPassword("12345678");
+    user.setRepeatedPassword("12345678");
+    user.setUsertypeId((long) 2);
+
+    this.save(user);
   }
 }

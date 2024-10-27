@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.backend.emailuser.domain.EmailUser;
@@ -15,6 +16,7 @@ import com.backend.serviceapproval.domain.ServiceApproval;
 import com.backend.userreagent.domain.UserReagent;
 import com.backend.usertype.domain.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,8 +57,6 @@ public class User implements UserDetails {
     @Column(length = 500, nullable = false)
     private String password;
 
-    private String repeatedPassword;
-
     @ManyToOne
     @JoinColumn(name = "user_type_id")
     private UserType userType;
@@ -93,8 +93,22 @@ public class User implements UserDetails {
     private List<UserReagent> userReagents;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+        if(userType == null) return null;
+
+        if(userType.getPermissions() == null) return null;
+
+        List<SimpleGrantedAuthority> authorities = userType.getPermissions().stream()
+                .map(each -> each.getOperation().getName())
+                .map(each -> new SimpleGrantedAuthority(each))
+                //.map(each -> {
+                //    String permission = each.name();
+                //    return new SimpleGrantedAuthority(permission);
+                //})
+                .collect(Collectors.toList());
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.userType.getName()));
+        return authorities;
     }
 }

@@ -3,7 +3,6 @@ package com.backend.orderservice.infrastructure.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class OrderServiceImpl implements OrderServiceService {
     @Override
     public OrderService save(OrderServiceDto orderService) {
         OrderService orderServiceDb = new OrderService();
-        BeanUtils.copyProperties(orderService, orderServiceDb);
+        orderServiceDb.setName(orderService.getName());
         orderServiceDb.setStatus(Status.ENABLED);
 
         User client = new User();
@@ -47,7 +46,7 @@ public class OrderServiceImpl implements OrderServiceService {
         Optional<OrderService> orderServiceDB = orderServiceRepository.findById(id);
         if (orderServiceDB.isPresent()) {
             OrderService orderServiceDb = new OrderService();
-            BeanUtils.copyProperties(orderService, orderServiceDb, orderService.getClass());
+            orderServiceDb.setName(orderService.getName());
 
             User client = new User();
             client.setId(orderService.getClientId());

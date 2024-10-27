@@ -41,7 +41,7 @@ public class UserType {
 	private List<User> userList;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userType", fetch = FetchType.EAGER)
     private List<GrantedPermission> permissions;
     
 }

@@ -3,7 +3,6 @@ package com.backend.servicereagent.infrastructure.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,10 @@ public class ServiceReagentImpl implements ServiceReagentService {
     @Override
     public ServiceReagent save(ServiceReagentDto serviceReagent) {
         ServiceReagent serviceReagentDb = new ServiceReagent();
-        BeanUtils.copyProperties(serviceReagent, serviceReagentDb, serviceReagent.getClass());
+        serviceReagentDb.setUnitValue(serviceReagent.getUnitValue());
+        serviceReagentDb.setStock(serviceReagent.getStock());
+        serviceReagentDb.setStockMax(serviceReagent.getStockMax());
+        serviceReagentDb.setStockMin(serviceReagent.getStockMin());
         serviceReagentDb.setStatus(Status.ENABLED);
 
         com.backend.service.domain.Service service = new com.backend.service.domain.Service();
@@ -42,7 +44,10 @@ public class ServiceReagentImpl implements ServiceReagentService {
         Optional<ServiceReagent> serviceReagentDB = serviceReagentRepository.findById(id);
         if (serviceReagentDB.isPresent()) {
             ServiceReagent serviceReagentDb = new ServiceReagent();
-            BeanUtils.copyProperties(serviceReagent, serviceReagentDb, serviceReagent.getClass());
+            serviceReagentDb.setUnitValue(serviceReagent.getUnitValue());
+            serviceReagentDb.setStock(serviceReagent.getStock());
+            serviceReagentDb.setStockMax(serviceReagent.getStockMax());
+            serviceReagentDb.setStockMin(serviceReagent.getStockMin());
 
             com.backend.service.domain.Service service = new com.backend.service.domain.Service();
             service.setId(serviceReagent.getServiceId());

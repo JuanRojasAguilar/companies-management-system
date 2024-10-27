@@ -3,7 +3,6 @@ package com.backend.city.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +36,7 @@ public class CityServiceImpl implements CityService {
     Optional<City> cityInstance = this.findById(id);
     if (cityInstance.isPresent()) {
       City cityDb = cityInstance.orElseThrow();
-      BeanUtils.copyProperties(city, cityDb, city.getClass());
+      cityDb.setName(city.getName());
 
       Region region = new Region();
       region.setId(city.getRegionId());
@@ -51,7 +50,7 @@ public class CityServiceImpl implements CityService {
   @Transactional
   public City save(CityDto city) {
     City cityDb = new City();
-    BeanUtils.copyProperties(city, cityDb, city.getClass());
+    cityDb.setName(city.getName());
     cityDb.setStatus(Status.ENABLED);
 
     Region region = new Region();

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +38,7 @@ public class UserTelephoneServiceImpl implements UserTelephoneService {
   @Transactional
   public UserTelephone save(UserTelephoneDto userTelephone) {
     UserTelephone userTelephoneDb = new UserTelephone();
-    BeanUtils.copyProperties(userTelephone, userTelephoneDb, userTelephone.getClass());
+    userTelephoneDb.setNumber(userTelephone.getNumber());
     userTelephoneDb.setStatus(Status.ENABLED);
 
     User user = new User();
@@ -59,7 +58,7 @@ public class UserTelephoneServiceImpl implements UserTelephoneService {
     Optional<UserTelephone> telephoneInstance = repository.findById(id);
     if (telephoneInstance.isPresent()) {
       UserTelephone userTelephoneDb = new UserTelephone();
-      BeanUtils.copyProperties(userTelephone, userTelephoneDb, userTelephone.getClass());
+      userTelephoneDb.setNumber(userTelephone.getNumber());
 
       User user = new User();
       user.setId(userTelephone.getUserId());

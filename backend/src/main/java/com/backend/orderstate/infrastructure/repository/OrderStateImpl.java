@@ -3,7 +3,6 @@ package com.backend.orderstate.infrastructure.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +22,7 @@ public class OrderStateImpl implements OrderStateService {
     @Override
     public OrderState save(OrderStateDto orderState) {
         OrderState orderStateDb = new OrderState();
-        BeanUtils.copyProperties(orderState, orderStateDb, orderState.getClass());
+        orderStateDb.setName(orderState.getName());
         orderStateDb.setStatus(Status.ENABLED);
 
         return orderStateRepository.save(orderStateDb);
@@ -35,7 +34,7 @@ public class OrderStateImpl implements OrderStateService {
         Optional<OrderState> orderStateDB = orderStateRepository.findById(id);
         if (orderStateDB.isPresent()) {
             OrderState orderStateDb = new OrderState();
-            BeanUtils.copyProperties(orderState, orderStateDb, orderState.getClass());
+            orderStateDb.setName(orderState.getName());
 
             return Optional.of(orderStateRepository.save(orderStateDb));
         }

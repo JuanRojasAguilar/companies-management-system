@@ -3,7 +3,6 @@ package com.backend.company.infrastructure;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     public Company save(CompanyDto company) {
         Company companyDb = new Company();
-        BeanUtils.copyProperties(company, companyDb, company.getClass());
+        companyDb.setName(company.getName());
         companyDb.setStatus(Status.ENABLED);
 
         CompanyType companyType = new CompanyType();
@@ -50,7 +49,7 @@ public class CompanyServiceImpl implements CompanyService {
         Optional<Company> companyInstance = this.findById(id);
         if (companyInstance.isPresent()) {
             Company companyDb = companyInstance.orElseThrow();
-            BeanUtils.copyProperties(company, companyDb, company.getClass());
+            companyDb.setName(company.getName());
 
             CompanyType companyType = new CompanyType();
             companyType.setId(company.getCompanyTypeId());
