@@ -74,7 +74,8 @@ export default function FindingsServiceList() {
   const columns = ["name", "finding", "edit", "select"];
 
   return (
-    <div className="space-y-4 h-full flex flex-col">
+   <div className="space-y-4 h-full flex flex-col p-4">
+	  <h1 className="text-lg text-center">Service Findings</h1>
       <Table
         aria-label="Service Findings Table"
         className="grow [&>div]:grow [&>div]:mb-2"

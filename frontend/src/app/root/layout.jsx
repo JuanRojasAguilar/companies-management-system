@@ -13,7 +13,7 @@ export default function providerLayout({ children }) {
         <NextUIProvider>
             <div className={styles.mainDiv}>
                 <main className={styles.currentPage}>{children}</main>
-                <NavigationBar pages={customerPages}/>
+                <NavigationBar pages={rootPages}/>
             </div>
         </NextUIProvider>
     )

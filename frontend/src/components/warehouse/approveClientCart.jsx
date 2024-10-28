@@ -25,8 +25,8 @@ export default function ProductList() {
   };
 
   return (
-    <div style={{ width: '100vw', height: '100vh', padding: '20px', boxSizing: 'border-box' }}>
-      <h1>Product List</h1>
+    <div className="space-y-4 h-full w-full p-8 pr-16">
+	  <h1 className="text-lg text-center pb-4">Products List</h1>
       <Table aria-label="Product Table" css={{ marginTop: '20px' }}>
         <TableHeader>
           <TableColumn>Product</TableColumn>

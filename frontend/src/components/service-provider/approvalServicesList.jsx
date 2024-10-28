@@ -80,7 +80,8 @@ export default function ApprovalServicesList() {
   ];
 
   return (
-    <div className="space-y-4 h-full flex flex-col">
+    <div className="space-y-4 h-full flex flex-col p-4 pr-16">
+	  <h1 className="text-lg text-center">Service Approval</h1>
       <Input
         classNames={{
           base: "max-w-full sm:max-w-[20rem] h-10",

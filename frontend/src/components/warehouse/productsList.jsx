@@ -47,7 +47,7 @@ export default function ProductsList() {
   const columns = ["name", "value", "current stock", "more info"];
 
   return (
-    <div className="space-y-4 h-full p-4">
+    <div className="space-y-4 h-full p-4 pr-16">
 	  <h1 className="text-lg text-center">Products List</h1>
 	  <Table aria-label="Products Table" className="grow [&>div]:grow [&>div]:mb-2">
         <TableHeader>

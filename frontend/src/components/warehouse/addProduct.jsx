@@ -60,7 +60,8 @@ export default function CreateProduct() {
   };
 
   return (
-    <div className="space-y-4 h-full w-full p-8">
+    <div className="space-y-4 h-full w-full p-8 pr-16">
+		  <h1 className="text-lg text-center">Product Creation</h1>
       <h1>Create Product</h1>
       <Input
         label="Product ID"

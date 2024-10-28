@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Modal, Input, Button, Table, Row, ModalBody, ModalFooter, ModalHeader, TableRow, TableBody, TableCell, TableColumn, TableHeader } from '@nextui-org/react';
+import { Modal, Input, Button, Table, Row, ModalBody, ModalFooter, ModalHeader, TableRow, TableBody, TableCell, TableColumn, TableHeader, SelectItem, ModalContent } from '@nextui-org/react';
 
 export default function CRUDPage({ entity }) {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [newItem, setNewItem] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showNewModal, setShowNewModal] = useState(false);
   const [search, setSearch] = useState("");
+  const [columns, setColumns] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const differentEndpoints = [
     ["order/details", "order-details"],
@@ -27,44 +31,37 @@ export default function CRUDPage({ entity }) {
   ];
 
   const convertEndpoint = () => {
-      const match = differentEndpoints.find(([original, modified]) => modified == entity);
-      return( match ? match[0] : entity);
+    const match = differentEndpoints.find(([original, modified]) => modified === entity);
+    return match ? match[0] : entity;
   };
-
-  // Fetch data on mount
+ 
   useEffect(() => {
-	const fixedEndpoint = convertEndpoint();
-    if (fixedEndpoint) {
-      axios.get(`/api/${fixedEndpoint}`)
-        .then(response => {
-          console.log(response.data); // Log response for debugging
-          setData(response.data);
-          setFilteredData(response.data);
-        })
-        .catch(error => console.error("Error fetching data:", error));
-    }
-  }, [entity]);
-
-  // Filter data by search
-  useEffect(() => {
+    const fixedEndpoint = convertEndpoint();
+	if (fixedEndpoint) {
+	  setLoading(true);
+	  axios.get(`http://localhost:8080/api/${fixedEndpoint}`)
+		.then(response => {
+		  setData(response.data);
+		  setFilteredData(response.data);
+		  setColumns(Object.keys(response.data[0]));
+		  console.log(response.data);
+		})
+		.catch(error => console.error("Error fetching data:", error))
+		.finally(() => {
+		  setLoading(false);
+		});
+	}
     setFilteredData(
       data.filter(item =>
-        item.name?.toLowerCase().includes(search.toLowerCase()) // Use optional chaining
+        item.name?.toLowerCase().includes(search.toLowerCase())
       )
     );
-  }, [search, data]);
+  }, [entity]);
 
-  // Handle selecting an item
-  const handleSelectItem = (item) => {
-    setSelectedItem(item);
-    setShowEditModal(true);
-  };
-
-  // Handle edit submission
   const handleEditSubmit = () => {
-    if (!selectedItem) return; // Check if selectedItem is defined
-    axios.put(`/api/${entity}/${selectedItem.id}`, selectedItem)
-      .then(response => {
+    if (!selectedItem) return;
+    axios.put(`http://localhost:8080/api/${entity}/${selectedItem.id}`, selectedItem)
+      .then(() => {
         setData(prevData =>
           prevData.map(item =>
             item.id === selectedItem.id ? selectedItem : item
@@ -75,21 +72,50 @@ export default function CRUDPage({ entity }) {
       .catch(error => console.error("Error updating item:", error));
   };
 
-  // Handle delete confirmation
   const handleDeleteConfirm = () => {
-    if (!selectedItem) return; // Check if selectedItem is defined
-    axios.delete(`/api/${entity}/${selectedItem.id}`)
-      .then(response => {
+    if (!selectedItem) return;
+    axios.delete(`http://localhost:8080/api/${entity}/${selectedItem.id}`)
+      .then(() => {
         setData(prevData => prevData.filter(item => item.id !== selectedItem.id));
         setShowDeleteModal(false);
       })
       .catch(error => console.error("Error deleting item:", error));
   };
 
+  const handleNewSubmit = () => {
+    if (!newItem) return;
+    axios.post(`http://localhost:8080/api/${entity}`, newItem)
+      .then(() => {
+        setData(prevData =>
+          prevData.map(item =>
+            item.id === newItem.id ? newItem : item
+          )
+        );
+        setShowNewModal(false);
+      })
+      .catch(error => console.error("Error updating item:", error));
+  };
+
+  const handleOpenEditModal = (item) => {
+    setSelectedItem(item);
+    setShowEditModal(true);
+	console.log(item, showEditModal);
+  };
+
+  const handleOpenDeleteModal = (item) => {
+    setSelectedItem(item);
+    setShowDeleteModal(true);
+  };
+
+  const handleOpenNewModal = () => {
+	setShowNewModal(true);
+  };
+
   return (
-    <div className="container">
-      <h1>{entity} CRUD Table</h1>
-      
+    <div className="space-y-4 h-full w-full p-8 pr-16">
+      <h1 className="text-lg text-center">{entity} CRUD Table</h1>
+	  
+	  <div className="flex flex row">
       <Input 
         type="text"
         clearable
@@ -99,25 +125,42 @@ export default function CRUDPage({ entity }) {
         onChange={e => setSearch(e.target.value)}
         css={{ marginBottom: '20px', width: '250px' }}
       />
+	  <Button className="ml-4" variant="ghost" color='success' onClick={() => handleOpenNewModal()}>
+		<i class='bx bx-message-square-add' ></i>
+	  </Button>
+	  </div>
 
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
       <Table aria-label={`${entity} Table`}>
         <TableHeader>
-          <TableColumn>Name</TableColumn>
-          <TableColumn>Description</TableColumn>
-          <TableColumn>Action</TableColumn>
+          {columns.map((col, index) => (
+            <TableColumn key={col} css={{ width: index === columns.length - 1 ? 'auto' : '1fr' }}>
+              {col.charAt(0).toUpperCase() + col.slice(1)}
+            </TableColumn>
+          ))}
+          <TableColumn css={{ width: '100px' }}>Actions</TableColumn>
         </TableHeader>
         <TableBody>
           {filteredData.map(item => (
             <TableRow key={item.id}>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>{item.description}</TableCell>
+              {columns.map(col => (
+                <TableCell key={`${item.id}-${col}`}>{item[col]}</TableCell>
+              ))}
               <TableCell>
-                <Button auto onClick={() => handleSelectItem(item)}>Select</Button>
+                <Button auto variant="ghost" color="primary" className="mx-2" onClick={() => handleOpenEditModal(item)}>
+				  <i class='bx bxs-edit'></i>
+				</Button>
+                <Button auto variant="ghost" color="danger" className="mx-2" onClick={() => handleOpenDeleteModal(item)}>
+				  <i class='bx bx-trash'></i>
+				</Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      )}
 
       {/* Edit Modal */}
       <Modal
@@ -125,24 +168,23 @@ export default function CRUDPage({ entity }) {
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
       >
+	  <ModalContent>
+	  {(onClose) => (
+		<>
         <ModalHeader>
           <h2>Edit {entity}</h2>
         </ModalHeader>
         <ModalBody>
-          <Input
-            label="Name"
-            clearable
-            fullWidth
-            value={selectedItem?.name || ''}
-            onChange={e => setSelectedItem({ ...selectedItem, name: e.target.value })}
-          />
-          <Input
-            label="Description"
-            clearable
-            fullWidth
-            value={selectedItem?.description || ''}
-            onChange={e => setSelectedItem({ ...selectedItem, description: e.target.value })}
-          />
+          {columns.map((col) => (
+            <Input
+              key={col}
+              label={col.charAt(0).toUpperCase() + col.slice(1)}
+              clearable
+              fullWidth
+              value={selectedItem?.[col] || ''}
+              onChange={e => setSelectedItem({ ...selectedItem, [col]: e.target.value })}
+            />
+          ))}
         </ModalBody>
         <ModalFooter>
           <Button auto onClick={handleEditSubmit}>
@@ -152,6 +194,9 @@ export default function CRUDPage({ entity }) {
             Cancel
           </Button>
         </ModalFooter>
+		</>
+	  )}
+	  </ModalContent>
       </Modal>
 
       {/* Delete Confirmation Modal */}
@@ -160,6 +205,9 @@ export default function CRUDPage({ entity }) {
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
       >
+	  <ModalContent>
+	  {(onClose) => (
+		<>
         <ModalHeader>
           <h2>Confirm Deletion</h2>
         </ModalHeader>
@@ -174,16 +222,46 @@ export default function CRUDPage({ entity }) {
             Cancel
           </Button>
         </ModalFooter>
+		</>
+	  )}
+	  </ModalContent>
       </Modal>
-
-      {/* If an item is selected, show Edit/Delete buttons */}
-      {selectedItem && (
-        <Row justify="center" css={{ marginTop: '20px' }}>
-          <Button auto onClick={() => setShowEditModal(true)}>Edit</Button>
-          <Button auto flat color="error" onClick={() => setShowDeleteModal(true)}>Delete</Button>
-        </Row>
-      )}
+      
+	  {/* New Modal */}
+      <Modal
+        closeButton
+        isOpen={showNewModal}
+        onClose={() => setShowNewModal(false)}
+      >
+	  <ModalContent>
+	  {(onClose) => (
+		<>
+        <ModalHeader>
+          <h2>New {entity}</h2>
+        </ModalHeader>
+        <ModalBody>
+          {columns.map((col) => (
+            <Input
+              key={col}
+              label={col.charAt(0).toUpperCase() + col.slice(1)}
+              clearable
+              fullWidth
+              onChange={e => setNewItem({ [col]: e.target.value })}
+            />
+          ))}
+        </ModalBody>
+        <ModalFooter>
+          <Button auto onClick={handleNewSubmit}>
+            Save Changes
+          </Button>
+          <Button auto flat color="error" onClick={() => setShowNewModal(false)}>
+            Cancel
+          </Button>
+        </ModalFooter>
+		</>
+	  )}
+	  </ModalContent>
+      </Modal>
     </div>
   );
 }
-
