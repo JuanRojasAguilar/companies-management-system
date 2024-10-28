@@ -48,11 +48,15 @@ public class TelephoneTypeServiceImpl implements TelephoneTypeService {
     @Override
     @Transactional
     public TelephoneType save(TelephoneTypeDto telephoneType) {
+<<<<<<< HEAD
         TelephoneType newTelType = new TelephoneType();
         newTelType.setName(telephoneType.getName());
         newTelType.setStatus(Status.ENABLED);
 
         return repository.save(newTelType);
+=======
+        return repository.save(telephoneType);
+>>>>>>> origin/alejo-dev
     }
 
     @Override
