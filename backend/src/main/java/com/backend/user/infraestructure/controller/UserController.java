@@ -24,6 +24,8 @@ import com.backend.user.domain.User;
 import com.backend.user.domain.dto.UserDto;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,7 +33,8 @@ public class UserController {
   @Autowired
   private UserService service;
 
-  @Autowired AuthenticationService authenticationService;
+  @Autowired 
+  private AuthenticationService authenticationService;
 
   @GetMapping
   public List<User> findAll() {
@@ -44,6 +47,14 @@ public class UserController {
             .map(response -> ResponseEntity.ok(response))
             .orElseGet(() -> ResponseEntity.notFound().build());
   }
+
+  @GetMapping("/login/{username}")
+  public ResponseEntity<?> loginUserByEmail(@PathVariable String username) {
+    return service.findOneByUsername(username)
+            .map(response -> ResponseEntity.ok(response))
+            .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+  
 
   @GetMapping("/employees")
   public List<User> findAllEmployees() {

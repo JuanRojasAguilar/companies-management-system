@@ -19,19 +19,17 @@ import com.backend.usertype.domain.UserType;
 import com.backend.utils.exceptions.InvalidPasswordException;
 import com.backend.utils.exceptions.ObjectNotFoundException;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-  @Autowired
-  UserRepository repository;
 
   @Autowired
-  UserTypeService userTypeRepository;
+  private UserRepository repository;
 
   @Autowired
-  PasswordEncoder passwordEncoder;
+  private UserTypeService userTypeRepository;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @Override
   @Transactional(readOnly = true)
@@ -153,7 +151,7 @@ public class UserServiceImpl implements UserService {
     user.setUsername("root");
     user.setPassword("12345678");
     user.setRepeatedPassword("12345678");
-    user.setUsertypeId((long) 2);
+    user.setUsertypeId(2L);
 
     this.save(user);
   }

@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.usertype.application.UserTypeService;
 import com.backend.usertype.domain.UserType;
@@ -25,7 +24,6 @@ public class UserTypeServiceImpl implements UserTypeService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Optional<UserType> findByName(String name) {
         return userTypeRepository.findByName(name);
     }
