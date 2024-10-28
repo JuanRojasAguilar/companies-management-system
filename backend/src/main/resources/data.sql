@@ -26,7 +26,6 @@ INSERT INTO modules (name, base_path) VALUES ('WORK_ORDER_DETAIL_STATUS', '/api/
 INSERT INTO modules (name, base_path) VALUES ('APPROVAL_STATUS', '/api/status-approval');
 INSERT INTO modules (name, base_path) VALUES ('AUTH', '/auth');
 
--- CREACIÓN DE OPERACIONES
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ALL_COUNTRIES','', 'GET', false, 1);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_ONE_COUNTRY','/[0-9]*', 'GET', false, 1);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('CREATE_ONE_COUNTRY','', 'POST', false, 1);
@@ -183,20 +182,17 @@ INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES (
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('VALIDATE-TOKEN','/validate-token', 'GET', true, 26);
 INSERT INTO operations (name, path, http_method, permit_all, module_id) VALUES ('READ_MY_PROFILE','/profile','GET', true, 26);
 
--- CREACIÓN DE ROLES2
-INSERT INTO user_types ("name") VALUES ('CUSTOMER'); --Buy Supplies and Services, LOGIN(without branch), Order/OrderStatus(if it isn't approved Write Why?)
+INSERT INTO user_types ("name") VALUES ('CUSTOMER'); 
 INSERT INTO user_types ("name") VALUES ('ADMINISTRATOR');
-INSERT INTO user_types ("name") VALUES ('BOSS'); --Work Orders
-INSERT INTO user_types ("name") VALUES ('EMPLOYEE'); --Work Orders/Orders(Which he is in charge), ApprovalStatus(Requested by Customer), Create Order(ask customer),
-INSERT INTO user_types ("name") VALUES ('SERVICE TRACKING'); --LIST Services that haven't been set to a branch
-INSERT INTO user_types ("name") VALUES ('MARKETING'); --LIST People
-INSERT INTO user_types ("name") VALUES ('BUYS DEPARTMENT'); --LIST Person_Supply(ONLY whose things have been bought),
-INSERT INTO user_types ("name") VALUES ('HUMAN RESOURCES'); -- ALL People(asigne Branch) Order and Work Order
-INSERT INTO user_types ("name") VALUES ('WAREHOUSE´S ADMIN'); --ALL Supplies, SellStatus, OrderStatus, SuppliesOrders, LIST Buys/Sells, LIST People(SUPPLIERS)
-INSERT INTO user_types ("name") VALUES ('STORAGE´S ADMIN'); --Buy Supplies, Manage Sells and Buys, Persons(Suppliers) PersonSupply
-INSERT INTO user_types ("name") VALUES ('SUPPLIERS'); --Buys, LIST buys,
+INSERT INTO user_types ("name") VALUES ('BOSS'); 
+INSERT INTO user_types ("name") VALUES ('EMPLOYEE'); 
+INSERT INTO user_types ("name") VALUES ('SERVICE TRACKING'); 
+INSERT INTO user_types ("name") VALUES ('MARKETING'); 
+INSERT INTO user_types ("name") VALUES ('BUYS DEPARTMENT'); 
+INSERT INTO user_types ("name") VALUES ('HUMAN RESOURCES'); 
+INSERT INTO user_types ("name") VALUES ('WAREHOUSE´S ADMIN'); 
+INSERT INTO user_types ("name") VALUES ('SUPPLIERS'); 
 
--- CREACIÓN DE PERMISOS
 INSERT INTO granted_permission (user_type_id, operation_id) VALUES (1, 59);
 INSERT INTO granted_permission (user_type_id, operation_id) VALUES (1, 69);
 INSERT INTO granted_permission (user_type_id, operation_id) VALUES (1, 79);
@@ -337,7 +333,45 @@ INSERT INTO granted_permission (user_type_id, operation_id) VALUES (2, 123);
 INSERT INTO granted_permission (user_type_id, operation_id) VALUES (2, 124);
 INSERT INTO granted_permission (user_type_id, operation_id) VALUES (2, 125);
 
-
-
 INSERT INTO granted_permission (user_type_id, operation_id) VALUES (4, 111);
 INSERT INTO granted_permission (user_type_id, operation_id) VALUES (4, 113);
+
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 134);  
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 140);  
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (1, 139); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 103); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 121); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 133); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 112);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 114);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (3, 116);
+
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 131); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (4, 57); 
+
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 86); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (5, 87); 
+
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 136);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 32);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (6, 34);
+
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 132);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 57);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 58);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 59);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 60);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 101);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 102);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (7, 104);
+
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 86); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 87); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 88); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 89); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 90); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 130);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 57);
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 101); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 102); 
+INSERT INTO granted_permissions (role_id, operation_id) VALUES (8, 104); 
