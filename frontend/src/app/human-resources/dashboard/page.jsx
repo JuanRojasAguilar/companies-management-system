@@ -1,17 +1,10 @@
 'use client'
-
-import generalDashboard from "@/components/human-resources/generalDashboard"
-
-const styles = {
-    mainDiv : "w-screen h-screen"
-}
+import Dashboard from "@/components/human-resources/generalDashboard"
 
 export default function CustomerPage() {
-    return (
-        <main className={styles.mainDiv}>
-            <section>
-                <generalDashboard/>
-            </section>
-        </main>
-    )    
+  return (
+    <div className="w-screen h-screen">
+      <Dashboard />
+    </div>
+  )
 }

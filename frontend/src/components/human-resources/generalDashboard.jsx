@@ -1,66 +1,101 @@
-import { useEffect, useState } from 'react';
-import {
-  Card, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,
-  Row, Col, Text, Statistic
-} from '@nextui-org/react';
-import axios from 'axios';
-import { withOptions } from 'tailwindcss/plugin';
+'use client'
+import { useEffect, useState } from 'react'
+import { 
+  Card, 
+  CardBody,
+  CardHeader,
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Divider 
+} from '@nextui-org/react'
 
 export default function Dashboard() {
-  const [orders, setOrders] = useState([]);
-  const [unassignedServices, setUnassignedServices] = useState([]);
-  const [branchStats, setBranchStats] = useState([]);
-  const [employeeStats, setEmployeeStats] = useState([]);
+  const [orders, setOrders] = useState([])
+  const [unassignedServices, setUnassignedServices] = useState([])
+  const [branchStats, setBranchStats] = useState([])
+  const [employeeStats, setEmployeeStats] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ordersData = await axios.get('/api/orders');
-        const servicesData = await axios.get('/api/services/unassigned');
-        const branchData = await axios.get('/api/stats/branches');
-        const employeeData = await axios.get('/api/stats/employees');
+        const [ordersData, servicesData, branchData, employeeData] = await Promise.all([
+          fetch('/api/orders').then(res => res.json()),
+          fetch('/api/services/unassigned').then(res => res.json()),
+          fetch('/api/stats/branches').then(res => res.json()),
+          fetch('/api/stats/employees').then(res => res.json())
+        ])
 
-        setOrders(ordersData.data);
-        setUnassignedServices(servicesData.data);
-        setBranchStats(branchData.data);
-        setEmployeeStats(employeeData.data);
+        setOrders(ordersData)
+        setUnassignedServices(servicesData)
+        setBranchStats(branchData)
+        setEmployeeStats(employeeData)
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+        console.error('Error fetching dashboard data:', error)
       }
-    };
-    fetchData();
-  }, []);
+    }
+
+    fetchData()
+  }, [])
 
   return (
-    <div className="container">
-      <h1>General Dashboard</h1>
-      <Row>
-        <Col span={6}>
-          <Card>
-            <h1>Order Summary</h1>
-            <Statistic value={orders.length} />
-            <Statistic value={orders.filter(o => o.status === 'Pending').length} />
-            <Statistic value={orders.filter(o => o.status === 'Completed').length} />
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card>
-            <h1>Unassigned Services</h1>
-            <Table aria-label="Unassigned Services" css={{ marginTop: '20px' }}>
+    <div className="p-6 gap-6">
+      <h1 className="text-2xl font-bold mb-6">General Dashboard</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader className="flex gap-3">
+            <div className="flex flex-col">
+              <p className="text-md">Order Summary</p>
+            </div>
+          </CardHeader>
+          <Divider/>
+          <CardBody>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span>Total Orders:</span>
+                <span>{orders.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Pending:</span>
+                <span>{orders.filter(o => o.status === 'Pending').length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Completed:</span>
+                <span>{orders.filter(o => o.status === 'Completed').length}</span>
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex gap-3">
+            <div className="flex flex-col">
+              <p className="text-md">Unassigned Services</p>
+            </div>
+          </CardHeader>
+          <Divider/>
+          <CardBody>
+            <Table aria-label="Unassigned Services">
               <TableHeader>
                 <TableColumn>Service</TableColumn>
+                <TableColumn>Status</TableColumn>
               </TableHeader>
               <TableBody>
                 {unassignedServices.map((service) => (
                   <TableRow key={service.id}>
                     <TableCell>{service.name}</TableCell>
+                    <TableCell>Unassigned</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          </Card>
-        </Col>
-      </Row>
+          </CardBody>
+        </Card>
+      </div>
     </div>
-  );
+  )
 }
